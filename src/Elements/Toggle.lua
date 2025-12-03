@@ -26,7 +26,7 @@ function Element:New(Idx, Config)
 	Toggle.SetDesc = ToggleFrame.SetDesc
 
 	local ToggleBorder = New("UIStroke", {
-		Thickness = 2,
+		Thickness = 1,
 		ApplyStrokeMode = Enum.ApplyStrokeMode.Border,
 	})
 

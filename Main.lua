@@ -3133,7 +3133,7 @@ local aa = {
 			i.DescLabel.Size = UDim2.new(1, -54, 0, 14)
 			h.SetTitle = i.SetTitle
 			h.SetDesc = i.SetDesc
-			local j = ai("UIStroke", { Thickness = 2, ApplyStrokeMode = Enum.ApplyStrokeMode.Border })
+			local j = ai("UIStroke", { Thickness = 1, ApplyStrokeMode = Enum.ApplyStrokeMode.Border })
 			local l = ai(
 				"Frame",
 				{
