@@ -28,6 +28,7 @@ local Library = {
 	OpenFrames = {},
 	Options = {},
 	Themes = require(Root.Themes).Names,
+	Accent = Color3.fromRGB(0, 255, 0),
 
 	Window = nil,
 	WindowFrame = nil,

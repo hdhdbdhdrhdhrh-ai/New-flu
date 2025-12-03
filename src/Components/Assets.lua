@@ -1,4 +1,4 @@
 return {
-	Close = "rbxassetid://10709818399",
+	Close = "rbxassetid://91859637038171",
 	Min = "rbxassetid://10734895698",
 }

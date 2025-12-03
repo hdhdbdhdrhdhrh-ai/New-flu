@@ -6,7 +6,8 @@ local InterfaceManager = {} do
         Theme = "Dark",
         Acrylic = true,
         Transparency = true,
-        MenuKeybind = "LeftControl"
+        MenuKeybind = "LeftControl",
+        Accent = Color3.fromRGB(0, 255, 0)
     }
 
     function InterfaceManager:SetFolder(folder)
@@ -101,6 +102,18 @@ local InterfaceManager = {} do
                 InterfaceManager:SaveSettings()
 			end
 		})
+	
+		local AccentPicker = section:AddColorpicker("Accent", {
+			Title = "Accent",
+			Description = "Color for toggle squares.",
+			Default = Settings.Accent,
+			Callback = function(Value)
+				Library.Accent = Value
+				Settings.Accent = Value
+				InterfaceManager:SaveSettings()
+			end
+		})
+		AccentPicker:SetValue(Settings.Accent)
 	
 		local MenuKeybind = section:AddKeybind("MenuKeybind", { Title = "Minimize Bind", Default = Settings.MenuKeybind })
 		MenuKeybind:OnChanged(function()
