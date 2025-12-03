@@ -1900,17 +1900,34 @@ local aa = {
 			n.Callback = n.Callback or function() end
 			local o = e(k.Element)(n.Title, n.Description, m.Container, true)
 			local p = j(
-				"ImageLabel",
+				"Frame",
 				{
-					Image = "rbxassetid://10709791437",
-					Size = UDim2.fromOffset(16, 16),
+					Size = UDim2.fromOffset(100, 26),
 					AnchorPoint = Vector2.new(1, 0.5),
 					Position = UDim2.new(1, -10, 0.5, 0),
-					BackgroundTransparency = 1,
+					BackgroundTransparency = 0,
 					Parent = o.Frame,
-					ThemeTag = { ImageColor3 = "Text" },
+				},
+				{
+					j("UICorner", { CornerRadius = UDim.new(0, 4) }),
+					j("TextLabel", {
+						Size = UDim2.fromScale(1, 1),
+						BackgroundTransparency = 1,
+						Text = n.ButtonText or "Button",
+						TextColor3 = Color3.fromRGB(255, 255, 255),
+						TextSize = 13,
+						FontFace = Font.new(
+							"rbxasset://fonts/families/GothamSSm.json",
+							Enum.FontWeight.Medium,
+							Enum.FontStyle.Normal
+						),
+					}),
 				}
 			)
+			function o.UpdateColor(q)
+				p.BackgroundColor3 = m.Library.Accent
+			end
+			o:UpdateColor()
 			i.AddSignal(o.Frame.MouseButton1Click, function()
 				m.Library:SafeCallback(n.Callback)
 			end)
