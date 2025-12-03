@@ -500,7 +500,7 @@ local aa = {
 	[8] = function()
 		local c, d, e, f, g = b(8)
 		return {
-			Close = "rbxassetid://91859637038171",
+			Close = "rbxassetid://113507840995608",
 			Min = "rbxassetid://10734895698",
 		}
 	end,
