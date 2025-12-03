@@ -14,32 +14,50 @@ function Element:New(Config)
 
 	local ButtonFrame = require(Components.Element)(Config.Title, Config.Description, self.Container, true)
 
+	local ButtonStroke = New("UIStroke", {
+		Thickness = 0.6,
+		ApplyStrokeMode = Enum.ApplyStrokeMode.Border,
+	})
+
+	local ButtonText = New("TextLabel", {
+		Size = UDim2.fromScale(1, 1),
+		BackgroundTransparency = 1,
+		Text = Config.ButtonText or "Button",
+		TextColor3 = Config.TextColor or Color3.fromRGB(255, 255, 255),
+		TextSize = 13,
+		AutomaticSize = Enum.AutomaticSize.X,
+		FontFace = Font.new(
+			"rbxasset://fonts/families/GothamSSm.json",
+			Enum.FontWeight.Medium,
+			Enum.FontStyle.Normal
+		),
+	})
+
 	local ButtonBox = New("Frame", {
-		Size = UDim2.fromOffset(100, 26),
-		AnchorPoint = Vector2.new(1, 0.5),
-		Position = UDim2.new(1, -10, 0.5, 0),
-		BackgroundTransparency = 0,
+		Size = UDim2.new(0, 0, 0, 26),
+		AnchorPoint = Vector2.new(0, 0),
+		Position = UDim2.new(0, 0, 1, 5),
+		BackgroundTransparency = Config.Filled and 0 or 1,
 		Parent = ButtonFrame.Frame,
+		AutomaticSize = Enum.AutomaticSize.X,
 	}, {
 		New("UICorner", {
 			CornerRadius = UDim.new(0, 4),
 		}),
-		New("TextLabel", {
-			Size = UDim2.fromScale(1, 1),
-			BackgroundTransparency = 1,
-			Text = Config.ButtonText or "Button",
-			TextColor3 = Color3.fromRGB(255, 255, 255),
-			TextSize = 13,
-			FontFace = Font.new(
-				"rbxasset://fonts/families/GothamSSm.json",
-				Enum.FontWeight.Medium,
-				Enum.FontStyle.Normal
-			),
+		New("UIPadding", {
+			PaddingLeft = UDim.new(0, 12),
+			PaddingRight = UDim.new(0, 12),
 		}),
+		ButtonStroke,
+		ButtonText,
 	})
 
 	function ButtonFrame:UpdateColor()
-		ButtonBox.BackgroundColor3 = self.Library.Accent
+		if Config.Filled then
+			ButtonBox.BackgroundColor3 = self.Library.Accent
+		else
+			ButtonStroke.Color = self.Library.Accent
+		end
 	end
 
 	ButtonFrame:UpdateColor()

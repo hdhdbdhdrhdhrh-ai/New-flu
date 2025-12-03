@@ -40,10 +40,25 @@ do
 
 
 
+    -- Border Button (default)
     Tabs.Main:AddButton({
-        Title = "Button",
-        Description = "Very important button",
-        ButtonText = "Click Me", -- Custom text inside the button
+        Title = "Border Button",
+        Description = "Button with accent border",
+        ButtonText = "Click Me",
+        TextColor = Color3.fromRGB(255, 255, 255), -- Custom text color
+        Filled = false, -- Border style (default)
+        Callback = function()
+            print("Border button clicked")
+        end
+    })
+
+    -- Filled Button
+    Tabs.Main:AddButton({
+        Title = "Filled Button",
+        Description = "Button with accent fill",
+        ButtonText = "Filled",
+        TextColor = Color3.fromRGB(0, 0, 0), -- Dark text for filled button
+        Filled = true, -- Filled style
         Callback = function()
             Window:Dialog({
                 Title = "Title",

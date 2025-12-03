@@ -1899,33 +1899,42 @@ local aa = {
 			assert(n.Title, "Button - Missing Title")
 			n.Callback = n.Callback or function() end
 			local o = e(k.Element)(n.Title, n.Description, m.Container, true)
+			local q = j("UIStroke", { Thickness = 0.6, ApplyStrokeMode = Enum.ApplyStrokeMode.Border })
+			local r = j("TextLabel", {
+				Size = UDim2.fromScale(1, 1),
+				BackgroundTransparency = 1,
+				Text = n.ButtonText or "Button",
+				TextColor3 = n.TextColor or Color3.fromRGB(255, 255, 255),
+				TextSize = 13,
+				AutomaticSize = Enum.AutomaticSize.X,
+				FontFace = Font.new(
+					"rbxasset://fonts/families/GothamSSm.json",
+					Enum.FontWeight.Medium,
+					Enum.FontStyle.Normal
+				),
+			})
 			local p = j(
 				"Frame",
 				{
-					Size = UDim2.fromOffset(100, 26),
-					AnchorPoint = Vector2.new(1, 0.5),
-					Position = UDim2.new(1, -10, 0.5, 0),
-					BackgroundTransparency = 0,
+					Size = UDim2.new(0, 0, 0, 26),
+					AnchorPoint = Vector2.new(0, 0),
+					Position = UDim2.new(0, 0, 1, 5),
+					BackgroundTransparency = n.Filled and 0 or 1,
 					Parent = o.Frame,
+					AutomaticSize = Enum.AutomaticSize.X,
 				},
 				{
 					j("UICorner", { CornerRadius = UDim.new(0, 4) }),
-					j("TextLabel", {
-						Size = UDim2.fromScale(1, 1),
-						BackgroundTransparency = 1,
-						Text = n.ButtonText or "Button",
-						TextColor3 = Color3.fromRGB(255, 255, 255),
-						TextSize = 13,
-						FontFace = Font.new(
-							"rbxasset://fonts/families/GothamSSm.json",
-							Enum.FontWeight.Medium,
-							Enum.FontStyle.Normal
-						),
-					}),
+					j("UIPadding", { PaddingLeft = UDim.new(0, 12), PaddingRight = UDim.new(0, 12) }),
+					q, r
 				}
 			)
-			function o.UpdateColor(q)
-				p.BackgroundColor3 = m.Library.Accent
+			function o.UpdateColor(s)
+				if n.Filled then
+					p.BackgroundColor3 = m.Library.Accent
+				else
+					q.Color = m.Library.Accent
+				end
 			end
 			o:UpdateColor()
 			i.AddSignal(o.Frame.MouseButton1Click, function()
@@ -3067,22 +3076,21 @@ local aa = {
 						ThemeTag = { TextColor3 = "SubText" },
 					}
 				)
+			local p = ai("UIStroke", { Thickness = 1, Color = g.Accent, Transparency = 0 })
 			local o = ai(
 				"Frame",
 				{
 					Size = UDim2.new(1, 0, 0, 4),
 					AnchorPoint = Vector2.new(1, 0.5),
 					Position = UDim2.new(1, -10, 0.5, 0),
-					BackgroundTransparency = 0.4,
+					BackgroundColor3 = g.Accent,
+					BackgroundTransparency = 0.5,
 					Parent = j.Frame,
-					ThemeTag = { BackgroundColor3 = "SliderRail" },
 				},
 				{
 					ai("UICorner", { CornerRadius = UDim.new(1, 0) }),
 					ai("UISizeConstraint", { MaxSize = Vector2.new(150, math.huge) }),
-					n,
-					m,
-					l,
+					p, n, m, l,
 				}
 			)
 			ah.AddSignal(k.InputBegan, function(p)
