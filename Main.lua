@@ -137,6 +137,7 @@ local aa = {
 			MinimizeKeybind = nil,
 			MinimizeKey = Enum.KeyCode.LeftControl,
 			GUI = w,
+			Accent = Color3.fromRGB(0, 255, 0),
 		}
 		function x.SafeCallback(y, z, ...)
 			if not z then
