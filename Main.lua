@@ -502,8 +502,6 @@ local aa = {
 		return {
 			Close = "rbxassetid://10709818399",
 			Min = "rbxassetid://10734895698",
-			Max = "rbxassetid://9886659406",
-			Restore = "rbxassetid://9886659001",
 		}
 	end,
 	[9] = function()
@@ -1434,10 +1432,7 @@ local aa = {
 					} },
 				})
 			end)
-			o.MaxButton = q(i.Max, UDim2.new(1, -40, 0, 4), o.Frame, function()
-				n.Window.Maximize(not n.Window.Maximized)
-			end)
-			o.MinButton = q(i.Min, UDim2.new(1, -80, 0, 4), o.Frame, function()
+			o.MinButton = q(i.Min, UDim2.new(1, -40, 0, 4), o.Frame, function()
 				p.Window:Minimize()
 			end)
 			return o
@@ -1577,7 +1572,6 @@ local aa = {
 			local K, L
 			v.Maximize = function(M, N, O)
 				v.Maximized = M
-				v.TitleBar.MaxButton.Frame.Icon.Image = M and o.Restore or o.Max
 				if M then
 					K = v.Size.X.Offset
 					L = v.Size.Y.Offset
