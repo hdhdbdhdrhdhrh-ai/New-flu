@@ -2,6 +2,9 @@ local Fluent = loadstring(game:HttpGet("https://raw.githubusercontent.com/hdhdbd
 local SaveManager = loadstring(game:HttpGet("https://raw.githubusercontent.com/dawid-scripts/Fluent/master/Addons/SaveManager.lua"))()
 local InterfaceManager = loadstring(game:HttpGet("https://raw.githubusercontent.com/dawid-scripts/Fluent/master/Addons/InterfaceManager.lua"))()
 
+-- Set custom accent color (optional, defaults to green)
+Fluent.Accent = Color3.fromRGB(0, 255, 0)
+
 local Window = Fluent:CreateWindow({
     Title = "Fluent " .. Fluent.Version,
     SubTitle = "by dawid",
@@ -40,6 +43,7 @@ do
     Tabs.Main:AddButton({
         Title = "Button",
         Description = "Very important button",
+        ButtonText = "Click Me", -- Custom text inside the button
         Callback = function()
             Window:Dialog({
                 Title = "Title",
