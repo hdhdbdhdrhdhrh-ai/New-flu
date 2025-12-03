@@ -3133,6 +3133,7 @@ local aa = {
 			i.DescLabel.Size = UDim2.new(1, -54, 0, 14)
 			h.SetTitle = i.SetTitle
 			h.SetDesc = i.SetDesc
+			local j = ai("UIStroke", { Thickness = 2, ApplyStrokeMode = Enum.ApplyStrokeMode.Border })
 			local l = ai(
 				"Frame",
 				{
@@ -3142,7 +3143,7 @@ local aa = {
 					Parent = i.Frame,
 					BackgroundTransparency = 1,
 				},
-				{ ai("UICorner", { CornerRadius = UDim.new(0, 4) }) }
+				{ ai("UICorner", { CornerRadius = UDim.new(0, 4) }), j }
 			)
 			local m = ai(
 				"ImageLabel",
@@ -3160,9 +3161,12 @@ local aa = {
 				if h.Value then
 					l.BackgroundColor3 = g.Accent
 					l.BackgroundTransparency = 0
+					j.Transparency = 1
 					m.Visible = true
 				else
 					l.BackgroundTransparency = 1
+					j.Color = g.Accent
+					j.Transparency = 0
 					m.Visible = false
 				end
 			end

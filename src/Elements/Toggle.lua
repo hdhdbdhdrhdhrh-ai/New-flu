@@ -25,6 +25,11 @@ function Element:New(Idx, Config)
 	Toggle.SetTitle = ToggleFrame.SetTitle
 	Toggle.SetDesc = ToggleFrame.SetDesc
 
+	local ToggleBorder = New("UIStroke", {
+		Thickness = 2,
+		ApplyStrokeMode = Enum.ApplyStrokeMode.Border,
+	})
+
 	local ToggleSquare = New("Frame", {
 		Size = UDim2.fromOffset(18, 18),
 		AnchorPoint = Vector2.new(1, 0.5),
@@ -35,6 +40,7 @@ function Element:New(Idx, Config)
 		New("UICorner", {
 			CornerRadius = UDim.new(0, 4),
 		}),
+		ToggleBorder,
 	})
 
 	local CheckIcon = New("ImageLabel", {
@@ -51,9 +57,12 @@ function Element:New(Idx, Config)
 		if Toggle.Value then
 			ToggleSquare.BackgroundColor3 = Library.Accent
 			ToggleSquare.BackgroundTransparency = 0
+			ToggleBorder.Transparency = 1
 			CheckIcon.Visible = true
 		else
 			ToggleSquare.BackgroundTransparency = 1
+			ToggleBorder.Color = Library.Accent
+			ToggleBorder.Transparency = 0
 			CheckIcon.Visible = false
 		end
 	end
