@@ -1332,7 +1332,7 @@ local aa = {
 			local o, p, q =
 				{}, e(h), function(o, p, q, r)
 					local s = { Callback = r or function() end }
-					s.Frame = l("TextButton", { Size = UDim2.new(0, 34, 1, -8), AnchorPoint = Vector2.new(1, 0), BackgroundTransparency = 1, Parent = q, Position = p, Text = "", ThemeTag = { BackgroundColor3 = "Text" } }, { l("UICorner", { CornerRadius = UDim.new(0, 7) }), l("ImageLabel", { Image = o, Size = UDim2.fromOffset(16, 16), Position = UDim2.fromScale(0.5, 0.5), AnchorPoint = Vector2.new(0.5, 0.5), BackgroundTransparency = 1, Name = "Icon", ThemeTag = { ImageColor3 = "Text" } }) })
+					s.Frame = l("TextButton", { Size = UDim2.new(0, 34, 1, -8), AnchorPoint = Vector2.new(1, 0), BackgroundTransparency = 1, Parent = q, Position = p, Text = "", ThemeTag = { BackgroundColor3 = "Text" } }, { l("UICorner", { CornerRadius = UDim.new(0, 7) }), l("ImageLabel", { Image = o, Size = UDim2.fromOffset(16, 16), Position = UDim2.fromScale(0.5, 0.5), AnchorPoint = Vector2.new(0.5, 0.5), BackgroundTransparency = 1, Name = "Icon", ThemeTag = { ImageColor3 = "Text" }, Rotation = (o == i.Close and 90 or 0) }) })
 					local t, u = j.SpringMotor(1, s.Frame, "BackgroundTransparency")
 					m(s.Frame.MouseEnter, function()
 						u(0.94)
