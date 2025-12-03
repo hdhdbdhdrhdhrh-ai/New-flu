@@ -3133,11 +3133,11 @@ local aa = {
 			i.DescLabel.Size = UDim2.new(1, -54, 0, 14)
 			h.SetTitle = i.SetTitle
 			h.SetDesc = i.SetDesc
-			local j = ai("UIStroke", { Thickness = 1, ApplyStrokeMode = Enum.ApplyStrokeMode.Border })
+			local j = ai("UIStroke", { Thickness = 0.8, ApplyStrokeMode = Enum.ApplyStrokeMode.Border })
 			local l = ai(
 				"Frame",
 				{
-					Size = UDim2.fromOffset(18, 18),
+					Size = UDim2.fromOffset(16, 16),
 					AnchorPoint = Vector2.new(1, 0.5),
 					Position = UDim2.new(1, -10, 0.5, 0),
 					Parent = i.Frame,
@@ -3148,7 +3148,7 @@ local aa = {
 			local m = ai(
 				"ImageLabel",
 				{
-					Size = UDim2.fromOffset(12, 12),
+					Size = UDim2.fromOffset(10, 10),
 					Position = UDim2.fromScale(0.5, 0.5),
 					AnchorPoint = Vector2.new(0.5, 0.5),
 					Image = "rbxassetid://10709790644",

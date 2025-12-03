@@ -26,12 +26,12 @@ function Element:New(Idx, Config)
 	Toggle.SetDesc = ToggleFrame.SetDesc
 
 	local ToggleBorder = New("UIStroke", {
-		Thickness = 1,
+		Thickness = 0.8,
 		ApplyStrokeMode = Enum.ApplyStrokeMode.Border,
 	})
 
 	local ToggleSquare = New("Frame", {
-		Size = UDim2.fromOffset(18, 18),
+		Size = UDim2.fromOffset(16, 16),
 		AnchorPoint = Vector2.new(1, 0.5),
 		Position = UDim2.new(1, -10, 0.5, 0),
 		Parent = ToggleFrame.Frame,
@@ -44,7 +44,7 @@ function Element:New(Idx, Config)
 	})
 
 	local CheckIcon = New("ImageLabel", {
-		Size = UDim2.fromOffset(12, 12),
+		Size = UDim2.fromOffset(10, 10),
 		Position = UDim2.fromScale(0.5, 0.5),
 		AnchorPoint = Vector2.new(0.5, 0.5),
 		Image = "rbxassetid://10709790644",
