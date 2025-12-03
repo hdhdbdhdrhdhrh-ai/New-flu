@@ -3132,51 +3132,47 @@ local aa = {
 			i.DescLabel.Size = UDim2.new(1, -54, 0, 14)
 			h.SetTitle = i.SetTitle
 			h.SetDesc = i.SetDesc
-			local j, k =
-				ai(
-					"ImageLabel",
-					{
-						AnchorPoint = Vector2.new(0, 0.5),
-						Size = UDim2.fromOffset(14, 14),
-						Position = UDim2.new(0, 2, 0.5, 0),
-						Image = "http://www.roblox.com/asset/?id=12266946128",
-						ImageTransparency = 0.5,
-						ThemeTag = { ImageColor3 = "ToggleSlider" },
-					}
-				),
-				ai("UIStroke", { Transparency = 0.5, ThemeTag = { Color = "ToggleSlider" } })
 			local l = ai(
 				"Frame",
 				{
-					Size = UDim2.fromOffset(36, 18),
+					Size = UDim2.fromOffset(18, 18),
 					AnchorPoint = Vector2.new(1, 0.5),
 					Position = UDim2.new(1, -10, 0.5, 0),
 					Parent = i.Frame,
 					BackgroundTransparency = 1,
-					ThemeTag = { BackgroundColor3 = "Accent" },
 				},
-				{ ai("UICorner", { CornerRadius = UDim.new(0, 9) }), k, j }
+				{ ai("UICorner", { CornerRadius = UDim.new(0, 4) }) }
 			)
-			function h.OnChanged(m, n)
-				h.Changed = n
-				n(h.Value)
+			local m = ai(
+				"ImageLabel",
+				{
+					Size = UDim2.fromOffset(12, 12),
+					Position = UDim2.fromScale(0.5, 0.5),
+					AnchorPoint = Vector2.new(0.5, 0.5),
+					Image = "rbxassetid://10709790644",
+					BackgroundTransparency = 1,
+					Visible = false,
+					Parent = l,
+				}
+			)
+			function h.UpdateVisuals(n)
+				if h.Value then
+					l.BackgroundColor3 = g.Accent
+					l.BackgroundTransparency = 0
+					m.Visible = true
+				else
+					l.BackgroundTransparency = 1
+					m.Visible = false
+				end
 			end
-			function h.SetValue(m, n)
-				n = not not n
-				h.Value = n
-				ah.OverrideTag(k, { Color = h.Value and "Accent" or "ToggleSlider" })
-				ah.OverrideTag(j, { ImageColor3 = h.Value and "ToggleToggled" or "ToggleSlider" })
-				af:Create(
-					j,
-					TweenInfo.new(0.25, Enum.EasingStyle.Quint, Enum.EasingDirection.Out),
-					{ Position = UDim2.new(0, h.Value and 19 or 2, 0.5, 0) }
-				):Play()
-				af:Create(
-					l,
-					TweenInfo.new(0.25, Enum.EasingStyle.Quint, Enum.EasingDirection.Out),
-					{ BackgroundTransparency = h.Value and 0 or 1 }
-				):Play()
-				j.ImageTransparency = h.Value and 0 or 0.5
+			function h.OnChanged(n, o)
+				h.Changed = o
+				o(h.Value)
+			end
+			function h.SetValue(n, o)
+				o = not not o
+				h.Value = o
+				h:UpdateVisuals()
 				g:SafeCallback(h.Callback, h.Value)
 				g:SafeCallback(h.Changed, h.Value)
 			end
