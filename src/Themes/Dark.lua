@@ -2,9 +2,9 @@ return {
 	Name = "Dark",
 	Accent = Color3.fromRGB(96, 205, 255),
 
-	AcrylicMain = Color3.fromRGB(60, 60, 60),
+	AcrylicMain = Color3.fromRGB(0, 0, 0),
 	AcrylicBorder = Color3.fromRGB(90, 90, 90),
-	AcrylicGradient = ColorSequence.new(Color3.fromRGB(40, 40, 40), Color3.fromRGB(40, 40, 40)),
+	AcrylicGradient = ColorSequence.new(Color3.fromRGB(0, 0, 0), Color3.fromRGB(0, 0, 0)),
 	AcrylicNoise = 0.9,
 
 	TitleBarLine = Color3.fromRGB(75, 75, 75),
