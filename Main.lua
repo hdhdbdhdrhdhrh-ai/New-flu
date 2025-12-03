@@ -386,7 +386,7 @@ local aa = {
 							ImageTransparency = 0.7,
 						}
 					),
-					j("UICorner", { CornerRadius = UDim.new(0, 8) }),
+					j("UICorner", { CornerRadius = UDim.new(0, 4) }),
 					j(
 						"Frame",
 						{
@@ -395,7 +395,7 @@ local aa = {
 							Name = "Background",
 							ThemeTag = { BackgroundColor3 = "AcrylicMain" },
 						},
-						{ j("UICorner", { CornerRadius = UDim.new(0, 8) }) }
+						{ j("UICorner", { CornerRadius = UDim.new(0, 4) }) }
 					),
 					j(
 						"Frame",
@@ -405,7 +405,7 @@ local aa = {
 							Size = UDim2.fromScale(1, 1),
 						},
 						{
-							j("UICorner", { CornerRadius = UDim.new(0, 8) }),
+							j("UICorner", { CornerRadius = UDim.new(0, 4) }),
 							j("UIGradient", { Rotation = 90, ThemeTag = { Color = "AcrylicGradient" } }),
 						}
 					),
@@ -419,7 +419,7 @@ local aa = {
 							Size = UDim2.fromScale(1, 1),
 							BackgroundTransparency = 1,
 						},
-						{ j("UICorner", { CornerRadius = UDim.new(0, 8) }) }
+						{ j("UICorner", { CornerRadius = UDim.new(0, 4) }) }
 					),
 					j(
 						"ImageLabel",
@@ -432,16 +432,16 @@ local aa = {
 							BackgroundTransparency = 1,
 							ThemeTag = { ImageTransparency = "AcrylicNoise" },
 						},
-						{ j("UICorner", { CornerRadius = UDim.new(0, 8) }) }
+						{ j("UICorner", { CornerRadius = UDim.new(0, 4) }) }
 					),
 					j(
 						"Frame",
 						{ BackgroundTransparency = 1, Size = UDim2.fromScale(1, 1), ZIndex = 2 },
 						{
-							j("UICorner", { CornerRadius = UDim.new(0, 8) }),
+							j("UICorner", { CornerRadius = UDim.new(0, 4) }),
 							j(
 								"UIStroke",
-								{ Transparency = 0.5, Thickness = 1, ThemeTag = { Color = "AcrylicBorder" } }
+								{ Transparency = 0.5, Thickness = 0, ThemeTag = { Color = "AcrylicBorder" } }
 							),
 						}
 					),
