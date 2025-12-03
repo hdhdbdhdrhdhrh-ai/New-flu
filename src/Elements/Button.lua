@@ -33,13 +33,14 @@ function Element:New(Config)
 		),
 	})
 
-	local ButtonBox = New("Frame", {
+	local ButtonBox = New("TextButton", {
 		Size = UDim2.new(0, 0, 0, 26),
-		AnchorPoint = Vector2.new(0, 0),
-		Position = UDim2.new(0, 0, 1, 5),
+		AnchorPoint = Vector2.new(1, 0),
+		Position = UDim2.new(1, -10, 1, 5),
 		BackgroundTransparency = Config.Filled and 0 or 1,
 		Parent = ButtonFrame.Frame,
 		AutomaticSize = Enum.AutomaticSize.X,
+		Text = "",
 	}, {
 		New("UICorner", {
 			CornerRadius = UDim.new(0, 4),
@@ -62,7 +63,7 @@ function Element:New(Config)
 
 	ButtonFrame:UpdateColor()
 
-	Creator.AddSignal(ButtonFrame.Frame.MouseButton1Click, function()
+	Creator.AddSignal(ButtonBox.MouseButton1Click, function()
 		self.Library:SafeCallback(Config.Callback)
 	end)
 

@@ -59,6 +59,7 @@ function Element:New(Idx, Config)
 			ToggleSquare.BackgroundTransparency = 0
 			ToggleBorder.Transparency = 1
 			CheckIcon.Visible = true
+			CheckIcon.ImageColor3 = Color3.fromRGB(255, 255, 255)
 		else
 			ToggleSquare.BackgroundTransparency = 1
 			ToggleBorder.Color = Library.Accent

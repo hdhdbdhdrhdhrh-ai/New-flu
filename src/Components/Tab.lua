@@ -103,6 +103,7 @@ function TabModule:New(Title, Icon, Parent)
 		BackgroundTransparency = 1,
 		Parent = Window.ContainerHolder,
 		Visible = false,
+		ClipsDescendants = true,
 		BottomImage = "rbxassetid://6889812791",
 		MidImage = "rbxassetid://6889812721",
 		TopImage = "rbxassetid://6276641225",
