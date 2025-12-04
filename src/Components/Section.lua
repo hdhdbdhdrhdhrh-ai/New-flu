@@ -17,16 +17,6 @@ return function(Title, Parent, DefaultOpen)
 		LayoutOrder = 7,
 	})
 	
-	-- Top separator line
-	Section.TopLine = New("Frame", {
-		Size = UDim2.new(1, 0, 0, 1),
-		Position = UDim2.new(0, 0, 0, 0),
-		BackgroundColor3 = Color3.fromRGB(100, 100, 100),
-		BackgroundTransparency = 0.3,
-		BorderSizePixel = 0,
-		Parent = Section.Root,
-	})
-	
 	-- Section header (clickable, transparent)
 	Section.Header = New("TextButton", {
 		Size = UDim2.new(1, 0, 0, 30),
@@ -52,16 +42,6 @@ return function(Title, Parent, DefaultOpen)
 			Enum.FontStyle.Normal
 		),
 		Parent = Section.Header,
-	})
-	
-	-- Bottom separator line
-	Section.BottomLine = New("Frame", {
-		Size = UDim2.new(1, 0, 0, 1),
-		Position = UDim2.new(0, 0, 0, 35),
-		BackgroundColor3 = Color3.fromRGB(100, 100, 100),
-		BackgroundTransparency = 0.3,
-		BorderSizePixel = 0,
-		Parent = Section.Root,
 	})
 	
 	-- Arrow icon

@@ -2,6 +2,9 @@ local Fluent = loadstring(game:HttpGet("https://raw.githubusercontent.com/hdhdbd
 local SaveManager = loadstring(game:HttpGet("https://raw.githubusercontent.com/dawid-scripts/Fluent/master/Addons/SaveManager.lua"))()
 local InterfaceManager = loadstring(game:HttpGet("https://raw.githubusercontent.com/dawid-scripts/Fluent/master/Addons/InterfaceManager.lua"))()
 
+-- New Border Feature: Grey borders (thickness 0.5) are automatically added between elements and around the tab list for better visual separation.
+-- This feature is always enabled and enhances the UI's organization.
+
 -- Set custom accent color BEFORE creating the window
 Fluent.Accent = Color3.fromRGB(0, 135, 177)
 
@@ -314,6 +317,23 @@ do
     --     Section1.Toggle()  -- This will open the first section
     -- end)
 end
+
+-- New Border Feature Demo Section (added after Main tab for demonstration)
+local BorderDemoSection = Tabs.Main:AddSection({
+    Title = "Border Feature Demo",
+    Open = true
+})
+
+BorderDemoSection:AddParagraph({
+    Title = "Border Feature",
+    Content = "Notice the grey borders between elements and around the tab list for better visual separation."
+})
+
+BorderDemoSection:AddToggle("DemoToggle1", {Title = "First Toggle", Default = false})
+BorderDemoSection:AddButton({Title = "Demo Button 1", Callback = function() print("Button 1") end})
+BorderDemoSection:AddToggle("DemoToggle2", {Title = "Second Toggle", Default = true})
+BorderDemoSection:AddButton({Title = "Demo Button 2", Callback = function() print("Button 2") end})
+BorderDemoSection:AddToggle("DemoToggle3", {Title = "Third Toggle", Default = false})
 
 
 -- Addons:

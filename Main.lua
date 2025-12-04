@@ -1042,6 +1042,16 @@ local aa = {
 				LayoutOrder = 7,
 			})
 			
+			-- Top separator line
+			m.TopLine = j("Frame", {
+				Size = UDim2.new(1, 0, 0, 1),
+				Position = UDim2.new(0, 0, 0, 0),
+				BackgroundColor3 = Color3.fromRGB(100, 100, 100),
+				BackgroundTransparency = 0.3,
+				BorderSizePixel = 0,
+				Parent = m.Root,
+			})
+			
 			-- Section header (clickable, transparent)
 			m.Header = j("TextButton", {
 				Size = UDim2.new(1, 0, 0, 30),
@@ -1070,6 +1080,16 @@ local aa = {
 					Enum.FontStyle.Normal
 				),
 				Parent = m.Header,
+			})
+			
+			-- Bottom separator line
+			m.BottomLine = j("Frame", {
+				Size = UDim2.new(1, 0, 0, 1),
+				Position = UDim2.new(0, 0, 0, 35),
+				BackgroundColor3 = Color3.fromRGB(100, 100, 100),
+				BackgroundTransparency = 0.3,
+				BorderSizePixel = 0,
+				Parent = m.Root,
 			})
 			
 			-- Arrow icon
