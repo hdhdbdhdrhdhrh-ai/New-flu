@@ -187,7 +187,7 @@ function Element:New(Idx, Config)
 		end
 
 		local TagFrame = New("Frame", {
-			Size = UDim2.new(0, 0, 0, 22),
+			Size = UDim2.new(0, 0, 0, 20),
 			AutomaticSize = Enum.AutomaticSize.X,
 			BackgroundTransparency = 1,
 			BorderSizePixel = 0,
@@ -198,10 +198,9 @@ function Element:New(Idx, Config)
 				CornerRadius = UDim.new(0, 4),
 			}),
 			New("UIStroke", {
-				Color = Color3.fromRGB(0, 180, 0),
-				Thickness = 1,
+				Color = Color3.fromRGB(80, 80, 80),
+				Thickness = 0.5,
 				ApplyStrokeMode = Enum.ApplyStrokeMode.Border,
-				ThemeTag = { Color = "Accent" },
 			}),
 			New("UIPadding", {
 				PaddingLeft = UDim.new(0, 6),
@@ -227,6 +226,7 @@ function Element:New(Idx, Config)
 			BackgroundTransparency = 1,
 			AutomaticSize = Enum.AutomaticSize.XY,
 			Parent = TagFrame,
+			LayoutOrder = 1,
 			ThemeTag = {
 				TextColor3 = "Text",
 			},
@@ -236,9 +236,10 @@ function Element:New(Idx, Config)
 			Image = "rbxassetid://113507840995608",
 			ImageColor3 = Color3.fromRGB(180, 180, 180),
 			BackgroundTransparency = 1,
-			Size = UDim2.fromOffset(12, 12),
+			Size = UDim2.fromOffset(10, 10),
 			AutoButtonColor = false,
 			Parent = TagFrame,
+			LayoutOrder = 2,
 			ThemeTag = { ImageColor3 = "SubText" },
 		})
 
