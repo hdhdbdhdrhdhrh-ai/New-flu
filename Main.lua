@@ -763,7 +763,7 @@ local aa = {
 			q.Border = k(
 				"UIStroke",
 				{
-					Transparency = 0.5,
+					Transparency = 1,
 					ApplyStrokeMode = Enum.ApplyStrokeMode.Border,
 					Color = Color3.fromRGB(0, 0, 0),
 					ThemeTag = { Color = "ElementBorder" },
@@ -1924,7 +1924,7 @@ local aa = {
 				{
 					Size = UDim2.new(0, 0, 0, 26),
 					BackgroundTransparency = n.Filled and 0 or 1,
-					Position = UDim2.new(0, 10, 0, 0),
+					Position = UDim2.new(0, 8, 0, 0),
 					AnchorPoint = Vector2.new(0, 0),
 					Text = "",
 					Parent = o.Frame,

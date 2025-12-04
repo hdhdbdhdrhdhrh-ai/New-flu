@@ -58,7 +58,7 @@ return function(Title, Desc, Parent, Hover)
 	})
 
 	Element.Border = New("UIStroke", {
-		Transparency = 0.5,
+		Transparency = 1,
 		ApplyStrokeMode = Enum.ApplyStrokeMode.Border,
 		Color = Color3.fromRGB(0, 0, 0),
 		ThemeTag = {

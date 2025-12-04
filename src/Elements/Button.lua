@@ -38,7 +38,7 @@ function Element:New(Config)
 	local ClickableButton = New("TextButton", {
 		Size = UDim2.new(0, 0, 0, 26),
 		BackgroundTransparency = Config.Filled and 0 or 1,
-		Position = UDim2.new(0, 10, 0, 0),
+		Position = UDim2.new(0, 8, 0, 0),
 		AnchorPoint = Vector2.new(0, 0),
 		Text = "",
 		Parent = ButtonFrame.Frame,
