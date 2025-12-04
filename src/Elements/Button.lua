@@ -48,6 +48,7 @@ function Element:New(Config)
 		Text = "",
 		Parent = ButtonFrame.Frame.Parent,
 		AutomaticSize = Enum.AutomaticSize.None,
+		ClipsDescendants = true,
 	}, {
 		New("UICorner", {
 			CornerRadius = UDim.new(0, 4),

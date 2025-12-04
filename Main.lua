@@ -1929,6 +1929,7 @@ local aa = {
 					Parent = o.Frame,
 					AutomaticSize = Enum.AutomaticSize.X,
 					Text = "",
+					ClipsDescendants = true,
 				},
 				{
 					j("UICorner", { CornerRadius = UDim.new(0, 4) }),
