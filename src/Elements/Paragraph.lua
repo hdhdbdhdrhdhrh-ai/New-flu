@@ -15,6 +15,13 @@ function Paragraph:New(Config)
 	Paragraph.Frame.BackgroundTransparency = 1
 	Paragraph.Border.Transparency = 1
 
+	-- Provide SetGradient API for consistency with other elements (applies to the title)
+	function Paragraph:SetGradient(gradientOptions)
+		if Paragraph and Paragraph.SetTitleGradient then
+			Paragraph:SetTitleGradient(gradientOptions)
+		end
+	end
+
 	return Paragraph
 end
 

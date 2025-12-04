@@ -718,21 +718,8 @@ local aa = {
 		local h = d.Parent.Parent
 		local i, j = e(h.Packages.Flipper), e(h.Creator)
 		local k, l = j.New, i.Spring.new
-		return function(m, n, o, p, r, s)
+		return function(m, n, o, p)
 			local q = {}
-			local t = {}
-			if s and s.Enabled then
-				table.insert(
-					t,
-					k("UIGradient", {
-						Color = ColorSequence.new{
-							ColorSequenceKeypoint.new(0, s.Color1 or Color3.fromRGB(0, 150, 0)),
-							ColorSequenceKeypoint.new(1, s.Color2 or Color3.fromRGB(0, 255, 150))
-						},
-						Rotation = s.Rotation or 0,
-					})
-				)
-			end
 			q.TitleLabel = k(
 				"TextLabel",
 				{
@@ -742,15 +729,14 @@ local aa = {
 						Enum.FontStyle.Normal
 					),
 					Text = m,
-					TextColor3 = (s and s.Enabled) and Color3.fromRGB(255, 255, 255) or Color3.fromRGB(240, 240, 240),
+					TextColor3 = Color3.fromRGB(240, 240, 240),
 					TextSize = 13,
 					TextXAlignment = Enum.TextXAlignment.Left,
 					Size = UDim2.new(1, 0, 0, 14),
 					BackgroundColor3 = Color3.fromRGB(255, 255, 255),
 					BackgroundTransparency = 1,
-					ThemeTag = { TextColor3 = (s and s.Enabled) and nil or "Text" },
-				},
-				t
+					ThemeTag = { TextColor3 = "Text" },
+				}
 			)
 			q.DescLabel = k(
 				"TextLabel",
@@ -790,29 +776,10 @@ local aa = {
 			q.Border = k(
 				"UIStroke",
 				{
-					Transparency = 0.3,
-					Thickness = 0.5,
+					Transparency = 1,
 					ApplyStrokeMode = Enum.ApplyStrokeMode.Border,
-					Color = Color3.fromRGB(100, 100, 100),
-				}
-			)
-			q.BottomLine = k(
-				"Frame",
-				{
-					Size = UDim2.new(1, 0, 0, 1),
-					Position = UDim2.new(0, 0, 1, 0),
-					AnchorPoint = Vector2.new(0, 1),
-					BackgroundTransparency = 0.3,
-					BorderSizePixel = 0,
-					LayoutOrder = 3,
-				},
-				{
-					k("UIStroke", {
-						Thickness = 0.5,
-						Color = Color3.fromRGB(100, 100, 100),
-						Transparency = 0.3,
-						ApplyStrokeMode = Enum.ApplyStrokeMode.Border,
-					})
+					Color = Color3.fromRGB(0, 0, 0),
+					ThemeTag = { Color = "ElementBorder" },
 				}
 			)
 			q.Frame = k(
@@ -827,7 +794,7 @@ local aa = {
 					LayoutOrder = 7,
 					ClipsDescendants = true,
 				},
-				{ k("UICorner", { CornerRadius = UDim.new(0, 4) }), k("UIListLayout", { SortOrder = Enum.SortOrder.LayoutOrder, Padding = UDim.new(0, 5) }), q.Border, q.LabelHolder, q.BottomLine }
+				{ k("UICorner", { CornerRadius = UDim.new(0, 4) }), q.Border, q.LabelHolder }
 			)
 			function q.SetTitle(r, s)
 				q.TitleLabel.Text = s
@@ -842,31 +809,6 @@ local aa = {
 					q.DescLabel.Visible = true
 				end
 				q.DescLabel.Text = s
-			end
-			function q.SetGradient(r, s)
-				if s and s.Enabled then
-					local t = q.TitleLabel:FindFirstChild("UIGradient")
-					if t then
-						t:Destroy()
-					end
-					q.TitleLabel.TextColor3 = Color3.fromRGB(255, 255, 255)
-					q.TitleLabel.ThemeTag = nil
-					k("UIGradient", {
-						Color = ColorSequence.new{
-							ColorSequenceKeypoint.new(0, s.Color1 or Color3.fromRGB(0, 150, 0)),
-							ColorSequenceKeypoint.new(1, s.Color2 or Color3.fromRGB(0, 255, 150))
-						},
-						Rotation = s.Rotation or 0,
-						Parent = q.TitleLabel,
-					})
-				else
-					local t = q.TitleLabel:FindFirstChild("UIGradient")
-					if t then
-						t:Destroy()
-					end
-					q.TitleLabel.TextColor3 = Color3.fromRGB(240, 240, 240)
-					q.TitleLabel.ThemeTag = { TextColor3 = "Text" }
-				end
 			end
 			function q.Destroy(r)
 				q.Frame:Destroy()
@@ -3409,7 +3351,7 @@ local aa = {
 		function aj.New(c, d)
 			assert(d.Title, "Paragraph - Missing Title")
 			d.Content = d.Content or ""
-			local e = ac(ag.Element)(d.Title, d.Content, aj.Container, false, d.Border, d.Gradient)
+			local e = ac(ag.Element)(d.Title, d.Content, aj.Container, false)
 			e.Frame.BackgroundTransparency = 0.92
 			e.Border.Transparency = 0.6
 			return e

@@ -5,34 +5,22 @@ local New = Creator.New
 
 local Spring = Flipper.Spring.new
 
-return function(Title, Desc, Parent, Hover, Border, GradientOptions)
+return function(Title, Desc, Parent, Hover, Border, Gradient)
 	local Element = {}
-
-	local titleLabelChildren = {}
-
-	if GradientOptions and GradientOptions.Enabled then
-		table.insert(titleLabelChildren, New("UIGradient", {
-			Color = ColorSequence.new{
-				ColorSequenceKeypoint.new(0, GradientOptions.Color1 or Color3.fromRGB(0, 150, 0)),
-				ColorSequenceKeypoint.new(1, GradientOptions.Color2 or Color3.fromRGB(0, 255, 150))
-			},
-			Rotation = GradientOptions.Rotation or 0,
-		}))
-	end
 
 	Element.TitleLabel = New("TextLabel", {
 		FontFace = Font.new("rbxasset://fonts/families/GothamSSm.json", Enum.FontWeight.Medium, Enum.FontStyle.Normal),
 		Text = Title,
-		TextColor3 = (GradientOptions and GradientOptions.Enabled) and Color3.fromRGB(255, 255, 255) or Color3.fromRGB(240, 240, 240),
+		TextColor3 = Color3.fromRGB(240, 240, 240),
 		TextSize = 13,
 		TextXAlignment = Enum.TextXAlignment.Left,
 		Size = UDim2.new(1, 0, 0, 14),
 		BackgroundColor3 = Color3.fromRGB(255, 255, 255),
 		BackgroundTransparency = 1,
 		ThemeTag = {
-			TextColor3 = (GradientOptions and GradientOptions.Enabled) and nil or "Text",
+			TextColor3 = "Text",
 		},
-	}, titleLabelChildren)
+	})
 
 	Element.DescLabel = New("TextLabel", {
 		FontFace = Font.new("rbxasset://fonts/families/GothamSSm.json"),
@@ -108,9 +96,16 @@ return function(Title, Desc, Parent, Hover, Border, GradientOptions)
 			SortOrder = Enum.SortOrder.LayoutOrder,
 			Padding = UDim.new(0, 5),
 		}),
+		Element.Border,
 		Element.LabelHolder,
 		Element.BottomLine,
 	})
+
+	-- Honor Border config: if false, hide border stroke and bottom line
+	if Border == false then
+		Element.Border.Transparency = 1
+		Element.BottomLine.BackgroundTransparency = 1
+	end
 
 	function Element:SetTitle(Set)
 		Element.TitleLabel.Text = Set
@@ -128,19 +123,17 @@ return function(Title, Desc, Parent, Hover, Border, GradientOptions)
 		Element.DescLabel.Text = Set
 	end
 
-	function Element:SetGradient(gradientOptions)
+	-- Set title gradient: takes a table { Enabled = boolean, Color1 = Color3, Color2 = Color3, Rotation = number }
+	function Element:SetTitleGradient(gradientOptions)
 		if gradientOptions and gradientOptions.Enabled then
 			-- Remove existing gradient if any
 			local existingGradient = Element.TitleLabel:FindFirstChild("UIGradient")
 			if existingGradient then
 				existingGradient:Destroy()
 			end
-			
 			-- Ensure base text color is white
 			Element.TitleLabel.TextColor3 = Color3.fromRGB(255, 255, 255)
-			Element.TitleLabel.ThemeTag = nil
-			
-			-- Create text gradient
+			-- Create the UIGradient
 			New("UIGradient", {
 				Color = ColorSequence.new{
 					ColorSequenceKeypoint.new(0, gradientOptions.Color1 or Color3.fromRGB(0, 150, 0)),
@@ -150,15 +143,51 @@ return function(Title, Desc, Parent, Hover, Border, GradientOptions)
 				Parent = Element.TitleLabel,
 			})
 		else
-			-- Remove gradient if disabled and reset to default color
 			local existingGradient = Element.TitleLabel:FindFirstChild("UIGradient")
 			if existingGradient then
 				existingGradient:Destroy()
 			end
 			Element.TitleLabel.TextColor3 = Color3.fromRGB(240, 240, 240)
-			Element.TitleLabel.ThemeTag = { TextColor3 = "Text" }
 		end
 	end
+
+	-- Set description gradient (same behavior as title gradient)
+	function Element:SetDescGradient(gradientOptions)
+		if gradientOptions and gradientOptions.Enabled then
+			local existingGradient = Element.DescLabel:FindFirstChild("UIGradient")
+			if existingGradient then
+				existingGradient:Destroy()
+			end
+			Element.DescLabel.TextColor3 = Color3.fromRGB(255, 255, 255)
+			New("UIGradient", {
+				Color = ColorSequence.new{
+					ColorSequenceKeypoint.new(0, gradientOptions.Color1 or Color3.fromRGB(0, 150, 0)),
+					ColorSequenceKeypoint.new(1, gradientOptions.Color2 or Color3.fromRGB(0, 255, 150))
+				},
+				Rotation = gradientOptions.Rotation or 0,
+				Parent = Element.DescLabel,
+			})
+		else
+			local existingGradient = Element.DescLabel:FindFirstChild("UIGradient")
+			if existingGradient then
+				existingGradient:Destroy()
+			end
+			Element.DescLabel.TextColor3 = Color3.fromRGB(200, 200, 200)
+		end
+	end
+
+	-- If Gradient param is provided on creation, apply it to title and desc accordingly
+	if Gradient then
+		if type(Gradient) == "table" then
+			-- Apply to title (if present)
+			Element:SetTitleGradient(Gradient)
+			-- If gradient specifies Desc = true, apply to desc as well
+			if Gradient.Desc then
+				Element:SetDescGradient(Gradient)
+			end
+		end
+	end
+
 
 	function Element:Destroy()
 		Element.Frame:Destroy()
