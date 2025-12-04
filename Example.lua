@@ -186,27 +186,6 @@ do
         print("Dropdown changed:", Value)
     end)
 
-    -- Add a few items with "water" in the title for search testing
-    Section3:AddButton({
-        Title = "Water Option 1",
-        Description = "Contains water",
-        ButtonText = "Select",
-        Filled = false,
-        Callback = function()
-            print("Water Option 1 clicked")
-        end
-    })
-
-    Section3:AddButton({
-        Title = "Water Toggle",
-        Description = "Toggle that mentions water",
-        ButtonText = "Toggle",
-        Filled = false,
-        Callback = function()
-            print("Water Toggle clicked")
-        end
-    })
-
 
     
     local MultiDropdown = Section3:AddDropdown("MultiDropdown", {

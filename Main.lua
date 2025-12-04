@@ -1720,7 +1720,30 @@ local aa = {
 					BackgroundTransparency = 1,
 					ClipsDescendants = true,
 				},
-				{ v.TabHolder, D }
+	 			{ v.TabHolder, D }
+			)
+
+			-- Search box overlaying the tab list (no background, thin grey border)
+			local TabSearchBox = s(
+				"TextBox",
+				{
+					Size = UDim2.new(1, -8, 0, 28),
+					Position = UDim2.new(0, 4, 0, 6),
+					BackgroundTransparency = 1,
+					BorderSizePixel = 1,
+					BorderColor3 = Color3.fromRGB(180, 180, 180),
+					Text = "",
+					PlaceholderText = "Search...",
+					TextColor3 = Color3.fromRGB(255, 255, 255),
+					TextXAlignment = "Left",
+					ClearTextOnFocus = false,
+					Parent = F,
+					ZIndex = 5,
+					BackgroundTransparency = 1,
+					FontFace = Font.new("rbxasset://fonts/families/GothamSSm.json", Enum.FontWeight.Medium, Enum.FontStyle.Normal),
+					TextSize = 14,
+				},
+				{ s("UICorner", { CornerRadius = UDim.new(0, 4) }) }
 			)
 			v.TabDisplay = s(
 				"TextLabel",
@@ -1939,6 +1962,61 @@ local aa = {
 				P:Open()
 			end
 			local N = e(p.Tab):Init(v)
+
+			-- Wire up the search box to filter items in the current tab's sections
+			if TabSearchBox then
+				TabSearchBox:GetPropertyChangedSignal("Text"):Connect(function()
+					local term = string.lower(TabSearchBox.Text or "")
+					local sel = (N and N.SelectedTab) or 0
+					if sel == 0 then
+						return
+					end
+					local container = N.Containers and N.Containers[sel]
+					if not container then
+						return
+					end
+					-- Empty term -> reset visibility
+					if term == "" then
+						for _, sectionRoot in ipairs(container:GetChildren()) do
+							if sectionRoot:IsA("GuiObject") then
+								sectionRoot.Visible = true
+								local itemsParent = sectionRoot:FindFirstChild("Container") or sectionRoot:FindFirstChildWhichIsA("Frame")
+								if itemsParent then
+									for _, item in ipairs(itemsParent:GetChildren()) do
+										if item:IsA("GuiObject") then
+											item.Visible = true
+										end
+									end
+								end
+							end
+						end
+						return
+					end
+					-- Filter by term
+					for _, sectionRoot in ipairs(container:GetChildren()) do
+						if sectionRoot:IsA("GuiObject") then
+							local itemsParent = sectionRoot:FindFirstChild("Container") or sectionRoot:FindFirstChildWhichIsA("Frame")
+							local anyFound = false
+							if itemsParent then
+								for _, item in ipairs(itemsParent:GetChildren()) do
+									if item:IsA("GuiObject") then
+										local keep = false
+										for _, desc in ipairs(item:GetDescendants()) do
+											if (desc:IsA("TextLabel") or desc:IsA("TextButton")) and desc.Text and desc.Text:lower():find(term, 1, true) then
+												keep = true
+												break
+											end
+										end
+										item.Visible = keep
+										if keep then anyFound = true end
+								end
+								end
+							end
+							sectionRoot.Visible = anyFound
+						end
+					end
+				end)
+			end
 			function v.AddTab(O, P)
 				return N:New(P.Title, P.Icon, v.TabHolder)
 			end
