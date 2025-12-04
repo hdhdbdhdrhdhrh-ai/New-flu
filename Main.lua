@@ -1902,7 +1902,7 @@ local aa = {
 		function l.New(m, n)
 			assert(n.Title, "Button - Missing Title")
 			n.Callback = n.Callback or function() end
-			local o = e(k.Element)(n.Title, n.Description, m.Container, true)
+			local o = e(k.Element)(n.Title, n.Description, m.Container, false)
 			local q = j("UIStroke", { Thickness = 0.6, ApplyStrokeMode = Enum.ApplyStrokeMode.Border })
 			local r = j("TextLabel", {
 				Size = UDim2.fromScale(1, 1),
@@ -1910,22 +1910,24 @@ local aa = {
 				Text = n.ButtonText or "Button",
 				TextColor3 = n.TextColor or Color3.fromRGB(255, 255, 255),
 				TextSize = 13,
-				AutomaticSize = Enum.AutomaticSize.X,
 				FontFace = Font.new(
 					"rbxasset://fonts/families/GothamSSm.json",
 					Enum.FontWeight.Medium,
 					Enum.FontStyle.Normal
 				),
+				TextXAlignment = Enum.TextXAlignment.Center,
+				TextYAlignment = Enum.TextYAlignment.Center,
 			})
 			local p = j(
-				"Frame",
+				"TextButton",
 				{
 					Size = UDim2.new(0, 0, 0, 26),
 					AnchorPoint = Vector2.new(0, 0),
-					Position = UDim2.new(0, 0, 1, 5),
+					Position = UDim2.new(0, 10, 1, 5),
 					BackgroundTransparency = n.Filled and 0 or 1,
 					Parent = o.Frame,
 					AutomaticSize = Enum.AutomaticSize.X,
+					Text = "",
 				},
 				{
 					j("UICorner", { CornerRadius = UDim.new(0, 4) }),
@@ -1941,7 +1943,7 @@ local aa = {
 				end
 			end
 			o:UpdateColor()
-			i.AddSignal(o.Frame.MouseButton1Click, function()
+			i.AddSignal(p.MouseButton1Click, function()
 				m.Library:SafeCallback(n.Callback)
 			end)
 			return o
@@ -3040,7 +3042,6 @@ local aa = {
 				{ Value = nil, Min = f.Min, Max = f.Max, Rounding = f.Rounding, Callback = f.Callback or function(h) end, Type = "Slider" },
 				false,
 				ac(aj.Element)(f.Title, f.Description, d.Container, false)
-			j.DescLabel.Size = UDim2.new(1, -170, 0, 14)
 			h.SetTitle = j.SetTitle
 			h.SetDesc = j.SetDesc
 			local k = ai(
@@ -3061,8 +3062,8 @@ local aa = {
 				),
 				ai(
 					"Frame",
-					{ Size = UDim2.new(0, 0, 1, 0), ThemeTag = { BackgroundColor3 = "Accent" } },
-					{ ai("UICorner", { CornerRadius = UDim.new(1, 0) }) }
+					{ Size = UDim2.new(0, 0, 1, 0), BackgroundTransparency = 0.5, ThemeTag = { BackgroundColor3 = "Accent" } },
+					{ ai("UIStroke", { Thickness = 1, ApplyStrokeMode = Enum.ApplyStrokeMode.Border, ThemeTag = { Color = "Accent" } }), ai("UICorner", { CornerRadius = UDim.new(1, 0) }) }
 				),
 				ai(
 					"TextLabel",
@@ -3075,26 +3076,25 @@ local aa = {
 						BackgroundColor3 = Color3.fromRGB(255, 255, 255),
 						BackgroundTransparency = 1,
 						Size = UDim2.new(0, 100, 0, 14),
-						Position = UDim2.new(0, -4, 0.5, 0),
-						AnchorPoint = Vector2.new(1, 0.5),
+						Position = UDim2.new(1, -10, 0, -20),
+						AnchorPoint = Vector2.new(1, 0),
 						ThemeTag = { TextColor3 = "SubText" },
 					}
 				)
-			local p = ai("UIStroke", { Thickness = 1, Color = g.Accent, Transparency = 0 })
 			local o = ai(
 				"Frame",
 				{
-					Size = UDim2.new(1, 0, 0, 4),
-					AnchorPoint = Vector2.new(1, 0.5),
-					Position = UDim2.new(1, -10, 0.5, 0),
-					BackgroundColor3 = g.Accent,
-					BackgroundTransparency = 0.5,
+					Size = UDim2.new(1, -120, 0, 4),
+					AnchorPoint = Vector2.new(0, 0),
+					Position = UDim2.new(0, 10, 1, 5),
+					BackgroundColor3 = Color3.fromRGB(0, 0, 0),
+					BackgroundTransparency = 0,
 					Parent = j.Frame,
 				},
 				{
+					ai("UIStroke", { Color = Color3.fromRGB(128, 128, 128), Thickness = 1, ApplyStrokeMode = Enum.ApplyStrokeMode.Border }),
 					ai("UICorner", { CornerRadius = UDim.new(1, 0) }),
-					ai("UISizeConstraint", { MaxSize = Vector2.new(150, math.huge) }),
-					p, n, m, l,
+					n, m, l,
 				}
 			)
 			ah.AddSignal(k.InputBegan, function(p)
