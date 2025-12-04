@@ -28,7 +28,7 @@ function Element:New(Idx, Config)
 
 	local Dragging = false
 
-	local SliderFrame = require(Components.Element)(Config.Title, Config.Description, self.Container, false)
+	local SliderFrame = require(Components.Element)(Config.Title, Config.Description, self.Container, false, Config.Border)
 	
 	-- Add padding below slider to prevent overlap with next element
 	local SliderPadding = New("UIPadding", {

@@ -12,7 +12,7 @@ function Element:New(Config)
 	assert(Config.Title, "Button - Missing Title")
 	Config.Callback = Config.Callback or function() end
 
-	local ButtonFrame = require(Components.Element)(Config.Title, Config.Description, self.Container, false)
+	local ButtonFrame = require(Components.Element)(Config.Title, Config.Description, self.Container, false, Config.Border)
 
 	local buttonColor = Config.Color or Color3.fromRGB(80, 80, 80) -- Default grey, or custom color
 

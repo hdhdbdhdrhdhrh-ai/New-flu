@@ -5,7 +5,7 @@ local New = Creator.New
 
 local Spring = Flipper.Spring.new
 
-return function(Title, Desc, Parent, Hover)
+return function(Title, Desc, Parent, Hover, Border)
 	local Element = {}
 
 	Element.TitleLabel = New("TextLabel", {
@@ -65,21 +65,23 @@ return function(Title, Desc, Parent, Hover)
 		Color = Color3.fromRGB(100, 100, 100),
 	})
 
-	Element.BottomLine = New("Frame", {
-		Size = UDim2.new(1, 0, 0, 1),
-		Position = UDim2.new(0, 0, 1, 0),
-		AnchorPoint = Vector2.new(0, 1),
-		BackgroundTransparency = 1,
-		BorderSizePixel = 0,
-		LayoutOrder = 3,
-	}, {
-		New("UIStroke", {
-			Thickness = 0.5,
-			Color = Color3.fromRGB(100, 100, 100),
-			Transparency = 0.3,
-			ApplyStrokeMode = Enum.ApplyStrokeMode.Border,
-		}),
-	})
+	if Border then
+		Element.BottomLine = New("Frame", {
+			Size = UDim2.new(1, 0, 0, 1),
+			Position = UDim2.new(0, 0, 1, 0),
+			AnchorPoint = Vector2.new(0, 1),
+			BackgroundTransparency = 1,
+			BorderSizePixel = 0,
+			LayoutOrder = 3,
+		}, {
+			New("UIStroke", {
+				Thickness = 0.5,
+				Color = Color3.fromRGB(100, 100, 100),
+				Transparency = 0.3,
+				ApplyStrokeMode = Enum.ApplyStrokeMode.Border,
+			}),
+		})
+	end
 
 	Element.Frame = New("Frame", {
 		Size = UDim2.new(1, 0, 0, 0),
@@ -98,7 +100,7 @@ return function(Title, Desc, Parent, Hover)
 		}),
 		Element.Border,
 		Element.LabelHolder,
-		Element.BottomLine,
+		Border and Element.BottomLine or nil,
 	})
 
 	function Element:SetTitle(Set)
