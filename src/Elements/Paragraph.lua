@@ -8,18 +8,23 @@ Paragraph.__index = Paragraph
 Paragraph.__type = "Paragraph"
 
 function Paragraph:New(Idx, Config)
+	print("[DEBUG] Paragraph:New called with Idx:", Idx, "Config:", Config)
 	assert(Config.Title, "Paragraph - Missing Title")
 	Config.Content = Config.Content or ""
 
+	print("[DEBUG] Creating paragraph element with Gradient:", Config.Gradient)
+
 	-- Create the paragraph element, passing gradient and border config
 	local ParagraphElement = require(script.Parent.Parent.Components.Element)(
-		Config.Title, 
-		Config.Content, 
-		Paragraph.Container, 
+		Config.Title,
+		Config.Content,
+		Paragraph.Container,
 		false,        -- Hover disabled for paragraphs
 		Config.Border, -- Pass Border config
 		Config.Gradient  -- Pass Gradient config to Element
 	)
+
+	print("[DEBUG] ParagraphElement created:", ParagraphElement)
 	
 	-- Style paragraph as transparent with optional border
 	ParagraphElement.Frame.BackgroundTransparency = 1

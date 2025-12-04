@@ -60,22 +60,39 @@ end
 
 local function applyGradientToLabel(label, themeResetColor,
 	options)
+	print("[DEBUG] applyGradientToLabel called")
+	print("[DEBUG] label:", label)
+	print("[DEBUG] options:", options)
+
 	local info = normalizeGradientOptions(options)
+	print("[DEBUG] normalizeGradientOptions returned:", info)
+
 	if not info or info.enabled == false then
+		print("[DEBUG] Gradient disabled or invalid, removing gradient")
 		removeGradientFrom(label)
 		label.TextColor3 = themeResetColor
 		return
 	end
+
+	print("[DEBUG] Applying gradient...")
 	removeGradientFrom(label)
+
 	-- Remove from theme registry to prevent theme system from overriding the gradient color
 	if Creator.Registry and Creator.Registry[label] then
 		local registryData = Creator.Registry[label]
+		print("[DEBUG] Found label in theme registry")
 		if registryData and registryData.Properties then
+			print("[DEBUG] Removing TextColor3 from theme properties")
 			registryData.Properties.TextColor3 = nil
 		end
+	else
+		print("[DEBUG] Label NOT found in theme registry")
 	end
+
 	-- Ensure white base so gradient is vivid
 	label.TextColor3 = Color3.fromRGB(255, 255, 255)
+	print("[DEBUG] Set label TextColor3 to white")
+
 	local props = {
 		Color = info.sequence,
 		Rotation = info.rotation,
@@ -85,7 +102,9 @@ local function applyGradientToLabel(label, themeResetColor,
 	if info.transparency and typeof(info.transparency) == "NumberSequence" then
 		props.Transparency = info.transparency
 	end
+
 	New("UIGradient", props)
+	print("[DEBUG] UIGradient created with sequence:", info.sequence)
 end
 
 return function(Title, Desc, Parent, Hover, Border, Gradient)
@@ -229,18 +248,26 @@ return function(Title, Desc, Parent, Hover, Border, Gradient)
 	end
 
 	-- If Gradient param is provided on creation, apply it
+	print("[DEBUG] Element creation - Gradient param:", Gradient)
 	if Gradient and type(Gradient) == "table" then
+		print("[DEBUG] Gradient is a table, applying...")
 		-- Backwards-compatible: a single table applies to title; apply to desc if Desc = true
 		if Gradient.Title then
+			print("[DEBUG] Applying gradient to title from Gradient.Title")
 			Element:SetTitleGradient(Gradient.Title)
 		else
+			print("[DEBUG] Applying gradient to title from Gradient directly")
 			Element:SetTitleGradient(Gradient)
 		end
 		if Gradient.Desc == true then
+			print("[DEBUG] Applying gradient to desc (Desc=true)")
 			Element:SetDescGradient(Gradient)
 		elseif type(Gradient.Desc) == "table" then
+			print("[DEBUG] Applying gradient to desc from Gradient.Desc table")
 			Element:SetDescGradient(Gradient.Desc)
 		end
+	else
+		print("[DEBUG] No gradient provided or invalid type")
 	end
 
 	function Element:Destroy()
