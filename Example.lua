@@ -41,15 +41,13 @@ do
     -- Create a collapsible section with gradient (closed by default)
     local Section1 = Tabs.Main:AddSection({
         Title = "Comp Killer Section",
-        Open = false
-    })
-    
-    -- Apply gradient immediately after creation
-    Section1:SetGradient({
-        Enabled = true,
-        Color1 = Color3.fromRGB(0, 150, 0),  -- Medium green
-        Color2 = Color3.fromRGB(0, 255, 150), -- Light green
-        Rotation = 0
+        Open = false,
+        Gradient = {
+            Enabled = true,
+            Color1 = Color3.fromRGB(0, 150, 0),  -- Medium green
+            Color2 = Color3.fromRGB(0, 255, 150), -- Light green
+            Rotation = 0
+        }
     })
 
     -- Add elements inside the section
@@ -95,15 +93,13 @@ do
     -- Create another section with same gradient (open by default)
     local Section2 = Tabs.Main:AddSection({
         Title = "Interactive Elements",
-        Open = true
-    })
-    
-    -- Apply gradient immediately after creation
-    Section2:SetGradient({
-        Enabled = true,
-        Color1 = Color3.fromRGB(0, 150, 0),  -- Medium green
-        Color2 = Color3.fromRGB(0, 255, 150), -- Light green
-        Rotation = 0
+        Open = true,
+        Gradient = {
+            Enabled = true,
+            Color1 = Color3.fromRGB(0, 150, 0),  -- Medium green
+            Color2 = Color3.fromRGB(0, 255, 150), -- Light green
+            Rotation = 0
+        }
     })
 
 
@@ -141,15 +137,13 @@ do
     -- Create a third section with same gradient
     local Section3 = Tabs.Main:AddSection({
         Title = "Color Selection",
-        Open = false
-    })
-    
-    -- Apply gradient immediately after creation
-    Section3:SetGradient({
-        Enabled = true,
-        Color1 = Color3.fromRGB(0, 150, 0),  -- Medium green
-        Color2 = Color3.fromRGB(0, 255, 150), -- Light green
-        Rotation = 0
+        Open = false,
+        Gradient = {
+            Enabled = true,
+            Color1 = Color3.fromRGB(0, 150, 0),  -- Medium green
+            Color2 = Color3.fromRGB(0, 255, 150), -- Light green
+            Rotation = 0
+        }
     })
 
     local Dropdown = Section3:AddDropdown("Dropdown", {
@@ -221,15 +215,13 @@ do
     -- Create a fourth section with same gradient
     local Section4 = Tabs.Main:AddSection({
         Title = "Input & Controls",
-        Open = true
-    })
-    
-    -- Apply gradient immediately after creation
-    Section4:SetGradient({
-        Enabled = true,
-        Color1 = Color3.fromRGB(0, 150, 0),  -- Medium green
-        Color2 = Color3.fromRGB(0, 255, 150), -- Light green
-        Rotation = 0
+        Open = true,
+        Gradient = {
+            Enabled = true,
+            Color1 = Color3.fromRGB(0, 150, 0),  -- Medium green
+            Color2 = Color3.fromRGB(0, 255, 150), -- Light green
+            Rotation = 0
+        }
     })
 
     local Keybind = Section4:AddKeybind("Keybind", {

@@ -1362,6 +1362,11 @@ local aa = {
 				B.SetTitle = function(title) C:SetTitle(title) end
 				B.SetGradient = function(gradientOptions) C:SetGradient(gradientOptions) end
 				
+				-- Apply gradient if provided
+				if A.Gradient then
+					C:SetGradient(A.Gradient)
+				end
+				
 				-- Add support for nested sections
 				function B.AddSection(nestedOptions)
 					local nestedDefaultOpen = nestedOptions.Open or false
@@ -1371,6 +1376,11 @@ local aa = {
 					nestedSectionObj.Toggle = function() nestedSectionComp:Toggle() end
 					nestedSectionObj.SetTitle = function(title) nestedSectionComp:SetTitle(title) end
 					nestedSectionObj.SetGradient = function(gradientOptions) nestedSectionComp:SetGradient(gradientOptions) end
+					
+					-- Apply gradient if provided
+					if nestedOptions.Gradient then
+						nestedSectionComp:SetGradient(nestedOptions.Gradient)
+					end
 					
 					setmetatable(nestedSectionObj, v)
 					return nestedSectionObj
