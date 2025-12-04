@@ -1029,41 +1029,40 @@ local aa = {
 				LayoutOrder = 7,
 			})
 			
-			-- Section header (clickable)
-			m.Header = j("TextButton", {
-				Size = UDim2.new(1, 0, 0, 35),
-				BackgroundColor3 = Color3.fromRGB(0, 0, 0),
+			-- Top separator line
+			m.TopLine = j("Frame", {
+				Size = UDim2.new(1, 0, 0, 1),
+				Position = UDim2.new(0, 0, 0, 0),
+				BackgroundColor3 = Color3.fromRGB(100, 100, 100),
 				BackgroundTransparency = 0.3,
+				BorderSizePixel = 0,
+				Parent = m.Root,
+			})
+			
+			-- Section header (clickable, transparent)
+			m.Header = j("TextButton", {
+				Size = UDim2.new(1, 0, 0, 30),
+				Position = UDim2.new(0, 0, 0, 5),
+				BackgroundTransparency = 1,
 				Text = "",
 				Parent = m.Root,
-				AutomaticSize = Enum.AutomaticSize.None,
-			}, {
-				j("UICorner", {
-					CornerRadius = UDim.new(0, 6),
-				}),
-				j("UIStroke", {
-					Transparency = 0,
-					Color = Color3.fromRGB(0, 235, 0),
-					Thickness = 1.5,
-					ApplyStrokeMode = Enum.ApplyStrokeMode.Border,
-				}),
 			})
 			
 			-- Optional gradient overlay
 			m.GradientFrame = nil
 			
-			-- Section title text
+			-- Section title text with gradient support
 			m.TitleLabel = j("TextLabel", {
-				Size = UDim2.new(1, -40, 1, 0),
-				Position = UDim2.fromOffset(15, 0),
+				Size = UDim2.new(1, -30, 1, 0),
+				Position = UDim2.fromOffset(5, 0),
 				BackgroundTransparency = 1,
 				Text = k,
 				TextColor3 = Color3.fromRGB(240, 240, 240),
-				TextSize = 14,
+				TextSize = 15,
 				TextXAlignment = Enum.TextXAlignment.Left,
 				FontFace = Font.new(
 					"rbxasset://fonts/families/GothamSSm.json",
-					Enum.FontWeight.Medium,
+					Enum.FontWeight.Bold,
 					Enum.FontStyle.Normal
 				),
 				Parent = m.Header,
@@ -1072,14 +1071,24 @@ local aa = {
 				},
 			})
 			
+			-- Bottom separator line
+			m.BottomLine = j("Frame", {
+				Size = UDim2.new(1, 0, 0, 1),
+				Position = UDim2.new(0, 0, 0, 35),
+				BackgroundColor3 = Color3.fromRGB(100, 100, 100),
+				BackgroundTransparency = 0.3,
+				BorderSizePixel = 0,
+				Parent = m.Root,
+			})
+			
 			-- Arrow icon
 			m.Arrow = j("ImageLabel", {
-				Size = UDim2.fromOffset(16, 16),
-				Position = UDim2.new(1, -25, 0.5, 0),
+				Size = UDim2.fromOffset(14, 14),
+				Position = UDim2.new(1, -20, 0.5, 0),
 				AnchorPoint = Vector2.new(0.5, 0.5),
 				BackgroundTransparency = 1,
 				Image = "rbxassetid://6034818372",
-				ImageColor3 = Color3.fromRGB(180, 180, 180),
+				ImageColor3 = Color3.fromRGB(150, 150, 150),
 				Rotation = defaultOpen and 0 or 90,
 				Parent = m.Header,
 				ThemeTag = {
@@ -1090,7 +1099,7 @@ local aa = {
 			-- Content container
 			m.Container = j("Frame", {
 				Size = UDim2.new(1, 0, 0, 0),
-				Position = UDim2.fromOffset(0, 35),
+				Position = UDim2.fromOffset(0, 36),
 				AutomaticSize = Enum.AutomaticSize.Y,
 				BackgroundTransparency = 1,
 				Parent = m.Root,
@@ -1099,13 +1108,13 @@ local aa = {
 			}, {
 				j("UIListLayout", {
 					SortOrder = Enum.SortOrder.LayoutOrder,
-					Padding = UDim.new(0, 3),
+					Padding = UDim.new(0, 4),
 				}),
 				j("UIPadding", {
-					PaddingTop = UDim.new(0, 5),
-					PaddingLeft = UDim.new(0, 10),
-					PaddingRight = UDim.new(0, 10),
-					PaddingBottom = UDim.new(0, 3),
+					PaddingTop = UDim.new(0, 8),
+					PaddingLeft = UDim.new(0, 15),
+					PaddingRight = UDim.new(0, 15),
+					PaddingBottom = UDim.new(0, 8),
 				}),
 			})
 			
@@ -1145,7 +1154,7 @@ local aa = {
 					expandTween:Play()
 					
 					-- Update root size
-					m.Root.Size = UDim2.new(1, -10, 0, contentHeight + 35)
+					m.Root.Size = UDim2.new(1, -10, 0, contentHeight + 36)
 				else
 					-- Closing animation
 					local collapseTween = TweenService:Create(
@@ -1161,7 +1170,7 @@ local aa = {
 					end)
 					
 					-- Update root size
-					m.Root.Size = UDim2.new(1, -10, 0, 35)
+					m.Root.Size = UDim2.new(1, -10, 0, 36)
 				end
 			end
 			
@@ -1170,42 +1179,29 @@ local aa = {
 				m.TitleLabel.Text = NewTitle
 			end
 			
-			-- Set gradient function
+			-- Set gradient function (applies to text)
 			function m:SetGradient(gradientOptions)
 				if gradientOptions and gradientOptions.Enabled then
 					-- Remove existing gradient if any
-					if m.GradientFrame then
-						m.GradientFrame:Destroy()
+					local existingGradient = m.TitleLabel:FindFirstChild("UIGradient")
+					if existingGradient then
+						existingGradient:Destroy()
 					end
 					
-					-- Create gradient frame
-					m.GradientFrame = j("Frame", {
-						Size = UDim2.new(1, 0, 1, 0),
-						Position = UDim2.new(0, 0, 0, 0),
-						BackgroundTransparency = gradientOptions.Transparency or 0.7,
-						Parent = m.Header,
-						ZIndex = 2,
-					}, {
-						j("UICorner", {
-							CornerRadius = UDim.new(0, 6),
-						}),
-						j("UIGradient", {
-							Color = ColorSequence.new{
-								ColorSequenceKeypoint.new(0, gradientOptions.Color1 or Color3.fromRGB(0, 235, 0)),
-								ColorSequenceKeypoint.new(1, gradientOptions.Color2 or Color3.fromRGB(0, 150, 255))
-							},
-							Rotation = gradientOptions.Rotation or 45,
-						}),
+					-- Create text gradient
+					j("UIGradient", {
+						Color = ColorSequence.new{
+							ColorSequenceKeypoint.new(0, gradientOptions.Color1 or Color3.fromRGB(0, 235, 0)),
+							ColorSequenceKeypoint.new(1, gradientOptions.Color2 or Color3.fromRGB(0, 150, 0))
+						},
+						Rotation = gradientOptions.Rotation or 0,
+						Parent = m.TitleLabel,
 					})
-					
-					-- Ensure title is above gradient
-					m.TitleLabel.ZIndex = 3
-					m.Arrow.ZIndex = 3
 				else
 					-- Remove gradient if disabled
-					if m.GradientFrame then
-						m.GradientFrame:Destroy()
-						m.GradientFrame = nil
+					local existingGradient = m.TitleLabel:FindFirstChild("UIGradient")
+					if existingGradient then
+						existingGradient:Destroy()
 					end
 				end
 			end
@@ -1227,11 +1223,11 @@ local aa = {
 			-- Auto-resize based on content (only when section is open)
 			i.AddSignal(m.Layout:GetPropertyChangedSignal("AbsoluteContentSize"), function()
 				if m.Open then
-					local contentHeight = m.Layout.AbsoluteContentSize.Y + 13  -- padding
+					local contentHeight = m.Layout.AbsoluteContentSize.Y + 16  -- padding
 					m.Container.Size = UDim2.new(1, 0, 0, contentHeight)
-					m.Root.Size = UDim2.new(1, -10, 0, contentHeight + 35)
+					m.Root.Size = UDim2.new(1, -10, 0, contentHeight + 36)
 				else
-					m.Root.Size = UDim2.new(1, -10, 0, 35)
+					m.Root.Size = UDim2.new(1, -10, 0, 36)
 				end
 			end)
 			

@@ -17,41 +17,37 @@ return function(Title, Parent, DefaultOpen)
 		LayoutOrder = 7,
 	})
 	
-	-- Section header (clickable)
-	Section.Header = New("TextButton", {
-		Size = UDim2.new(1, 0, 0, 35),
-		BackgroundColor3 = Color3.fromRGB(0, 0, 0),
+	-- Top separator line
+	Section.TopLine = New("Frame", {
+		Size = UDim2.new(1, 0, 0, 1),
+		Position = UDim2.new(0, 0, 0, 0),
+		BackgroundColor3 = Color3.fromRGB(100, 100, 100),
 		BackgroundTransparency = 0.3,
-		Text = "",
+		BorderSizePixel = 0,
 		Parent = Section.Root,
-		AutomaticSize = Enum.AutomaticSize.None,
-	}, {
-		New("UICorner", {
-			CornerRadius = UDim.new(0, 6),
-		}),
-		New("UIStroke", {
-			Transparency = 0,
-			Color = Color3.fromRGB(0, 235, 0),
-			Thickness = 1.5,
-			ApplyStrokeMode = Enum.ApplyStrokeMode.Border,
-		}),
 	})
 	
-	-- Optional gradient overlay
-	Section.GradientFrame = nil
+	-- Section header (clickable, transparent)
+	Section.Header = New("TextButton", {
+		Size = UDim2.new(1, 0, 0, 30),
+		Position = UDim2.new(0, 0, 0, 5),
+		BackgroundTransparency = 1,
+		Text = "",
+		Parent = Section.Root,
+	})
 	
-	-- Section title text
+	-- Section title text with gradient support
 	Section.TitleLabel = New("TextLabel", {
-		Size = UDim2.new(1, -40, 1, 0),
-		Position = UDim2.fromOffset(15, 0),
+		Size = UDim2.new(1, -30, 1, 0),
+		Position = UDim2.fromOffset(5, 0),
 		BackgroundTransparency = 1,
 		Text = Title,
 		TextColor3 = Color3.fromRGB(240, 240, 240),
-		TextSize = 14,
+		TextSize = 15,
 		TextXAlignment = Enum.TextXAlignment.Left,
 		FontFace = Font.new(
 			"rbxasset://fonts/families/GothamSSm.json",
-			Enum.FontWeight.Medium,
+			Enum.FontWeight.Bold,
 			Enum.FontStyle.Normal
 		),
 		Parent = Section.Header,
@@ -60,14 +56,24 @@ return function(Title, Parent, DefaultOpen)
 		},
 	})
 	
+	-- Bottom separator line
+	Section.BottomLine = New("Frame", {
+		Size = UDim2.new(1, 0, 0, 1),
+		Position = UDim2.new(0, 0, 0, 35),
+		BackgroundColor3 = Color3.fromRGB(100, 100, 100),
+		BackgroundTransparency = 0.3,
+		BorderSizePixel = 0,
+		Parent = Section.Root,
+	})
+	
 	-- Arrow icon
 	Section.Arrow = New("ImageLabel", {
-		Size = UDim2.fromOffset(16, 16),
-		Position = UDim2.new(1, -25, 0.5, 0),
+		Size = UDim2.fromOffset(14, 14),
+		Position = UDim2.new(1, -20, 0.5, 0),
 		AnchorPoint = Vector2.new(0.5, 0.5),
 		BackgroundTransparency = 1,
 		Image = "rbxassetid://6034818372",
-		ImageColor3 = Color3.fromRGB(180, 180, 180),
+		ImageColor3 = Color3.fromRGB(150, 150, 150),
 		Rotation = DefaultOpen and 0 or 90,
 		Parent = Section.Header,
 		ThemeTag = {
@@ -78,7 +84,7 @@ return function(Title, Parent, DefaultOpen)
 	-- Content container
 	Section.Container = New("Frame", {
 		Size = UDim2.new(1, 0, 0, 0),
-		Position = UDim2.fromOffset(0, 35),
+		Position = UDim2.fromOffset(0, 36),
 		AutomaticSize = Enum.AutomaticSize.Y,
 		BackgroundTransparency = 1,
 		Parent = Section.Root,
@@ -87,13 +93,13 @@ return function(Title, Parent, DefaultOpen)
 	}, {
 		New("UIListLayout", {
 			SortOrder = Enum.SortOrder.LayoutOrder,
-			Padding = UDim.new(0, 3),
+			Padding = UDim.new(0, 4),
 		}),
 		New("UIPadding", {
-			PaddingTop = UDim.new(0, 5),
-			PaddingLeft = UDim.new(0, 10),
-			PaddingRight = UDim.new(0, 10),
-			PaddingBottom = UDim.new(0, 3),
+			PaddingTop = UDim.new(0, 8),
+			PaddingLeft = UDim.new(0, 15),
+			PaddingRight = UDim.new(0, 15),
+			PaddingBottom = UDim.new(0, 8),
 		}),
 	})
 	
@@ -132,8 +138,8 @@ return function(Title, Parent, DefaultOpen)
 			)
 			expandTween:Play()
 			
-			-- Update root size
-			Section.Root.Size = UDim2.new(1, -10, 0, contentHeight + 35)
+				-- Update root size
+			Section.Root.Size = UDim2.new(1, -10, 0, contentHeight + 36)
 		else
 			-- Closing animation
 			local collapseTween = TweenService:Create(
@@ -149,51 +155,36 @@ return function(Title, Parent, DefaultOpen)
 			end)
 			
 			-- Update root size
-			Section.Root.Size = UDim2.new(1, -10, 0, 35)
+			Section.Root.Size = UDim2.new(1, -10, 0, 36)
 		end
-	end
-	
-	-- Set title function
+	end	-- Set title function
 	function Section:SetTitle(NewTitle)
 		Section.TitleLabel.Text = NewTitle
 	end
 	
-	-- Set gradient function
+	-- Set gradient function (applies to text)
 	function Section:SetGradient(gradientOptions)
 		if gradientOptions and gradientOptions.Enabled then
 			-- Remove existing gradient if any
-			if Section.GradientFrame then
-				Section.GradientFrame:Destroy()
+			local existingGradient = Section.TitleLabel:FindFirstChild("UIGradient")
+			if existingGradient then
+				existingGradient:Destroy()
 			end
 			
-			-- Create gradient frame
-			Section.GradientFrame = New("Frame", {
-				Size = UDim2.new(1, 0, 1, 0),
-				Position = UDim2.new(0, 0, 0, 0),
-				BackgroundTransparency = gradientOptions.Transparency or 0.7,
-				Parent = Section.Header,
-				ZIndex = 2,
-			}, {
-				New("UICorner", {
-					CornerRadius = UDim.new(0, 6),
-				}),
-				New("UIGradient", {
-					Color = ColorSequence.new{
-						ColorSequenceKeypoint.new(0, gradientOptions.Color1 or Color3.fromRGB(0, 235, 0)),
-						ColorSequenceKeypoint.new(1, gradientOptions.Color2 or Color3.fromRGB(0, 150, 255))
-					},
-					Rotation = gradientOptions.Rotation or 45,
-				}),
+			-- Create text gradient
+			New("UIGradient", {
+				Color = ColorSequence.new{
+					ColorSequenceKeypoint.new(0, gradientOptions.Color1 or Color3.fromRGB(0, 235, 0)),
+					ColorSequenceKeypoint.new(1, gradientOptions.Color2 or Color3.fromRGB(0, 150, 0))
+				},
+				Rotation = gradientOptions.Rotation or 0,
+				Parent = Section.TitleLabel,
 			})
-			
-			-- Ensure title is above gradient
-			Section.TitleLabel.ZIndex = 3
-			Section.Arrow.ZIndex = 3
 		else
 			-- Remove gradient if disabled
-			if Section.GradientFrame then
-				Section.GradientFrame:Destroy()
-				Section.GradientFrame = nil
+			local existingGradient = Section.TitleLabel:FindFirstChild("UIGradient")
+			if existingGradient then
+				existingGradient:Destroy()
 			end
 		end
 	end
@@ -215,11 +206,11 @@ return function(Title, Parent, DefaultOpen)
 	-- Auto-resize based on content (only when section is open)
 	Creator.AddSignal(Section.Layout:GetPropertyChangedSignal("AbsoluteContentSize"), function()
 		if Section.Open then
-			local contentHeight = Section.Layout.AbsoluteContentSize.Y + 13  -- padding
+			local contentHeight = Section.Layout.AbsoluteContentSize.Y + 16  -- padding
 			Section.Container.Size = UDim2.new(1, 0, 0, contentHeight)
-			Section.Root.Size = UDim2.new(1, -10, 0, contentHeight + 35)
+			Section.Root.Size = UDim2.new(1, -10, 0, contentHeight + 36)
 		else
-			Section.Root.Size = UDim2.new(1, -10, 0, 35)
+			Section.Root.Size = UDim2.new(1, -10, 0, 36)
 		end
 	end)
 	

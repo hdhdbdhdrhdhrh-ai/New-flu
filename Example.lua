@@ -44,10 +44,10 @@ do
         Open = false,
         Gradient = {
             Enabled = true,
-            Color1 = Color3.fromRGB(255, 0, 150), -- Pink
-            Color2 = Color3.fromRGB(0, 235, 0),   -- Green (accent color)
+            Color1 = Color3.fromRGB(0, 100, 0),  -- Dark green
+            Color2 = Color3.fromRGB(0, 235, 0),  -- Light green (accent)
             Rotation = 45,
-            Transparency = 0.7
+            Transparency = 0.5
         }
     })
 
@@ -97,10 +97,10 @@ do
         Open = true,
         Gradient = {
             Enabled = true,
-            Color1 = Color3.fromRGB(0, 150, 255), -- Blue
-            Color2 = Color3.fromRGB(150, 0, 255), -- Purple
+            Color1 = Color3.fromRGB(0, 80, 0),   -- Darker green
+            Color2 = Color3.fromRGB(0, 200, 0),  -- Lighter green
             Rotation = -45,
-            Transparency = 0.6
+            Transparency = 0.4
         }
     })
 
@@ -142,10 +142,10 @@ do
         Open = false,
         Gradient = {
             Enabled = true,
-            Color1 = Color3.fromRGB(0, 235, 0),   -- Accent green
-            Color2 = Color3.fromRGB(255, 215, 0), -- Gold
+            Color1 = Color3.fromRGB(0, 120, 0),  -- Medium dark green
+            Color2 = Color3.fromRGB(0, 235, 0),  -- Accent light green
             Rotation = 90,
-            Transparency = 0.8
+            Transparency = 0.6
         }
     })
 
@@ -221,10 +221,10 @@ do
         Open = true,
         Gradient = {
             Enabled = true,
-            Color1 = Color3.fromRGB(50, 50, 50),  -- Dark gray
-            Color2 = Color3.fromRGB(0, 235, 0),   -- Accent green
+            Color1 = Color3.fromRGB(0, 60, 0),   -- Very dark green
+            Color2 = Color3.fromRGB(0, 180, 0),  -- Medium light green
             Rotation = 180,
-            Transparency = 0.9  -- Very subtle
+            Transparency = 0.7
         }
     })
 
@@ -292,10 +292,10 @@ do
         print("Changing Section1 gradient...")
         Section1:SetGradient({
             Enabled = true,
-            Color1 = Color3.fromRGB(255, 100, 0), -- Orange
-            Color2 = Color3.fromRGB(255, 0, 100), -- Red-pink
+            Color1 = Color3.fromRGB(0, 150, 0),  -- Medium green
+            Color2 = Color3.fromRGB(0, 255, 100), -- Bright light green
             Rotation = 135,
-            Transparency = 0.5
+            Transparency = 0.3
         })
         
         task.wait(3)
