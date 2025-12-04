@@ -93,15 +93,24 @@ function Element:New(Config)
 		ClickableButton.BackgroundTransparency = Config.Filled and 0 or 1
 	end)
 	
-	-- Add click effect
+	-- Add smooth click effect with tweens
+	local TweenService = game:GetService("TweenService")
+	local clickTweenInfo = TweenInfo.new(0.1, Enum.EasingStyle.Quad, Enum.EasingDirection.Out)
+	
 	Creator.AddSignal(ClickableButton.MouseButton1Down, function()
-		ClickableButton.Size = UDim2.new(0, -2, 0, 24) -- Slightly smaller
-		ClickableButton.BackgroundTransparency = Config.Filled and 0.2 or 0.9
+		local clickDownTween = TweenService:Create(ClickableButton, clickTweenInfo, {
+			Size = UDim2.new(0, -2, 0, 24),
+			BackgroundTransparency = Config.Filled and 0.2 or 0.9
+		})
+		clickDownTween:Play()
 	end)
 	
 	Creator.AddSignal(ClickableButton.MouseButton1Up, function()
-		ClickableButton.Size = UDim2.new(0, 0, 0, 26) -- Back to normal
-		ClickableButton.BackgroundTransparency = Config.Filled and 0 or 1
+		local clickUpTween = TweenService:Create(ClickableButton, clickTweenInfo, {
+			Size = UDim2.new(0, 0, 0, 26),
+			BackgroundTransparency = Config.Filled and 0 or 1
+		})
+		clickUpTween:Play()
 	end)
 
 	Creator.AddSignal(ClickableButton.MouseButton1Click, function()

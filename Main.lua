@@ -1963,14 +1963,22 @@ local aa = {
 			i.AddSignal(p.MouseLeave, function()
 				p.BackgroundTransparency = n.Filled and 0 or 1
 			end)
-			-- Add click effect
+			-- Add smooth click effect with tweens
+			local TweenService = game:GetService("TweenService")
+			local clickTweenInfo = TweenInfo.new(0.1, Enum.EasingStyle.Quad, Enum.EasingDirection.Out)
 			i.AddSignal(p.MouseButton1Down, function()
-				p.Size = UDim2.new(0, -2, 0, 24)
-				p.BackgroundTransparency = n.Filled and 0.2 or 0.9
+				local clickDownTween = TweenService:Create(p, clickTweenInfo, {
+					Size = UDim2.new(0, -2, 0, 24),
+					BackgroundTransparency = n.Filled and 0.2 or 0.9
+				})
+				clickDownTween:Play()
 			end)
 			i.AddSignal(p.MouseButton1Up, function()
-				p.Size = UDim2.new(0, 0, 0, 26)
-				p.BackgroundTransparency = n.Filled and 0 or 1
+				local clickUpTween = TweenService:Create(p, clickTweenInfo, {
+					Size = UDim2.new(0, 0, 0, 26),
+					BackgroundTransparency = n.Filled and 0 or 1
+				})
+				clickUpTween:Play()
 			end)
 			i.AddSignal(p.MouseButton1Click, function()
 				m.Library:SafeCallback(n.Callback)
