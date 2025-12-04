@@ -78,7 +78,7 @@ return function(Config)
 
 	local TabFrame = New("Frame", {
 		Size = UDim2.new(0, Window.TabWidth, 1, -66),
-		Position = UDim2.new(0, 12, 0, 54),
+		Position = UDim2.new(0, 12, 0, 44),
 		BackgroundTransparency = 1,
 		ClipsDescendants = true,
 	}, {
@@ -95,7 +95,7 @@ return function(Config)
 		TextXAlignment = "Left",
 		TextYAlignment = "Center",
 		Size = UDim2.new(1, -16, 0, 28),
-		Position = UDim2.fromOffset(Window.TabWidth + 26, 56),
+		Position = UDim2.fromOffset(Window.TabWidth + 26, 44),
 		BackgroundTransparency = 1,
 		ThemeTag = {
 			TextColor3 = "Text",
@@ -114,7 +114,7 @@ return function(Config)
 
 	Window.ContainerCanvas = New("Frame", {
 		Size = UDim2.new(1, -Window.TabWidth - 32, 1, -102),
-		Position = UDim2.fromOffset(Window.TabWidth + 26, 90),
+		Position = UDim2.fromOffset(Window.TabWidth + 26, 80),
 		BackgroundTransparency = 1,
 	}, {
 		Window.ContainerAnim,
