@@ -42,8 +42,9 @@ return function(Title, Desc, Parent, Hover)
 		AutomaticSize = Enum.AutomaticSize.Y,
 		BackgroundColor3 = Color3.fromRGB(255, 255, 255),
 		BackgroundTransparency = 1,
-		Position = UDim2.fromOffset(35, 0),
-		Size = UDim2.new(1, -63, 0, 0),
+		Position = UDim2.fromOffset(10, 0),
+		Size = UDim2.new(1, -20, 0, 0),
+		LayoutOrder = 1,
 	}, {
 		New("UIListLayout", {
 			SortOrder = Enum.SortOrder.LayoutOrder,
@@ -76,6 +77,10 @@ return function(Title, Desc, Parent, Hover)
 	}, {
 		New("UICorner", {
 			CornerRadius = UDim.new(0, 4),
+		}),
+		New("UIListLayout", {
+			SortOrder = Enum.SortOrder.LayoutOrder,
+			Padding = UDim.new(0, 5),
 		}),
 		Element.Border,
 		Element.LabelHolder,

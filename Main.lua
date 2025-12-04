@@ -747,8 +747,9 @@ local aa = {
 					AutomaticSize = Enum.AutomaticSize.Y,
 					BackgroundColor3 = Color3.fromRGB(255, 255, 255),
 					BackgroundTransparency = 1,
-					Position = UDim2.fromOffset(35, 0),
-					Size = UDim2.new(1, -63, 0, 0),
+					Position = UDim2.fromOffset(10, 0),
+					Size = UDim2.new(1, -20, 0, 0),
+					LayoutOrder = 1,
 				},
 				{
 					k(
@@ -781,7 +782,7 @@ local aa = {
 					LayoutOrder = 7,
 					ClipsDescendants = true,
 				},
-				{ k("UICorner", { CornerRadius = UDim.new(0, 4) }), q.Border, q.LabelHolder }
+				{ k("UICorner", { CornerRadius = UDim.new(0, 4) }), q.Border, q.LabelHolder, k("UIListLayout", { SortOrder = Enum.SortOrder.LayoutOrder, Padding = UDim.new(0, 5) }) }
 			)
 			function q.SetTitle(r, s)
 				q.TitleLabel.Text = s
@@ -2617,21 +2618,15 @@ local aa = {
 			l.SetTitle = m.SetTitle
 			l.SetDesc = m.SetDesc
 
-			-- Add bottom padding to element frame for dropdown spacing
-			e("UIPadding", {
-				PaddingBottom = UDim.new(0, 50),
-				Parent = m.Frame,
-			})
-
 			-- Search box container with grey border - positioned under title/description
 			local SearchBoxContainer = e("Frame", {
 				Size = UDim2.new(1, -20, 0, 36),
-				Position = UDim2.new(0, 10, 1, -45),
 				BackgroundColor3 = Color3.fromRGB(15, 15, 15),
 				BackgroundTransparency = 0,
 				BorderSizePixel = 0,
 				Parent = m.Frame,
 				AutomaticSize = Enum.AutomaticSize.Y,
+				LayoutOrder = 2,
 			}, {
 				e("UICorner", { CornerRadius = UDim.new(0, 8) }),
 				e("UIStroke", {
