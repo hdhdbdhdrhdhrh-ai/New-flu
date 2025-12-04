@@ -1728,7 +1728,7 @@ local aa = {
 				"TextLabel",
 				{
 					RichText = true,
-					Text = "Tab",
+					Text = "",
 					TextTransparency = 0,
 					FontFace = Font.new("rbxassetid://12187365364", Enum.FontWeight.SemiBold, Enum.FontStyle.Normal),
 					TextSize = 28,
