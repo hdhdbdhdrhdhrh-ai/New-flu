@@ -43,11 +43,11 @@ return function(Title, Parent, DefaultOpen)
 		BackgroundTransparency = 1,
 		Text = Title,
 		TextColor3 = Color3.fromRGB(240, 240, 240),
-		TextSize = 15,
+		TextSize = 14,
 		TextXAlignment = Enum.TextXAlignment.Left,
 		FontFace = Font.new(
 			"rbxasset://fonts/families/GothamSSm.json",
-			Enum.FontWeight.Bold,
+			Enum.FontWeight.Medium,
 			Enum.FontStyle.Normal
 		),
 		Parent = Section.Header,
@@ -194,14 +194,7 @@ return function(Title, Parent, DefaultOpen)
 		Section:Toggle()
 	end)
 	
-	-- Hover effect
-	Creator.AddSignal(Section.Header.MouseEnter, function()
-		Section.Header.BackgroundTransparency = 0.05
-	end)
-	
-	Creator.AddSignal(Section.Header.MouseLeave, function()
-		Section.Header.BackgroundTransparency = 0.1
-	end)
+	-- No hover effects to keep transparent background
 	
 	-- Auto-resize based on content (only when section is open)
 	Creator.AddSignal(Section.Layout:GetPropertyChangedSignal("AbsoluteContentSize"), function()
