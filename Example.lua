@@ -1,3 +1,4 @@
+-- Prefer a local `Fluent` module in ReplicatedStorage when running locally.
 local Fluent = loadstring(game:HttpGet("https://raw.githubusercontent.com/hdhdbdhdrhdhrh-ai/New-flu/refs/heads/main/Main.lua"))()
 local SaveManager = loadstring(game:HttpGet("https://raw.githubusercontent.com/dawid-scripts/Fluent/master/Addons/SaveManager.lua"))()
 local InterfaceManager = loadstring(game:HttpGet("https://raw.githubusercontent.com/dawid-scripts/Fluent/master/Addons/InterfaceManager.lua"))()
@@ -36,10 +37,29 @@ do
 
 
 
-    Tabs.Main:AddParagraph({
+    local MainParagraph = Tabs.Main:AddParagraph({
         Title = "Paragraph",
-        Content = "This is a paragraph.\nSecond line!"
+        Content = "This is a paragraph.\nSecond line!",
+        -- Demonstrate the new paragraph title gradient via initial config
+        Gradient = {
+            Enabled = true,
+            Color1 = Color3.fromRGB(255, 100, 150), -- Pink
+            Color2 = Color3.fromRGB(100, 150, 255), -- Blue
+            Rotation = 0,
+        },
     })
+
+    -- Show how to update gradient at runtime using SetGradient (after a short delay so initial gradient is visible)
+    if MainParagraph and MainParagraph.SetGradient then
+        task.delay(2, function()
+            MainParagraph:SetGradient({
+                Enabled = true,
+                Color1 = Color3.fromRGB(255, 220, 0), -- Yellow
+                Color2 = Color3.fromRGB(255, 120, 0), -- Orange
+                Rotation = 90,
+            })
+        end)
+    end
 
     -- Create a collapsible section with gradient (closed by default)
     local Section1 = Tabs.Main:AddSection({
