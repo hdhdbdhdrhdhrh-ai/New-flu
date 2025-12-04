@@ -51,9 +51,6 @@ return function(Title, Parent, DefaultOpen)
 			Enum.FontStyle.Normal
 		),
 		Parent = Section.Header,
-		ThemeTag = {
-			TextColor3 = "Text",
-		},
 	})
 	
 	-- Bottom separator line

@@ -1066,9 +1066,6 @@ local aa = {
 					Enum.FontStyle.Normal
 				),
 				Parent = m.Header,
-				ThemeTag = {
-					TextColor3 = "Text",
-				},
 			})
 			
 			-- Bottom separator line
