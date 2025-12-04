@@ -336,9 +336,6 @@ function Element:New(Idx, Config)
 				BackgroundColor3 = isSelected and Color3.fromRGB(70, 70, 70) or Color3.fromRGB(50, 50, 50),
 				Text = "",
 				Parent = DropdownScrollFrame,
-				ThemeTag = {
-					BackgroundColor3 = "DropdownOption",
-				},
 			}, {
 				OptionLabel,
 				CheckIcon,
