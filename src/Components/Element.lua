@@ -11,15 +11,12 @@ return function(Title, Desc, Parent, Hover)
 	Element.TitleLabel = New("TextLabel", {
 		FontFace = Font.new("rbxasset://fonts/families/GothamSSm.json", Enum.FontWeight.Medium, Enum.FontStyle.Normal),
 		Text = Title,
-		TextColor3 = Color3.fromRGB(240, 240, 240),
+		TextColor3 = Color3.new(1, 1, 1),
 		TextSize = 13,
 		TextXAlignment = Enum.TextXAlignment.Left,
 		Size = UDim2.new(1, 0, 0, 14),
 		BackgroundColor3 = Color3.fromRGB(255, 255, 255),
 		BackgroundTransparency = 1,
-		ThemeTag = {
-			TextColor3 = "Text",
-		},
 	}, {
 		New("UIGradient", {
 			Color = ColorSequence.new({
