@@ -11,23 +11,28 @@ function Paragraph:New(Config)
 	assert(Config.Title, "Paragraph - Missing Title")
 	Config.Content = Config.Content or ""
 
-	local Paragraph = require(script.Parent.Parent.Components.Element)(Config.Title, Config.Content, Paragraph.Container, false, Config.Border, Config.Gradient)
-	Paragraph.Frame.BackgroundTransparency = 1
-	Paragraph.Border.Transparency = 1
+	-- Create the paragraph element, passing gradient config
+	local ParagraphElement = require(script.Parent.Parent.Components.Element)(
+		Config.Title, 
+		Config.Content, 
+		Paragraph.Container, 
+		false, 
+		Config.Border, 
+		Config.Gradient  -- Pass gradient to Element
+	)
+	
+	ParagraphElement.Frame.BackgroundTransparency = 1
+	ParagraphElement.Border.Transparency = 1
 
-	-- Always support SetGradient for paragraph title
-	function Paragraph:SetGradient(gradientOptions)
-		if Paragraph and Paragraph.SetTitleGradient then
-			Paragraph:SetTitleGradient(gradientOptions)
+	-- Expose SetGradient method on the Paragraph object
+	function ParagraphElement:SetGradient(gradientOptions)
+		if ParagraphElement.SetTitleGradient then
+			ParagraphElement:SetTitleGradient(gradientOptions)
 		end
 	end
 
-	-- If Gradient is provided in config, apply it immediately
-	if Config.Gradient then
-		Paragraph:SetGradient(Config.Gradient)
-	end
-
-	return Paragraph
+	-- Return the element with proper metatable
+	return setmetatable(ParagraphElement, Paragraph)
 end
 
 return Paragraph
