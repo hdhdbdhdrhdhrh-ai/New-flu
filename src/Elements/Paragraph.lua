@@ -11,7 +11,7 @@ function Paragraph:New(Config)
 	assert(Config.Title, "Paragraph - Missing Title")
 	Config.Content = Config.Content or ""
 
-	local Paragraph = require(Components.Element)(Config.Title, Config.Content, Paragraph.Container, false, Config.Border)
+	local Paragraph = require(script.Parent.Parent.Components.Element)(Config.Title, Config.Content, Paragraph.Container, false, Config.Border, Config.Gradient)
 	Paragraph.Frame.BackgroundTransparency = 1
 	Paragraph.Border.Transparency = 1
 

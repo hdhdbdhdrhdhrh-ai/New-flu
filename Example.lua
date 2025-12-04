@@ -41,6 +41,17 @@ do
         Content = "This is a paragraph.\nSecond line!"
     })
 
+    Tabs.Main:AddParagraph({
+        Title = "Gradient Paragraph",
+        Content = "This paragraph has a gradient title!",
+        Gradient = {
+            Enabled = true,
+            Color1 = Color3.fromRGB(255, 100, 150),  -- Pink
+            Color2 = Color3.fromRGB(100, 150, 255),  -- Blue
+            Rotation = 0
+        }
+    })
+
     -- Create a collapsible section with gradient (closed by default)
     local Section1 = Tabs.Main:AddSection({
         Title = "Comp Killer Section",
