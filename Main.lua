@@ -747,9 +747,8 @@ local aa = {
 					AutomaticSize = Enum.AutomaticSize.Y,
 					BackgroundColor3 = Color3.fromRGB(255, 255, 255),
 					BackgroundTransparency = 1,
-					Position = UDim2.fromOffset(10, 0),
-					Size = UDim2.new(1, -20, 0, 0),
-					LayoutOrder = 1,
+					Position = UDim2.fromOffset(35, 0),
+					Size = UDim2.new(1, -63, 0, 0),
 				},
 				{
 					k(
@@ -782,7 +781,7 @@ local aa = {
 					LayoutOrder = 7,
 					ClipsDescendants = true,
 				},
-				{ k("UICorner", { CornerRadius = UDim.new(0, 4) }), q.Border, q.LabelHolder, k("UIListLayout", { SortOrder = Enum.SortOrder.LayoutOrder, Padding = UDim.new(0, 5) }) }
+				{ k("UICorner", { CornerRadius = UDim.new(0, 4) }), q.Border, q.LabelHolder }
 			)
 			function q.SetTitle(r, s)
 				q.TitleLabel.Text = s
@@ -2618,46 +2617,33 @@ local aa = {
 			l.SetTitle = m.SetTitle
 			l.SetDesc = m.SetDesc
 
-			-- Set layout orders
-			m.TitleLabel.LayoutOrder = 1
-			m.DescLabel.LayoutOrder = 2
-
-			-- Add spacing above search box (like Button does)
-			local DropdownSpacing = e("Frame", {
-				Size = UDim2.new(1, 0, 0, 8),
-				BackgroundTransparency = 1,
-				LayoutOrder = 3,
-				Parent = m.LabelHolder,
-			})
-
-			-- Search box container with grey border - in LabelHolder like Button
+			-- Search box container with grey border - positioned under title/description
 			local SearchBoxContainer = e("Frame", {
-				Size = UDim2.new(1, 0, 0, 32),
+				Size = UDim2.new(1, -20, 0, 36),
+				Position = UDim2.new(0, 10, 1, 5),
 				BackgroundColor3 = Color3.fromRGB(15, 15, 15),
 				BackgroundTransparency = 0,
 				BorderSizePixel = 0,
-				Parent = m.LabelHolder,
+				Parent = m.Frame,
 				AutomaticSize = Enum.AutomaticSize.Y,
-				LayoutOrder = 4,
 			}, {
-				e("UICorner", { CornerRadius = UDim.new(0, 6) }),
+				e("UICorner", { CornerRadius = UDim.new(0, 8) }),
 				e("UIStroke", {
 					Color = Color3.fromRGB(80, 80, 80),
 					Thickness = 1,
 					ApplyStrokeMode = Enum.ApplyStrokeMode.Border,
 				}),
 				e("UIPadding", {
-					PaddingLeft = UDim.new(0, 8),
-					PaddingRight = UDim.new(0, 8),
-					PaddingTop = UDim.new(0, 5),
-					PaddingBottom = UDim.new(0, 5),
+					PaddingLeft = UDim.new(0, 10),
+					PaddingRight = UDim.new(0, 10),
+					PaddingTop = UDim.new(0, 6),
+					PaddingBottom = UDim.new(0, 6),
 				}),
 			})
 
-			-- Make element frame transparent like Button
-			m.Frame.BackgroundTransparency = 1
-			m.Frame.BorderSizePixel = 0
-			m.Border.Transparency = 1
+			-- Update element frame to accommodate dropdown
+			m.Frame.Size = UDim2.new(1, 0, 0, 0)
+			m.Frame.AutomaticSize = Enum.AutomaticSize.Y
 
 			-- Tags and search input layout
 			local TagsLayout = e("UIListLayout", {
@@ -2745,24 +2731,19 @@ local aa = {
 				if l.SelectedTags[value] then return end
 
 				local TagFrame = e("Frame", {
-					Size = UDim2.new(0, 0, 0, 22),
+					Size = UDim2.new(0, 0, 0, 24),
 					AutomaticSize = Enum.AutomaticSize.X,
-					BackgroundTransparency = 1,
+					BackgroundColor3 = Color3.fromRGB(0, 180, 0),
 					BorderSizePixel = 0,
 					Parent = SearchBoxContainer,
 					LayoutOrder = #l.SelectedTags,
 				}, {
-					e("UICorner", { CornerRadius = UDim.new(0, 4) }),
-					e("UIStroke", {
-						Color = Color3.fromRGB(100, 100, 100),
-						Thickness = 1,
-						ApplyStrokeMode = Enum.ApplyStrokeMode.Border,
-					}),
+					e("UICorner", { CornerRadius = UDim.new(0, 6) }),
 					e("UIPadding", {
-						PaddingLeft = UDim.new(0, 6),
-						PaddingRight = UDim.new(0, 5),
-						PaddingTop = UDim.new(0, 2),
-						PaddingBottom = UDim.new(0, 2),
+						PaddingLeft = UDim.new(0, 8),
+						PaddingRight = UDim.new(0, 6),
+						PaddingTop = UDim.new(0, 3),
+						PaddingBottom = UDim.new(0, 3),
 					}),
 				})
 
@@ -2776,20 +2757,21 @@ local aa = {
 
 				e("TextLabel", {
 					Text = value,
-					TextColor3 = Color3.fromRGB(200, 200, 200),
-					TextSize = 11,
+					TextColor3 = Color3.fromRGB(255, 255, 255),
+					TextSize = 12,
 					FontFace = Font.new("rbxasset://fonts/families/GothamSSm.json", Enum.FontWeight.Medium, Enum.FontStyle.Normal),
 					BackgroundTransparency = 1,
 					AutomaticSize = Enum.AutomaticSize.XY,
 					Parent = TagFrame,
-					ThemeTag = { TextColor3 = "Text" },
 				})
 
-				local XButton = e("ImageButton", {
-					Image = "rbxassetid://113507840995608",
-					ImageColor3 = Color3.fromRGB(150, 150, 150),
+				local XButton = e("TextButton", {
+					Text = "×",
+					TextColor3 = Color3.fromRGB(255, 255, 255),
+					TextSize = 16,
+					FontFace = Font.new("rbxasset://fonts/families/GothamSSm.json", Enum.FontWeight.Bold, Enum.FontStyle.Normal),
 					BackgroundTransparency = 1,
-					Size = UDim2.fromOffset(12, 12),
+					Size = UDim2.fromOffset(14, 14),
 					AutoButtonColor = false,
 					Parent = TagFrame,
 				})
