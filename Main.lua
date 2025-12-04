@@ -773,7 +773,7 @@ local aa = {
 				"TextButton",
 				{
 					Size = UDim2.new(1, 0, 0, 0),
-					BackgroundTransparency = 0.89,
+					BackgroundTransparency = 1,
 					BackgroundColor3 = Color3.fromRGB(130, 130, 130),
 					Parent = o,
 					AutomaticSize = Enum.AutomaticSize.Y,
@@ -1923,12 +1923,13 @@ local aa = {
 				"TextButton",
 				{
 					Size = UDim2.new(0, 0, 0, 26),
-					AnchorPoint = Vector2.new(0, 0),
-					Position = UDim2.new(0, 10, 0, 19),
 					BackgroundTransparency = n.Filled and 0 or 1,
+					Position = UDim2.new(0, 10, 0, 0),
+					AnchorPoint = Vector2.new(0, 0),
+					Text = "",
 					Parent = o.Frame,
 					AutomaticSize = Enum.AutomaticSize.X,
-					Text = "",
+					LayoutOrder = 2,
 					ClipsDescendants = true,
 				},
 				{
@@ -1937,6 +1938,15 @@ local aa = {
 					q, r
 				}
 			)
+			local u = j("UIListLayout", {
+				SortOrder = Enum.SortOrder.LayoutOrder,
+				VerticalAlignment = Enum.VerticalAlignment.Top,
+				Padding = UDim.new(0, 8),
+			})
+			o.LabelHolder.LayoutOrder = 1
+			u.Parent = o.Frame
+			o.Frame.Size = UDim2.new(1, 0, 0, 0)
+			o.Frame.AutomaticSize = Enum.AutomaticSize.Y
 			o.Frame.BackgroundTransparency = 1
 			o.Frame.BorderSizePixel = 0
 			o.Border.Transparency = 1

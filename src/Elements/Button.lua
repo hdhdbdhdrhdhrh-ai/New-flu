@@ -34,23 +34,16 @@ function Element:New(Config)
 		TextYAlignment = Enum.TextYAlignment.Center,
 	})
 
-	-- Make the button right under the title
-	ButtonFrame.Frame.Size = UDim2.new(0, 0, 0, 26)
-	ButtonFrame.Frame.AutomaticSize = Enum.AutomaticSize.X
-	ButtonFrame.Frame.Position = UDim2.new(0, 10, 0, 19)
-	ButtonFrame.Frame.BackgroundTransparency = 1
-	ButtonFrame.Frame.BorderSizePixel = 0
-	ButtonFrame.Border.Transparency = 1
-	
-	-- Convert Frame to TextButton
+	-- Create button as separate element below title/desc
 	local ClickableButton = New("TextButton", {
-		Size = UDim2.new(1, 0, 1, 0),
+		Size = UDim2.new(0, 0, 0, 26),
 		BackgroundTransparency = Config.Filled and 0 or 1,
-		Position = UDim2.fromOffset(0, 0),
+		Position = UDim2.new(0, 10, 0, 0),
 		AnchorPoint = Vector2.new(0, 0),
 		Text = "",
 		Parent = ButtonFrame.Frame,
-		AutomaticSize = Enum.AutomaticSize.None,
+		AutomaticSize = Enum.AutomaticSize.X,
+		LayoutOrder = 2,
 		ClipsDescendants = true,
 	}, {
 		New("UICorner", {
@@ -64,9 +57,22 @@ function Element:New(Config)
 		ButtonText,
 	})
 	
-	-- Remove the old frame
-	ButtonFrame.Frame:Destroy()
-	ButtonFrame.Frame = ClickableButton
+	-- Update element frame to use UIListLayout so button appears after title/desc
+	local ListLayout = New("UIListLayout", {
+		SortOrder = Enum.SortOrder.LayoutOrder,
+		VerticalAlignment = Enum.VerticalAlignment.Top,
+		Padding = UDim.new(0, 8),
+	})
+	
+	ButtonFrame.LabelHolder.LayoutOrder = 1
+	ListLayout.Parent = ButtonFrame.Frame
+	
+	-- Remove old frame references
+	ButtonFrame.Frame.Size = UDim2.new(1, 0, 0, 0)
+	ButtonFrame.Frame.AutomaticSize = Enum.AutomaticSize.Y
+	ButtonFrame.Frame.BackgroundTransparency = 1
+	ButtonFrame.Frame.BorderSizePixel = 0
+	ButtonFrame.Border.Transparency = 1
 
 	function ButtonFrame:UpdateColor()
 		if Config.Filled then
