@@ -44,7 +44,7 @@ do
     Tabs.Main:AddButton({
         Title = "Border Button",
         Description = "Button with accent border",
-        ButtonText = "Click Me",
+        ButtonText = "Click Me fdbksgfjigsdyjfggsdiufg",
         TextColor = Color3.fromRGB(255, 255, 255), -- Custom text color
         Filled = false, -- Border style (default)
         Callback = function()

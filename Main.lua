@@ -1923,7 +1923,7 @@ local aa = {
 				{
 					Size = UDim2.new(0, 0, 0, 26),
 					BackgroundTransparency = n.Filled and 0 or 1,
-					Position = UDim2.new(0, 8, 0, 0),
+					Position = UDim2.new(0, 5, 0, 0),
 					AnchorPoint = Vector2.new(0, 0),
 					Text = "",
 					Parent = o.Frame,
@@ -1942,8 +1942,12 @@ local aa = {
 				VerticalAlignment = Enum.VerticalAlignment.Top,
 				Padding = UDim.new(0, 8),
 			})
+			local v = j("UIPadding", {
+				PaddingRight = UDim.new(0, 15),
+			})
 			o.LabelHolder.LayoutOrder = 1
 			u.Parent = o.Frame
+			v.Parent = o.Frame
 			o.Frame.Size = UDim2.new(1, 0, 0, 0)
 			o.Frame.AutomaticSize = Enum.AutomaticSize.Y
 			o.Frame.BackgroundTransparency = 1
