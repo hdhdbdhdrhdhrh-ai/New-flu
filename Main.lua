@@ -2893,18 +2893,21 @@ local aa = {
 				v.Visible = false
 			end
 			function l.Display(B)
-				local C, D = l.Values, ""
-				if j.Multi then
-					for E, F in next, C do
-						if l.Value[F] then
-							D = D .. F .. ", "
+				for C, D in pairs(l.SelectedTags) do
+					D:Destroy()
+				end
+				l.SelectedTags = {}
+				if l.Multi then
+					for C, D in pairs(l.Value) do
+						if D then
+							l:CreateTag(C)
 						end
 					end
-					D = D:sub(1, #D - 2)
 				else
-					D = l.Value or ""
+					if l.Value then
+						l:CreateTag(l.Value)
+					end
 				end
-				n.Text = (D == "" and "--" or D)
 			end
 			function l.GetActiveValues(B)
 				if j.Multi then
