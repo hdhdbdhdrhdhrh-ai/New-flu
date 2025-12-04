@@ -38,10 +38,17 @@ do
         Content = "This is a paragraph.\nSecond line!"
     })
 
-    -- Create a collapsible section (closed by default)
+    -- Create a collapsible section with gradient (closed by default)
     local Section1 = Tabs.Main:AddSection({
         Title = "Comp Killer Section",
-        Open = false
+        Open = false,
+        Gradient = {
+            Enabled = true,
+            Color1 = Color3.fromRGB(255, 0, 150), -- Pink
+            Color2 = Color3.fromRGB(0, 235, 0),   -- Green (accent color)
+            Rotation = 45,
+            Transparency = 0.7
+        }
     })
 
     -- Add elements inside the section
@@ -84,10 +91,17 @@ do
         end
     })
 
-    -- Create another section (open by default)
+    -- Create another section with different gradient (open by default)
     local Section2 = Tabs.Main:AddSection({
-        Title = "Another Section",
-        Open = true
+        Title = "Interactive Elements",
+        Open = true,
+        Gradient = {
+            Enabled = true,
+            Color1 = Color3.fromRGB(0, 150, 255), -- Blue
+            Color2 = Color3.fromRGB(150, 0, 255), -- Purple
+            Rotation = -45,
+            Transparency = 0.6
+        }
     })
 
 
@@ -122,10 +136,17 @@ do
 
 
 
-    -- Create a third section for more elements
+    -- Create a third section with accent-based gradient
     local Section3 = Tabs.Main:AddSection({
-        Title = "More Elements",
-        Open = false
+        Title = "Color Selection",
+        Open = false,
+        Gradient = {
+            Enabled = true,
+            Color1 = Color3.fromRGB(0, 235, 0),   -- Accent green
+            Color2 = Color3.fromRGB(255, 215, 0), -- Gold
+            Rotation = 90,
+            Transparency = 0.8
+        }
     })
 
     local Dropdown = Section3:AddDropdown("Dropdown", {
@@ -194,10 +215,17 @@ do
         )
     end)
 
-    -- Create a fourth section for input elements
+    -- Create a fourth section with subtle gradient
     local Section4 = Tabs.Main:AddSection({
         Title = "Input & Controls",
-        Open = true
+        Open = true,
+        Gradient = {
+            Enabled = true,
+            Color1 = Color3.fromRGB(50, 50, 50),  -- Dark gray
+            Color2 = Color3.fromRGB(0, 235, 0),   -- Accent green
+            Rotation = 180,
+            Transparency = 0.9  -- Very subtle
+        }
     })
 
     local Keybind = Section4:AddKeybind("Keybind", {
@@ -258,10 +286,26 @@ do
         print("Input updated:", Input.Value)
     end)
 
-    -- Example of programmatically toggling sections
-    task.wait(3)  -- Wait 3 seconds
-    print("Opening Comp Killer Section...")
-    Section1.Toggle()  -- This will open the first section
+    -- Example of programmatically changing gradients
+    task.spawn(function()
+        task.wait(5)  -- Wait 5 seconds
+        print("Changing Section1 gradient...")
+        Section1:SetGradient({
+            Enabled = true,
+            Color1 = Color3.fromRGB(255, 100, 0), -- Orange
+            Color2 = Color3.fromRGB(255, 0, 100), -- Red-pink
+            Rotation = 135,
+            Transparency = 0.5
+        })
+        
+        task.wait(3)
+        print("Opening Comp Killer Section...")
+        Section1.Toggle()  -- This will open the first section
+        
+        task.wait(3)
+        print("Disabling Section2 gradient...")
+        Section2:SetGradient({Enabled = false}) -- Remove gradient
+    end)
 end
 
 

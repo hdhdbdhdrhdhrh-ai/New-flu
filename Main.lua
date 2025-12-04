@@ -1048,6 +1048,9 @@ local aa = {
 				}),
 			})
 			
+			-- Optional gradient overlay
+			m.GradientFrame = nil
+			
 			-- Section title text
 			m.TitleLabel = j("TextLabel", {
 				Size = UDim2.new(1, -40, 1, 0),
@@ -1164,6 +1167,46 @@ local aa = {
 			-- Set title function
 			function m:SetTitle(NewTitle)
 				m.TitleLabel.Text = NewTitle
+			end
+			
+			-- Set gradient function
+			function m:SetGradient(gradientOptions)
+				if gradientOptions and gradientOptions.Enabled then
+					-- Remove existing gradient if any
+					if m.GradientFrame then
+						m.GradientFrame:Destroy()
+					end
+					
+					-- Create gradient frame
+					m.GradientFrame = j("Frame", {
+						Size = UDim2.new(1, 0, 1, 0),
+						Position = UDim2.new(0, 0, 0, 0),
+						BackgroundTransparency = gradientOptions.Transparency or 0.7,
+						Parent = m.Header,
+						ZIndex = 2,
+					}, {
+						j("UICorner", {
+							CornerRadius = UDim.new(0, 6),
+						}),
+						j("UIGradient", {
+							Color = ColorSequence.new{
+								ColorSequenceKeypoint.new(0, gradientOptions.Color1 or Color3.fromRGB(0, 235, 0)),
+								ColorSequenceKeypoint.new(1, gradientOptions.Color2 or Color3.fromRGB(0, 150, 255))
+							},
+							Rotation = gradientOptions.Rotation or 45,
+						}),
+					})
+					
+					-- Ensure title is above gradient
+					m.TitleLabel.ZIndex = 3
+					m.Arrow.ZIndex = 3
+				else
+					-- Remove gradient if disabled
+					if m.GradientFrame then
+						m.GradientFrame:Destroy()
+						m.GradientFrame = nil
+					end
+				end
 			end
 			
 			-- Click handler
@@ -1326,6 +1369,12 @@ local aa = {
 				B.ScrollFrame = x.Container
 				B.Toggle = function() C:Toggle() end
 				B.SetTitle = function(title) C:SetTitle(title) end
+				B.SetGradient = function(gradientOptions) C:SetGradient(gradientOptions) end
+				
+				-- Apply gradient if provided
+				if A.Gradient then
+					C:SetGradient(A.Gradient)
+				end
 				
 				-- Add support for nested sections
 				function B.AddSection(nestedOptions)
@@ -1335,6 +1384,13 @@ local aa = {
 					nestedSectionObj.ScrollFrame = B.Container
 					nestedSectionObj.Toggle = function() nestedSectionComp:Toggle() end
 					nestedSectionObj.SetTitle = function(title) nestedSectionComp:SetTitle(title) end
+					nestedSectionObj.SetGradient = function(gradientOptions) nestedSectionComp:SetGradient(gradientOptions) end
+					
+					-- Apply gradient if provided
+					if nestedOptions.Gradient then
+						nestedSectionComp:SetGradient(nestedOptions.Gradient)
+					end
+					
 					setmetatable(nestedSectionObj, v)
 					return nestedSectionObj
 				end

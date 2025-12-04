@@ -36,6 +36,9 @@ return function(Title, Parent, DefaultOpen)
 		}),
 	})
 	
+	-- Optional gradient overlay
+	Section.GradientFrame = nil
+	
 	-- Section title text
 	Section.TitleLabel = New("TextLabel", {
 		Size = UDim2.new(1, -40, 1, 0),
@@ -152,6 +155,46 @@ return function(Title, Parent, DefaultOpen)
 	-- Set title function
 	function Section:SetTitle(NewTitle)
 		Section.TitleLabel.Text = NewTitle
+	end
+	
+	-- Set gradient function
+	function Section:SetGradient(gradientOptions)
+		if gradientOptions and gradientOptions.Enabled then
+			-- Remove existing gradient if any
+			if Section.GradientFrame then
+				Section.GradientFrame:Destroy()
+			end
+			
+			-- Create gradient frame
+			Section.GradientFrame = New("Frame", {
+				Size = UDim2.new(1, 0, 1, 0),
+				Position = UDim2.new(0, 0, 0, 0),
+				BackgroundTransparency = gradientOptions.Transparency or 0.7,
+				Parent = Section.Header,
+				ZIndex = 2,
+			}, {
+				New("UICorner", {
+					CornerRadius = UDim.new(0, 6),
+				}),
+				New("UIGradient", {
+					Color = ColorSequence.new{
+						ColorSequenceKeypoint.new(0, gradientOptions.Color1 or Color3.fromRGB(0, 235, 0)),
+						ColorSequenceKeypoint.new(1, gradientOptions.Color2 or Color3.fromRGB(0, 150, 255))
+					},
+					Rotation = gradientOptions.Rotation or 45,
+				}),
+			})
+			
+			-- Ensure title is above gradient
+			Section.TitleLabel.ZIndex = 3
+			Section.Arrow.ZIndex = 3
+		else
+			-- Remove gradient if disabled
+			if Section.GradientFrame then
+				Section.GradientFrame:Destroy()
+				Section.GradientFrame = nil
+			end
+		end
 	end
 	
 	-- Click handler
