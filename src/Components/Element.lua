@@ -66,13 +66,12 @@ return function(Title, Desc, Parent, Hover)
 		},
 	})
 
-	Element.Frame = New("TextButton", {
+	Element.Frame = New("Frame", {
 		Size = UDim2.new(1, 0, 0, 0),
 		BackgroundTransparency = 0.89,
 		BackgroundColor3 = Color3.fromRGB(130, 130, 130),
 		Parent = Parent,
 		AutomaticSize = Enum.AutomaticSize.Y,
-		Text = "",
 		LayoutOrder = 7,
 		ThemeTag = {
 			BackgroundColor3 = "Element",
