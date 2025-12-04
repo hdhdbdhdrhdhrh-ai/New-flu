@@ -56,7 +56,7 @@ do
     Tabs.Main:AddButton({
         Title = "Filled Button",
         Description = "Button with accent fill",
-        ButtonText = "Filled",
+        ButtonText = "Filledfsdffsfsdfsdgsgfdgdfgd",
         TextColor = Color3.fromRGB(0, 0, 0), -- Dark text for filled button
         Filled = true, -- Filled style
         Callback = function()
