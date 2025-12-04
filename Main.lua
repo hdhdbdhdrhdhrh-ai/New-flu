@@ -2466,7 +2466,7 @@ local aa = {
 			)
 			local u = e(
 				"Frame",
-				{ Size = UDim2.fromScale(1, 0.6), ThemeTag = { BackgroundColor3 = "DropdownHolder" } },
+				{ Size = UDim2.fromScale(1, 0.6), BackgroundTransparency = 1 },
 				{
 					t,
 					e("UICorner", { CornerRadius = UDim.new(0, 7) }),
@@ -2904,8 +2904,9 @@ local aa = {
 					ai(
 						"UIStroke",
 						{
-							Transparency = 1,
+							Transparency = 0.5,
 							ApplyStrokeMode = Enum.ApplyStrokeMode.Border,
+							ThemeTag = { Color = "InElementBorder" },
 						}
 					),
 					k,
