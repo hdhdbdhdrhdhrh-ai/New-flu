@@ -19,7 +19,7 @@ function Element:New(Idx, Config)
 		Type = "Toggle",
 	}
 
-	local ToggleFrame = require(Components.Element)(Config.Title, Config.Description, self.Container, false, Config.Border)
+	local ToggleFrame = require(Components.Element)(Config.Title, Config.Description, self.Container, false)
 
 	Toggle.SetTitle = ToggleFrame.SetTitle
 	Toggle.SetDesc = ToggleFrame.SetDesc

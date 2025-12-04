@@ -5,7 +5,7 @@ local New = Creator.New
 
 local Spring = Flipper.Spring.new
 
-return function(Title, Desc, Parent, Hover, Border)
+return function(Title, Desc, Parent, Hover, Borders)
 	local Element = {}
 
 	Element.TitleLabel = New("TextLabel", {
@@ -65,23 +65,37 @@ return function(Title, Desc, Parent, Hover, Border)
 		Color = Color3.fromRGB(100, 100, 100),
 	})
 
-	if Border then
-		Element.BottomLine = New("Frame", {
-			Size = UDim2.new(1, 0, 0, 1),
-			Position = UDim2.new(0, 0, 1, 0),
-			AnchorPoint = Vector2.new(0, 1),
-			BackgroundTransparency = 1,
-			BorderSizePixel = 0,
-			LayoutOrder = 3,
-		}, {
-			New("UIStroke", {
-				Thickness = 0.5,
-				Color = Color3.fromRGB(100, 100, 100),
-				Transparency = 0.3,
-				ApplyStrokeMode = Enum.ApplyStrokeMode.Border,
-			}),
-		})
-	end
+	Element.TopLine = New("Frame", {
+		Size = UDim2.new(1, 0, 0, 1),
+		Position = UDim2.new(0, 0, 0, 0),
+		AnchorPoint = Vector2.new(0, 0),
+		BackgroundTransparency = 1,
+		BorderSizePixel = 0,
+		LayoutOrder = 0,
+	}, {
+		New("UIStroke", {
+			Thickness = 0.5,
+			Color = Color3.fromRGB(100, 100, 100),
+			Transparency = 0.3,
+			ApplyStrokeMode = Enum.ApplyStrokeMode.Border,
+		}),
+	})
+
+	Element.BottomLine = New("Frame", {
+		Size = UDim2.new(1, 0, 0, 1),
+		Position = UDim2.new(0, 0, 1, 0),
+		AnchorPoint = Vector2.new(0, 1),
+		BackgroundTransparency = 1,
+		BorderSizePixel = 0,
+		LayoutOrder = 3,
+	}, {
+		New("UIStroke", {
+			Thickness = 0.5,
+			Color = Color3.fromRGB(100, 100, 100),
+			Transparency = 0.3,
+			ApplyStrokeMode = Enum.ApplyStrokeMode.Border,
+		}),
+	})
 
 	Element.Frame = New("Frame", {
 		Size = UDim2.new(1, 0, 0, 0),
@@ -100,8 +114,38 @@ return function(Title, Desc, Parent, Hover, Border)
 		}),
 		Element.Border,
 		Element.LabelHolder,
-		Border and Element.BottomLine or nil,
+		Element.TopLine,
+		Element.BottomLine,
 	})
+
+	-- Default lines hidden; toggled via SetBorders
+	Element.TopLine.Visible = false
+	Element.BottomLine.Visible = false
+
+	function Element:SetBorders(B)
+		-- Accept true (both), table {Top=true, Bottom=true}, or string 'top'/'bottom'/'both'
+		local top, bottom = false, false
+		if B == nil then
+			return
+		end
+		if type(B) == "boolean" then
+			top, bottom = B, B
+		elseif type(B) == "string" then
+			local s = B:lower()
+			if s == "top" then
+				top = true
+			elseif s == "bottom" then
+				bottom = true
+			elseif s == "both" then
+				top, bottom = true, true
+			end
+		elseif type(B) == "table" then
+			top = B.Top or B.top or false
+			bottom = B.Bottom or B.bottom or false
+		end
+		Element.TopLine.Visible = top
+		Element.BottomLine.Visible = bottom
+	end
 
 	function Element:SetTitle(Set)
 		Element.TitleLabel.Text = Set
@@ -125,6 +169,11 @@ return function(Title, Desc, Parent, Hover, Border)
 
 	Element:SetTitle(Title)
 	Element:SetDesc(Desc)
+
+	-- Apply initial borders if provided
+	if Borders ~= nil then
+		Element:SetBorders(Borders)
+	end
 
 	if Hover then
 		local Themes = Root.Themes

@@ -2,9 +2,8 @@ local Fluent = loadstring(game:HttpGet("https://raw.githubusercontent.com/hdhdbd
 local SaveManager = loadstring(game:HttpGet("https://raw.githubusercontent.com/dawid-scripts/Fluent/master/Addons/SaveManager.lua"))()
 local InterfaceManager = loadstring(game:HttpGet("https://raw.githubusercontent.com/dawid-scripts/Fluent/master/Addons/InterfaceManager.lua"))()
 
--- New Border Feature: Grey borders (thickness 0.5) can be optionally added between elements for better visual separation.
--- Set Border = true in the element config to add a grey line below that element.
--- This gives users control over which elements should have borders for improved organization.
+-- New Border Feature: Grey borders (thickness 0.5) are automatically added between elements and around the tab list for better visual separation.
+-- This feature is always enabled and enhances the UI's organization.
 
 -- Set custom accent color BEFORE creating the window
 Fluent.Accent = Color3.fromRGB(0, 135, 177)
@@ -40,48 +39,6 @@ do
     Tabs.Main:AddParagraph({
         Title = "Paragraph",
         Content = "This is a paragraph.\nSecond line!"
-    })
-
-    -- Border Demo Section - Shows elements with grey borders between them
-    local BorderDemoSection = Tabs.Main:AddSection({
-        Title = "Border Demo",
-        Open = true
-    })
-
-    BorderDemoSection:AddParagraph({
-        Title = "Paragraph with Border",
-        Content = "This paragraph has a grey border below it.",
-        Border = true
-    })
-
-    BorderDemoSection:AddButton({
-        Title = "Button with Border",
-        Description = "This button has a grey border below it",
-        ButtonText = "Click me!",
-        Callback = function()
-            Fluent:Notify({
-                Title = "Button Clicked",
-                Content = "You clicked the button with a border!",
-                Duration = 3
-            })
-        end,
-        Border = true
-    })
-
-    BorderDemoSection:AddToggle({
-        Title = "Toggle with Border",
-        Description = "This toggle has a grey border below it",
-        Default = false,
-        Callback = function(Value)
-            print("Toggle changed:", Value)
-        end,
-        Border = true
-    })
-
-    BorderDemoSection:AddParagraph({
-        Title = "Final Element",
-        Content = "This is the last element in the section.",
-        Border = false -- No border needed for the last element
     })
 
     -- Create a collapsible section with gradient (closed by default)
@@ -372,11 +329,16 @@ BorderDemoSection:AddParagraph({
     Content = "Notice the grey borders between elements and around the tab list for better visual separation."
 })
 
-BorderDemoSection:AddToggle("DemoToggle1", {Title = "First Toggle", Default = false})
-BorderDemoSection:AddButton({Title = "Demo Button 1", Callback = function() print("Button 1") end})
-BorderDemoSection:AddToggle("DemoToggle2", {Title = "Second Toggle", Default = true})
+-- Example: add a bottom border to the toggle so a grey line appears under it
+BorderDemoSection:AddToggle("DemoToggle1", {Title = "First Toggle", Default = false, Borders = { bottom = true }})
+BorderDemoSection:AddButton({Title = "Demo Button 1", Callback = function() print("Button 1") end, Borders = { top = true }})
+
+-- Example: show both top and bottom borders around this element
+BorderDemoSection:AddToggle("DemoToggle2", {Title = "Second Toggle", Default = true, Borders = { top = true, bottom = true }})
 BorderDemoSection:AddButton({Title = "Demo Button 2", Callback = function() print("Button 2") end})
-BorderDemoSection:AddToggle("DemoToggle3", {Title = "Third Toggle", Default = false})
+
+-- Example: enable both borders via boolean 'true' (shorthand)
+BorderDemoSection:AddToggle("DemoToggle3", {Title = "Third Toggle", Default = false, Borders = true})
 
 
 -- Addons:

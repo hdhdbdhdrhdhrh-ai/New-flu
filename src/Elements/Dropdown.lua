@@ -30,7 +30,7 @@ function Element:New(Idx, Config)
 		Callback = Config.Callback or function() end,
 	}
 
-	local DropdownFrame = require(Components.Element)(Config.Title, Config.Description, self.Container, false, Config.Border)
+	local DropdownFrame = require(Components.Element)(Config.Title, Config.Description, self.Container, false)
 	
 	Dropdown.SetTitle = DropdownFrame.SetTitle
 	Dropdown.SetDesc = DropdownFrame.SetDesc
