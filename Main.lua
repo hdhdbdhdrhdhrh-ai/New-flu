@@ -776,10 +776,29 @@ local aa = {
 			q.Border = k(
 				"UIStroke",
 				{
-					Transparency = 1,
+					Transparency = 0.3,
 					ApplyStrokeMode = Enum.ApplyStrokeMode.Border,
 					Color = Color3.fromRGB(0, 0, 0),
 					ThemeTag = { Color = "ElementBorder" },
+				}
+			)
+			q.BottomLine = k(
+				"Frame",
+				{
+					Size = UDim2.new(1, 0, 0, 1),
+					Position = UDim2.new(0, 0, 1, 0),
+					AnchorPoint = Vector2.new(0, 1),
+					BackgroundTransparency = 1,
+					BorderSizePixel = 0,
+					LayoutOrder = 3,
+				},
+				{
+					k("UIStroke", {
+						Thickness = 0.5,
+						Color = Color3.fromRGB(100, 100, 100),
+						Transparency = 0.3,
+						ApplyStrokeMode = Enum.ApplyStrokeMode.Border,
+					}),
 				}
 			)
 			q.Frame = k(
@@ -794,7 +813,7 @@ local aa = {
 					LayoutOrder = 7,
 					ClipsDescendants = true,
 				},
-				{ k("UICorner", { CornerRadius = UDim.new(0, 4) }), q.Border, q.LabelHolder }
+				{ k("UICorner", { CornerRadius = UDim.new(0, 4) }), q.Border, q.LabelHolder, q.BottomLine }
 			)
 			function q.SetTitle(r, s)
 				q.TitleLabel.Text = s
@@ -1710,7 +1729,15 @@ local aa = {
 					CanvasSize = UDim2.fromScale(0, 0),
 					ScrollingDirection = Enum.ScrollingDirection.Y,
 				},
-				{ s("UIListLayout", { Padding = UDim.new(0, 4) }) }
+				{ 
+					s("UIListLayout", { Padding = UDim.new(0, 4) }),
+					s("UIStroke", {
+						Thickness = 0.5,
+						Color = Color3.fromRGB(100, 100, 100),
+						Transparency = 0.3,
+						ApplyStrokeMode = Enum.ApplyStrokeMode.Border,
+					}),
+				}
 			)
 			local F = s(
 				"Frame",
