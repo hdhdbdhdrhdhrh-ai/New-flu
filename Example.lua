@@ -282,25 +282,12 @@ do
         print("Input updated:", Input.Value)
     end)
 
-    -- Example of programmatically changing gradients
-    task.spawn(function()
-        task.wait(5)  -- Wait 5 seconds
-        print("Changing Section1 gradient...")
-        Section1:SetGradient({
-            Enabled = true,
-            Color1 = Color3.fromRGB(0, 150, 0),  -- Medium green
-            Color2 = Color3.fromRGB(0, 255, 150), -- Light green
-            Rotation = 0
-        })
-        
-        task.wait(3)
-        print("Opening Comp Killer Section...")
-        Section1.Toggle()  -- This will open the first section
-        
-        task.wait(3)
-        print("Disabling Section2 gradient...")
-        Section2:SetGradient({Enabled = false}) -- Remove gradient
-    end)
+    -- Example of programmatically toggling sections
+    -- task.spawn(function()
+    --     task.wait(5)
+    --     print("Opening Comp Killer Section...")
+    --     Section1.Toggle()  -- This will open the first section
+    -- end)
 end
 
 
