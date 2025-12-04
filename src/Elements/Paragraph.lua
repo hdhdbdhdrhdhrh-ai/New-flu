@@ -7,7 +7,7 @@ local Paragraph = {}
 Paragraph.__index = Paragraph
 Paragraph.__type = "Paragraph"
 
-function Paragraph:New(Config)
+function Paragraph:New(Idx, Config)
 	assert(Config.Title, "Paragraph - Missing Title")
 	Config.Content = Config.Content or ""
 

@@ -346,7 +346,13 @@ local BorderDemoSection = Tabs.Main:AddSection({
 
 BorderDemoSection:AddParagraph({
     Title = "Border Feature",
-    Content = "Notice the grey borders between elements and around the tab list for better visual separation."
+    Content = "Notice the grey borders between elements and around the tab list for better visual separation.",
+    Gradient = {
+        Enabled = true,
+        Color1 = Color3.fromRGB(255, 100, 150), -- Pink
+        Color2 = Color3.fromRGB(100, 150, 255), -- Blue
+        Rotation = 0,
+    },
 })
 
 BorderDemoSection:AddToggle("DemoToggle1", {Title = "First Toggle", Default = false})
