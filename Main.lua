@@ -2436,9 +2436,8 @@ local aa = {
 						Size = UDim2.fromOffset(160, 30),
 						Position = UDim2.new(1, -10, 0.5, 0),
 						AnchorPoint = Vector2.new(1, 0.5),
-						BackgroundTransparency = 0.9,
+						BackgroundTransparency = 1,
 						Parent = m.Frame,
-						ThemeTag = { BackgroundColor3 = "DropdownFrame" },
 					},
 					{
 						e("UICorner", { CornerRadius = UDim.new(0, 5) }),
@@ -2902,10 +2901,9 @@ local aa = {
 					Size = UDim2.fromOffset(0, 30),
 					Position = UDim2.new(1, -10, 0.5, 0),
 					AnchorPoint = Vector2.new(1, 0.5),
-					BackgroundTransparency = 0.9,
+					BackgroundTransparency = 1,
 					Parent = j.Frame,
 					AutomaticSize = Enum.AutomaticSize.X,
-					ThemeTag = { BackgroundColor3 = "Keybind" },
 				},
 				{
 					ai("UICorner", { CornerRadius = UDim.new(0, 5) }),
