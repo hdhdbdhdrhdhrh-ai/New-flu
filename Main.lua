@@ -1076,7 +1076,7 @@ local aa = {
 				BackgroundTransparency = 1,
 				Image = "rbxassetid://6034818372",
 				ImageColor3 = Color3.fromRGB(180, 180, 180),
-				Rotation = defaultOpen and 90 or -90,
+				Rotation = defaultOpen and 90 or 0,
 				Parent = m.Header,
 				ThemeTag = {
 					ImageColor3 = "SubText",
@@ -1091,17 +1091,17 @@ local aa = {
 				BackgroundTransparency = 1,
 				Parent = m.Root,
 				Visible = defaultOpen,
-				ClipsDescendants = false,
+				ClipsDescendants = true,
 			}, {
 				j("UIListLayout", {
 					SortOrder = Enum.SortOrder.LayoutOrder,
-					Padding = UDim.new(0, 5),
+					Padding = UDim.new(0, 3),
 				}),
 				j("UIPadding", {
-					PaddingTop = UDim.new(0, 8),
+					PaddingTop = UDim.new(0, 5),
 					PaddingLeft = UDim.new(0, 10),
 					PaddingRight = UDim.new(0, 10),
-					PaddingBottom = UDim.new(0, 5),
+					PaddingBottom = UDim.new(0, 3),
 				}),
 			})
 			
@@ -1115,20 +1115,51 @@ local aa = {
 			function m:Toggle()
 				m.Open = not m.Open
 				
-				-- Animate arrow rotation
 				local TweenService = game:GetService("TweenService")
+				
+				-- Animate arrow rotation (0 = closed, 90 = open pointing right)
 				local rotationTween = TweenService:Create(
 					m.Arrow,
-					TweenInfo.new(0.2, Enum.EasingStyle.Quad, Enum.EasingDirection.Out),
-					{ Rotation = m.Open and 90 or -90 }
+					TweenInfo.new(0.25, Enum.EasingStyle.Quart, Enum.EasingDirection.Out),
+					{ Rotation = m.Open and 90 or 0 }
 				)
-				
 				rotationTween:Play()
 				
 				if m.Open then
+					-- Opening animation
 					m.Container.Visible = true
+					m.Container.Size = UDim2.new(1, 0, 0, 0)
+					
+					-- Wait for layout to calculate content size
+					task.wait()
+					local contentHeight = m.Layout.AbsoluteContentSize.Y + 13  -- padding
+					
+					-- Animate container expansion
+					local expandTween = TweenService:Create(
+						m.Container,
+						TweenInfo.new(0.3, Enum.EasingStyle.Quart, Enum.EasingDirection.Out),
+						{ Size = UDim2.new(1, 0, 0, contentHeight) }
+					)
+					expandTween:Play()
+					
+					-- Update root size
+					m.Root.Size = UDim2.new(1, -10, 0, contentHeight + 35)
 				else
-					m.Container.Visible = false
+					-- Closing animation
+					local collapseTween = TweenService:Create(
+						m.Container,
+						TweenInfo.new(0.2, Enum.EasingStyle.Quart, Enum.EasingDirection.Out),
+						{ Size = UDim2.new(1, 0, 0, 0) }
+					)
+					collapseTween:Play()
+					
+					-- Hide container after animation
+					collapseTween.Completed:Connect(function()
+						m.Container.Visible = false
+					end)
+					
+					-- Update root size
+					m.Root.Size = UDim2.new(1, -10, 0, 35)
 				end
 			end
 			
@@ -1151,10 +1182,15 @@ local aa = {
 				m.Header.BackgroundTransparency = 0.1
 			end)
 			
-			-- Auto-resize based on content
+			-- Auto-resize based on content (only when section is open)
 			i.AddSignal(m.Layout:GetPropertyChangedSignal("AbsoluteContentSize"), function()
-				m.Container.Size = UDim2.new(1, 0, 0, m.Layout.AbsoluteContentSize.Y)
-				m.Root.Size = UDim2.new(1, 0, 0, m.Layout.AbsoluteContentSize.Y + 45)
+				if m.Open then
+					local contentHeight = m.Layout.AbsoluteContentSize.Y + 13  -- padding
+					m.Container.Size = UDim2.new(1, 0, 0, contentHeight)
+					m.Root.Size = UDim2.new(1, -10, 0, contentHeight + 35)
+				else
+					m.Root.Size = UDim2.new(1, -10, 0, 35)
+				end
 			end)
 			
 			return m
@@ -1292,6 +1328,19 @@ local aa = {
 				B.ScrollFrame = x.Container
 				B.Toggle = function() C:Toggle() end
 				B.SetTitle = function(title) C:SetTitle(title) end
+				
+				-- Add support for nested sections
+				function B.AddSection(nestedOptions)
+					local nestedDefaultOpen = nestedOptions.Open or false
+					local nestedSectionObj, nestedSectionComp = { Type = "Section" }, e(n.Section)(nestedOptions.Title or nestedOptions, B.Container, nestedDefaultOpen)
+					nestedSectionObj.Container = nestedSectionComp.Container
+					nestedSectionObj.ScrollFrame = B.Container
+					nestedSectionObj.Toggle = function() nestedSectionComp:Toggle() end
+					nestedSectionObj.SetTitle = function(title) nestedSectionComp:SetTitle(title) end
+					setmetatable(nestedSectionObj, v)
+					return nestedSectionObj
+				end
+				
 				setmetatable(B, v)
 				return B
 			end
