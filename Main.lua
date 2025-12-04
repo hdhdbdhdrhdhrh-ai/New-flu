@@ -2601,401 +2601,463 @@ local aa = {
 		g.__index = g
 		g.__type = "Dropdown"
 		function g.New(h, i, j)
-			local k, l, m =
-				h.Library,
-				{
-					Values = j.Values,
-					Value = j.Default,
-					Multi = j.Multi,
-					Buttons = {},
-					Opened = false,
-					Type = "Dropdown",
-					Callback = j.Callback or function() end,
-				},
-				ac(f.Element)(j.Title, j.Description, h.Container, false)
-			m.DescLabel.Size = UDim2.new(1, -170, 0, 14)
+			local k = h.Library
+			local l = {
+				Values = j.Values,
+				Value = j.Multi and {} or nil,
+				Multi = j.Multi,
+				SelectedTags = {},
+				SearchText = "",
+				FilteredValues = j.Values,
+				Opened = false,
+				Type = "Dropdown",
+				Callback = j.Callback or function() end,
+			}
+			local m = ac(f.Element)(j.Title, j.Description, h.Container, false)
 			l.SetTitle = m.SetTitle
 			l.SetDesc = m.SetDesc
-			local n, o =
-				e(
-					"TextLabel",
-					{
-						FontFace = Font.new(
-							"rbxasset://fonts/families/GothamSSm.json",
-							Enum.FontWeight.Regular,
-							Enum.FontStyle.Normal
-						),
-						Text = "Value",
-						TextColor3 = Color3.fromRGB(240, 240, 240),
-						TextSize = 13,
-						TextXAlignment = Enum.TextXAlignment.Left,
-						Size = UDim2.new(1, -30, 0, 14),
-						Position = UDim2.new(0, 8, 0.5, 0),
-						AnchorPoint = Vector2.new(0, 0.5),
-						BackgroundColor3 = Color3.fromRGB(255, 255, 255),
-						BackgroundTransparency = 1,
-						TextTruncate = Enum.TextTruncate.AtEnd,
-						ThemeTag = { TextColor3 = "Text" },
-					}
-				),
-				e(
-					"ImageLabel",
-					{
-						Image = "rbxassetid://10709790948",
-						Size = UDim2.fromOffset(16, 16),
-						AnchorPoint = Vector2.new(1, 0.5),
-						Position = UDim2.new(1, -8, 0.5, 0),
-						BackgroundTransparency = 1,
-						ThemeTag = { ImageColor3 = "SubText" },
-					}
-				)
-			local p, s =
-				e(
-					"TextButton",
-					{
-						Size = UDim2.fromOffset(160, 30),
-						Position = UDim2.new(1, -10, 0.5, 0),
-						AnchorPoint = Vector2.new(1, 0.5),
-						BackgroundTransparency = 1,
-						Parent = m.Frame,
-					},
-					{
-						e("UICorner", { CornerRadius = UDim.new(0, 5) }),
-						e(
-							"UIStroke",
-							{
-								Transparency = 1,
-								ApplyStrokeMode = Enum.ApplyStrokeMode.Border,
-							}
-						),
-						o,
-						n,
-					}
-				),
-				e("UIListLayout", { Padding = UDim.new(0, 3) })
-			local t = e(
-				"ScrollingFrame",
-				{
-					Size = UDim2.new(1, -5, 1, -10),
-					Position = UDim2.fromOffset(5, 5),
-					BackgroundTransparency = 1,
-					BottomImage = "rbxassetid://6889812791",
-					MidImage = "rbxassetid://6889812721",
-					TopImage = "rbxassetid://6276641225",
-					ScrollBarImageColor3 = Color3.fromRGB(255, 255, 255),
-					ScrollBarImageTransparency = 0.95,
-					ScrollBarThickness = 4,
+
+			-- Search box container with grey border - positioned under title/description
+			local SearchBoxContainer = e("Frame", {
+				Size = UDim2.new(1, -20, 0, 36),
+				Position = UDim2.new(0, 10, 1, 5),
+				BackgroundColor3 = Color3.fromRGB(15, 15, 15),
+				BackgroundTransparency = 0,
+				BorderSizePixel = 0,
+				Parent = m.Frame,
+				AutomaticSize = Enum.AutomaticSize.Y,
+			}, {
+				e("UICorner", { CornerRadius = UDim.new(0, 8) }),
+				e("UIStroke", {
+					Color = Color3.fromRGB(80, 80, 80),
+					Thickness = 1,
+					ApplyStrokeMode = Enum.ApplyStrokeMode.Border,
+				}),
+				e("UIPadding", {
+					PaddingLeft = UDim.new(0, 10),
+					PaddingRight = UDim.new(0, 10),
+					PaddingTop = UDim.new(0, 6),
+					PaddingBottom = UDim.new(0, 6),
+				}),
+			})
+
+			-- Update element frame to accommodate dropdown
+			m.Frame.Size = UDim2.new(1, 0, 0, 0)
+			m.Frame.AutomaticSize = Enum.AutomaticSize.Y
+
+			-- Tags and search input layout
+			local TagsLayout = e("UIListLayout", {
+				FillDirection = Enum.FillDirection.Horizontal,
+				HorizontalAlignment = Enum.HorizontalAlignment.Left,
+				VerticalAlignment = Enum.VerticalAlignment.Center,
+				Padding = UDim.new(0, 6),
+				Wraps = true,
+				Parent = SearchBoxContainer,
+			})
+
+			-- Search input box
+			local SearchInput = e("TextBox", {
+				Size = UDim2.new(0, 80, 0, 24),
+				BackgroundTransparency = 1,
+				Text = "",
+				PlaceholderText = "Search...",
+				PlaceholderColor3 = Color3.fromRGB(120, 120, 120),
+				TextColor3 = Color3.fromRGB(240, 240, 240),
+				TextSize = 13,
+				TextXAlignment = Enum.TextXAlignment.Left,
+				FontFace = Font.new("rbxasset://fonts/families/GothamSSm.json", Enum.FontWeight.Regular, Enum.FontStyle.Normal),
+				ClearTextOnFocus = false,
+				Parent = SearchBoxContainer,
+				LayoutOrder = 999999,
+				ThemeTag = { TextColor3 = "Text" },
+			})
+
+			-- Dropdown icon
+			local DropdownIco = e("ImageLabel", {
+				Image = "rbxassetid://10709790948",
+				Size = UDim2.fromOffset(16, 16),
+				AnchorPoint = Vector2.new(1, 0.5),
+				Position = UDim2.new(1, -5, 0.5, 0),
+				BackgroundTransparency = 1,
+				Parent = SearchBoxContainer,
+				ZIndex = 10,
+				ThemeTag = { ImageColor3 = "SubText" },
+			})
+
+			-- Dropdown list layout
+			local DropdownListLayout = e("UIListLayout", { Padding = UDim.new(0, 4) })
+
+			local DropdownScrollFrame = e("ScrollingFrame", {
+				Size = UDim2.new(1, -8, 1, -12),
+				Position = UDim2.fromOffset(4, 6),
+				BackgroundTransparency = 1,
+				BottomImage = "rbxassetid://6889812791",
+				MidImage = "rbxassetid://6889812721",
+				TopImage = "rbxassetid://6276641225",
+				ScrollBarImageColor3 = Color3.fromRGB(255, 255, 255),
+				ScrollBarImageTransparency = 0.9,
+				ScrollBarThickness = 4,
+				BorderSizePixel = 0,
+				CanvasSize = UDim2.fromScale(0, 0),
+			}, { DropdownListLayout })
+
+			local DropdownHolderFrame = e("Frame", {
+				Size = UDim2.fromScale(1, 0.6),
+				BackgroundColor3 = Color3.fromRGB(20, 20, 20),
+				BackgroundTransparency = 0,
+			}, {
+				DropdownScrollFrame,
+				e("UICorner", { CornerRadius = UDim.new(0, 8) }),
+				e("UIStroke", {
+					ApplyStrokeMode = Enum.ApplyStrokeMode.Border,
+					Color = Color3.fromRGB(80, 80, 80),
+					Thickness = 1,
+				}),
+			})
+
+			local DropdownHolderCanvas = e("Frame", {
+				BackgroundTransparency = 1,
+				Size = UDim2.fromOffset(SearchBoxContainer.AbsoluteSize.X, 300),
+				Parent = h.Library.GUI,
+				Visible = false,
+			}, {
+				DropdownHolderFrame,
+				e("UISizeConstraint", { MinSize = Vector2.new(200, 0) }),
+			})
+			table.insert(k.OpenFrames, DropdownHolderCanvas)
+
+			-- Create a tag/chip for a selected item
+			function l:CreateTag(value)
+				if l.SelectedTags[value] then return end
+
+				local TagFrame = e("Frame", {
+					Size = UDim2.new(0, 0, 0, 24),
+					AutomaticSize = Enum.AutomaticSize.X,
+					BackgroundColor3 = Color3.fromRGB(0, 180, 0),
 					BorderSizePixel = 0,
-					CanvasSize = UDim2.fromScale(0, 0),
-				},
-				{ s }
-			)
-			local u = e(
-				"Frame",
-				{ Size = UDim2.fromScale(1, 0.6), BackgroundColor3 = Color3.fromRGB(0, 0, 0), BackgroundTransparency = 0 },
-				{
-					t,
-					e("UICorner", { CornerRadius = UDim.new(0, 7) }),
-					e(
-						"UIStroke",
-						{ ApplyStrokeMode = Enum.ApplyStrokeMode.Border, ThemeTag = { Color = "DropdownBorder" } }
-					),
-					e(
-						"ImageLabel",
-						{
-							BackgroundTransparency = 1,
-							Image = "http://www.roblox.com/asset/?id=5554236805",
-							ScaleType = Enum.ScaleType.Slice,
-							SliceCenter = Rect.new(23, 23, 277, 277),
-							Size = UDim2.fromScale(1, 1) + UDim2.fromOffset(30, 30),
-							Position = UDim2.fromOffset(-15, -15),
-							ImageColor3 = Color3.fromRGB(0, 0, 0),
-							ImageTransparency = 0.1,
-						}
-					),
-				}
-			)
-			local v = e(
-				"Frame",
-				{ BackgroundTransparency = 1, Size = UDim2.fromOffset(170, 300), Parent = h.Library.GUI, Visible = false },
-				{ u, e("UISizeConstraint", { MinSize = Vector2.new(170, 0) }) }
-			)
-			table.insert(k.OpenFrames, v)
-			local w, x =
-				function()
-					local w = 0
-					if ai.ViewportSize.Y - p.AbsolutePosition.Y < v.AbsoluteSize.Y - 5 then
-						w = v.AbsoluteSize.Y - 5 - (ai.ViewportSize.Y - p.AbsolutePosition.Y) + 40
-					end
-					v.Position = UDim2.fromOffset(p.AbsolutePosition.X - 1, p.AbsolutePosition.Y - 5 - w)
-				end, 0
-			local y, z =
-				function()
-					if #l.Values > 10 then
-						v.Size = UDim2.fromOffset(x, 392)
+					Parent = SearchBoxContainer,
+					LayoutOrder = #l.SelectedTags,
+				}, {
+					e("UICorner", { CornerRadius = UDim.new(0, 6) }),
+					e("UIPadding", {
+						PaddingLeft = UDim.new(0, 8),
+						PaddingRight = UDim.new(0, 6),
+						PaddingTop = UDim.new(0, 3),
+						PaddingBottom = UDim.new(0, 3),
+					}),
+				})
+
+				e("UIListLayout", {
+					FillDirection = Enum.FillDirection.Horizontal,
+					HorizontalAlignment = Enum.HorizontalAlignment.Left,
+					VerticalAlignment = Enum.VerticalAlignment.Center,
+					Padding = UDim.new(0, 4),
+					Parent = TagFrame,
+				})
+
+				e("TextLabel", {
+					Text = value,
+					TextColor3 = Color3.fromRGB(255, 255, 255),
+					TextSize = 12,
+					FontFace = Font.new("rbxasset://fonts/families/GothamSSm.json", Enum.FontWeight.Medium, Enum.FontStyle.Normal),
+					BackgroundTransparency = 1,
+					AutomaticSize = Enum.AutomaticSize.XY,
+					Parent = TagFrame,
+				})
+
+				local XButton = e("TextButton", {
+					Text = "×",
+					TextColor3 = Color3.fromRGB(255, 255, 255),
+					TextSize = 16,
+					FontFace = Font.new("rbxasset://fonts/families/GothamSSm.json", Enum.FontWeight.Bold, Enum.FontStyle.Normal),
+					BackgroundTransparency = 1,
+					Size = UDim2.fromOffset(14, 14),
+					AutoButtonColor = false,
+					Parent = TagFrame,
+				})
+
+				c.AddSignal(XButton.MouseButton1Click, function()
+					l:RemoveTag(value)
+				end)
+
+				l.SelectedTags[value] = TagFrame
+			end
+
+			-- Remove a tag
+			function l:RemoveTag(value)
+				if l.SelectedTags[value] then
+					l.SelectedTags[value]:Destroy()
+					l.SelectedTags[value] = nil
+
+					if l.Multi then
+						l.Value[value] = nil
 					else
-						v.Size = UDim2.fromOffset(x, s.AbsoluteContentSize.Y + 10)
+						l.Value = nil
 					end
-				end, function()
-					t.CanvasSize = UDim2.fromOffset(0, s.AbsoluteContentSize.Y)
+
+					l:BuildDropdownList()
+					k:SafeCallback(l.Callback, l.Value)
+					k:SafeCallback(l.Changed, l.Value)
 				end
-			w()
-			y()
-			c.AddSignal(p:GetPropertyChangedSignal("AbsolutePosition"), w)
-			c.AddSignal(p.MouseButton1Click, function()
+			end
+
+			-- Filter dropdown values based on search text
+			function l:FilterValues()
+				local search = SearchInput.Text:lower()
+				l.SearchText = search
+				
+				if search == "" then
+					l.FilteredValues = l.Values
+				else
+					l.FilteredValues = {}
+					for _, value in ipairs(l.Values) do
+						if value:lower():find(search, 1, true) then
+							table.insert(l.FilteredValues, value)
+						end
+					end
+				end
+				
+				l:BuildDropdownList()
+			end
+
+			-- Build dropdown list
+			function l:BuildDropdownList()
+				for _, child in ipairs(DropdownScrollFrame:GetChildren()) do
+					if not child:IsA("UIListLayout") then
+						child:Destroy()
+					end
+				end
+
+				for _, value in ipairs(l.FilteredValues) do
+					local isSelected = false
+					if l.Multi then
+						isSelected = l.Value[value] == true
+					else
+						isSelected = l.Value == value
+					end
+
+					local OptionButton = e("TextButton", {
+						Size = UDim2.new(1, -4, 0, 32),
+						BackgroundTransparency = isSelected and 0.85 or 1,
+						BackgroundColor3 = Color3.fromRGB(0, 180, 0),
+						AutoButtonColor = false,
+						Text = "",
+						Parent = DropdownScrollFrame,
+					}, {
+						e("UICorner", { CornerRadius = UDim.new(0, 6) }),
+						e("TextLabel", {
+							Text = value,
+							TextColor3 = Color3.fromRGB(220, 220, 220),
+							TextSize = 13,
+							TextXAlignment = Enum.TextXAlignment.Left,
+							BackgroundTransparency = 1,
+							Size = UDim2.new(1, -40, 1, 0),
+							Position = UDim2.fromOffset(12, 0),
+							FontFace = Font.new("rbxasset://fonts/families/GothamSSm.json", Enum.FontWeight.Regular, Enum.FontStyle.Normal),
+							ThemeTag = { TextColor3 = "Text" },
+						}),
+						e("Frame", {
+							Size = UDim2.fromOffset(4, isSelected and 16 or 6),
+							BackgroundColor3 = Color3.fromRGB(0, 235, 0),
+							Position = UDim2.new(0, 0, 0.5, 0),
+							AnchorPoint = Vector2.new(0, 0.5),
+							BackgroundTransparency = isSelected and 0 or 1,
+							ThemeTag = { BackgroundColor3 = "Accent" },
+						}, {
+							e("UICorner", { CornerRadius = UDim.new(0, 2) }),
+						}),
+					})
+
+					-- Hover effects
+					c.AddSignal(OptionButton.MouseEnter, function()
+						af:Create(OptionButton, TweenInfo.new(0.1), {
+							BackgroundTransparency = isSelected and 0.8 or 0.9
+						}):Play()
+					end)
+
+					c.AddSignal(OptionButton.MouseLeave, function()
+						af:Create(OptionButton, TweenInfo.new(0.1), {
+							BackgroundTransparency = isSelected and 0.85 or 1
+						}):Play()
+					end)
+
+					-- Click handler
+					c.AddSignal(OptionButton.MouseButton1Click, function()
+						if l.Multi then
+							if l.Value[value] then
+								l.Value[value] = nil
+								l:RemoveTag(value)
+							else
+								l.Value[value] = true
+								l:CreateTag(value)
+							end
+						else
+							for existingValue in pairs(l.SelectedTags) do
+								l:RemoveTag(existingValue)
+							end
+							
+							if l.Value ~= value then
+								l.Value = value
+								l:CreateTag(value)
+							else
+								l.Value = nil
+							end
+						end
+
+						l:BuildDropdownList()
+						k:SafeCallback(l.Callback, l.Value)
+						k:SafeCallback(l.Changed, l.Value)
+					end)
+				end
+
+				-- Update canvas size
+				DropdownScrollFrame.CanvasSize = UDim2.fromOffset(0, DropdownListLayout.AbsoluteContentSize.Y)
+				
+				-- Update dropdown holder size
+				local maxHeight = 350
+				local contentHeight = DropdownListLayout.AbsoluteContentSize.Y + 12
+				DropdownHolderCanvas.Size = UDim2.fromOffset(
+					SearchBoxContainer.AbsoluteSize.X,
+					math.min(contentHeight, maxHeight)
+				)
+			end
+
+			-- Position dropdown list
+			local function RecalculateListPosition()
+				local Add = 0
+				local searchBoxBottom = SearchBoxContainer.AbsolutePosition.Y + SearchBoxContainer.AbsoluteSize.Y
+				if ai.ViewportSize.Y - searchBoxBottom < DropdownHolderCanvas.AbsoluteSize.Y + 5 then
+					Add = DropdownHolderCanvas.AbsoluteSize.Y - (ai.ViewportSize.Y - searchBoxBottom) + 10
+				end
+				DropdownHolderCanvas.Position = UDim2.fromOffset(
+					SearchBoxContainer.AbsolutePosition.X,
+					searchBoxBottom + 5 - Add
+				)
+			end
+
+			-- Open dropdown
+			function l:Open()
+				l.Opened = true
+				h.ScrollFrame.ScrollingEnabled = false
+				DropdownHolderCanvas.Visible = true
+				RecalculateListPosition()
+				af:Create(DropdownHolderFrame, TweenInfo.new(0.2, Enum.EasingStyle.Quart, Enum.EasingDirection.Out), {
+					Size = UDim2.fromScale(1, 1)
+				}):Play()
+			end
+
+			-- Close dropdown
+			function l:Close()
+				l.Opened = false
+				h.ScrollFrame.ScrollingEnabled = true
+				DropdownHolderFrame.Size = UDim2.fromScale(1, 0.6)
+				DropdownHolderCanvas.Visible = false
+			end
+
+			-- Search input events
+			c.AddSignal(SearchInput:GetPropertyChangedSignal("Text"), function()
+				l:FilterValues()
+			end)
+
+			c.AddSignal(SearchInput.Focused, function()
 				l:Open()
 			end)
-			c.AddSignal(ag.InputBegan, function(A)
-				if
-					A.UserInputType == Enum.UserInputType.MouseButton1
-					or A.UserInputType == Enum.UserInputType.Touch
-				then
-					local B, C = u.AbsolutePosition, u.AbsoluteSize
-					if ah.X < B.X or ah.X > B.X + C.X or ah.Y < (B.Y - 20 - 1) or ah.Y > B.Y + C.Y then
+
+			c.AddSignal(SearchBoxContainer:GetPropertyChangedSignal("AbsolutePosition"), RecalculateListPosition)
+			c.AddSignal(SearchBoxContainer:GetPropertyChangedSignal("AbsoluteSize"), RecalculateListPosition)
+
+			-- Click outside to close
+			c.AddSignal(ag.InputBegan, function(Input)
+				if Input.UserInputType == Enum.UserInputType.MouseButton1 or Input.UserInputType == Enum.UserInputType.Touch then
+					local AbsPos, AbsSize = DropdownHolderFrame.AbsolutePosition, DropdownHolderFrame.AbsoluteSize
+					local SearchPos, SearchSize = SearchBoxContainer.AbsolutePosition, SearchBoxContainer.AbsoluteSize
+					
+					local inDropdown = ah.X >= AbsPos.X and ah.X <= AbsPos.X + AbsSize.X and
+									   ah.Y >= AbsPos.Y - 20 and ah.Y <= AbsPos.Y + AbsSize.Y
+					local inSearch = ah.X >= SearchPos.X and ah.X <= SearchPos.X + SearchSize.X and
+									 ah.Y >= SearchPos.Y and ah.Y <= SearchPos.Y + SearchSize.Y
+					
+					if not inDropdown and not inSearch then
 						l:Close()
 					end
 				end
 			end)
-			local A = h.ScrollFrame
-			function l.Open(B)
-				l.Opened = true
-				A.ScrollingEnabled = false
-				v.Visible = true
-				af:Create(
-					u,
-					TweenInfo.new(0.2, Enum.EasingStyle.Quart, Enum.EasingDirection.Out),
-					{ Size = UDim2.fromScale(1, 1) }
-				):Play()
+
+			-- Public methods
+			function l:SetValues(newValues)
+				l.Values = newValues or l.Values
+				l:FilterValues()
 			end
-			function l.Close(B)
-				l.Opened = false
-				A.ScrollingEnabled = true
-				u.Size = UDim2.fromScale(1, 0.6)
-				v.Visible = false
+
+			function l:OnChanged(callback)
+				l.Changed = callback
+				callback(l.Value)
 			end
-			function l.Display(B)
-				local C, D = l.Values, ""
-				if j.Multi then
-					for E, F in next, C do
-						if l.Value[F] then
-							D = D .. F .. ", "
-						end
-					end
-					D = D:sub(1, #D - 2)
-				else
-					D = l.Value or ""
+
+			function l:SetValue(value)
+				-- Clear existing tags
+				for existingValue in pairs(l.SelectedTags) do
+					l:RemoveTag(existingValue)
 				end
-				n.Text = (D == "" and "--" or D)
-			end
-			function l.GetActiveValues(B)
-				if j.Multi then
-					local C = {}
-					for D, E in next, l.Value do
-						table.insert(C, D)
-					end
-					return C
-				else
-					return l.Value and 1 or 0
-				end
-			end
-			function l.BuildDropdownList(B)
-				local C, D = l.Values, {}
-				for E, F in next, t:GetChildren() do
-					if not F:IsA("UIListLayout") then
-						F:Destroy()
-					end
-				end
-				local G = 0
-				for H, I in next, C do
-					local J = {}
-					G = G + 1
-					local K, L =
-						e(
-							"Frame",
-							{
-								Size = UDim2.fromOffset(4, 14),
-								BackgroundColor3 = Color3.fromRGB(76, 194, 255),
-								Position = UDim2.fromOffset(-1, 16),
-								AnchorPoint = Vector2.new(0, 0.5),
-								ThemeTag = { BackgroundColor3 = "Accent" },
-							},
-							{ e("UICorner", { CornerRadius = UDim.new(0, 2) }) }
-						),
-						e(
-							"TextLabel",
-							{
-								FontFace = Font.new("rbxasset://fonts/families/GothamSSm.json"),
-								Text = I,
-								TextColor3 = Color3.fromRGB(200, 200, 200),
-								TextSize = 13,
-								TextXAlignment = Enum.TextXAlignment.Left,
-								BackgroundColor3 = Color3.fromRGB(255, 255, 255),
-								AutomaticSize = Enum.AutomaticSize.Y,
-								BackgroundTransparency = 1,
-								Size = UDim2.fromScale(1, 1),
-								Position = UDim2.fromOffset(10, 0),
-								Name = "ButtonLabel",
-								ThemeTag = { TextColor3 = "Text" },
-							}
-						)
-					local M, N = (
-						e(
-							"TextButton",
-							{
-								Size = UDim2.new(1, -5, 0, 32),
-								BackgroundTransparency = 1,
-								ZIndex = 23,
-								Text = "",
-								Parent = t,
-								ThemeTag = { BackgroundColor3 = "DropdownOption" },
-							},
-							{ K, L, e("UICorner", { CornerRadius = UDim.new(0, 6) }) }
-						)
-					)
-					if j.Multi then
-						N = l.Value[I]
-					else
-						N = l.Value == I
-					end
-					local O, P = c.SpringMotor(1, M, "BackgroundTransparency")
-					local Q, R = c.SpringMotor(1, K, "BackgroundTransparency")
-					local S = d.SingleMotor.new(6)
-					S:onStep(function(T)
-						K.Size = UDim2.new(0, 4, 0, T)
-					end)
-					c.AddSignal(M.MouseEnter, function()
-						P(N and 0.85 or 0.89)
-					end)
-					c.AddSignal(M.MouseLeave, function()
-						P(N and 0.89 or 1)
-					end)
-					c.AddSignal(M.MouseButton1Down, function()
-						P(0.92)
-					end)
-					c.AddSignal(M.MouseButton1Up, function()
-						P(N and 0.85 or 0.89)
-					end)
-					function J.UpdateButton(T)
-						if j.Multi then
-							N = l.Value[I]
-							if N then
-								P(0.89)
-							end
-						else
-							N = l.Value == I
-							P(N and 0.89 or 1)
-						end
-						S:setGoal(d.Spring.new(N and 14 or 6, { frequency = 6 }))
-						R(N and 0 or 1)
-					end
-					L.InputBegan:Connect(function(T)
-						if
-							T.UserInputType == Enum.UserInputType.MouseButton1
-							or T.UserInputType == Enum.UserInputType.Touch
-						then
-							local U = not N
-							if l:GetActiveValues() == 1 and not U and not j.AllowNull then
-							else
-								if j.Multi then
-									N = U
-									l.Value[I] = N and true or nil
-								else
-									N = U
-									l.Value = N and I or nil
-									for V, W in next, D do
-										W:UpdateButton()
-									end
-								end
-								J:UpdateButton()
-								l:Display()
-								k:SafeCallback(l.Callback, l.Value)
-								k:SafeCallback(l.Changed, l.Value)
-							end
-						end
-					end)
-					J:UpdateButton()
-					l:Display()
-					D[M] = J
-				end
-				x = 0
-				for J, K in next, D do
-					if J.ButtonLabel then
-						if J.ButtonLabel.TextBounds.X > x then
-							x = J.ButtonLabel.TextBounds.X
-						end
-					end
-				end
-				x = x + 30
-				z()
-				y()
-			end
-			function l.SetValues(B, C)
-				if C then
-					l.Values = C
-				end
-				l:BuildDropdownList()
-			end
-			function l.OnChanged(B, C)
-				l.Changed = C
-				C(l.Value)
-			end
-			function l.SetValue(B, C)
+
 				if l.Multi then
-					local D = {}
-					for E, F in next, C do
-						if table.find(l.Values, E) then
-							D[E] = true
+					l.Value = {}
+					for key, val in pairs(value) do
+						if table.find(l.Values, key) then
+							l.Value[key] = true
+							l:CreateTag(key)
 						end
 					end
-					l.Value = D
 				else
-					if not C then
+					if value and table.find(l.Values, value) then
+						l.Value = value
+						l:CreateTag(value)
+					else
 						l.Value = nil
-					elseif table.find(l.Values, C) then
-						l.Value = C
 					end
 				end
+
 				l:BuildDropdownList()
 				k:SafeCallback(l.Callback, l.Value)
 				k:SafeCallback(l.Changed, l.Value)
 			end
-			function l.Destroy(B)
+
+			function l:Destroy()
 				m:Destroy()
 				k.Options[i] = nil
 			end
+
+			-- Initialize
 			l:BuildDropdownList()
-			l:Display()
-			local B = {}
-			if type(j.Default) == "string" then
-				local C = table.find(l.Values, j.Default)
-				if C then
-					table.insert(B, C)
-				end
-			elseif type(j.Default) == "table" then
-				for C, D in next, j.Default do
-					local E = table.find(l.Values, D)
-					if E then
-						table.insert(B, E)
+
+			-- Set default values
+			if j.Default then
+				if type(j.Default) == "table" then
+					for _, value in ipairs(j.Default) do
+						if l.Multi and table.find(l.Values, value) then
+							l.Value[value] = true
+							l:CreateTag(value)
+						end
 					end
-				end
-			elseif type(j.Default) == "number" and l.Values[j.Default] ~= nil then
-				table.insert(B, j.Default)
-			end
-			if next(B) then
-				for C = 1, #B do
-					local D = B[C]
-					if j.Multi then
-						l.Value[l.Values[D]] = true
+				elseif type(j.Default) == "string" and table.find(l.Values, j.Default) then
+					if l.Multi then
+						l.Value[j.Default] = true
 					else
-						l.Value = l.Values[D]
+						l.Value = j.Default
 					end
-					if not j.Multi then
-						break
+					l:CreateTag(j.Default)
+				elseif type(j.Default) == "number" and l.Values[j.Default] then
+					local defaultVal = l.Values[j.Default]
+					if l.Multi then
+						l.Value[defaultVal] = true
+					else
+						l.Value = defaultVal
 					end
+					l:CreateTag(defaultVal)
 				end
 				l:BuildDropdownList()
-				l:Display()
 			end
+
 			k.Options[i] = l
 			return l
 		end
