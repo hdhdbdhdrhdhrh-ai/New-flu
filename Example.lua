@@ -52,37 +52,64 @@ do
 
     -- Add elements inside the section
     Section1:AddButton({
-        Title = "Border Button",
-        Description = "Button with accent border",
-        ButtonText = "Click Me fdbksgfjigsdyjfggsdiufg",
-        TextColor = Color3.fromRGB(255, 255, 255), -- Custom text color
-        Filled = false, -- Border style (default)
+        Title = "Grey Button (Default)",
+        Description = "Button with default grey border",
+        ButtonText = "Click Me",
+        TextColor = Color3.fromRGB(255, 255, 255),
+        Filled = false, -- Border style (default grey)
         Callback = function()
-            print("Border button clicked")
+            print("Grey border button clicked")
+        end
+    })
+
+    Section1:AddButton({
+        Title = "Accent Button",
+        Description = "Button with accent color",
+        ButtonText = "Accent",
+        TextColor = Color3.fromRGB(255, 255, 255),
+        Filled = false,
+        Color = Fluent.Accent, -- Use accent color for border
+        Callback = function()
+            print("Accent button clicked")
         end
     })
 
     Section1:AddButton({
         Title = "Filled Button",
-        Description = "Button with accent fill",
-        ButtonText = "Filledfsdffsfsdfsdgsgfdgdfgd",
-        TextColor = Color3.fromRGB(0, 0, 0), -- Dark text for filled button
-        Filled = true, -- Filled style
+        Description = "Button with filled background",
+        ButtonText = "Filled Grey",
+        TextColor = Color3.fromRGB(255, 255, 255),
+        Filled = true, -- Filled style (default grey)
+        Callback = function()
+            print("Filled grey button clicked")
+        end
+    })
+
+    Section1:AddButton({
+        Title = "Red Filled Button",
+        Description = "Custom color filled button",
+        ButtonText = "Delete",
+        TextColor = Color3.fromRGB(255, 255, 255),
+        Filled = true,
+        Color = Color3.fromRGB(180, 60, 60), -- Red color
         Callback = function()
             Window:Dialog({
-                Title = "Title",
-                Content = "This is a dialog",
+                Title = "Confirm Delete",
+                Content = "Are you sure you want to delete this?",
                 Buttons = {
                     {
-                        Title = "Confirm",
+                        Title = "Yes",
+                        Filled = true,
+                        Color = Color3.fromRGB(180, 60, 60), -- Red filled
                         Callback = function()
-                            print("Confirmed the dialog.")
+                            print("Confirmed delete")
                         end
                     },
                     {
                         Title = "Cancel",
+                        Color = Color3.fromRGB(80, 80, 80), -- Grey border
                         Callback = function()
-                            print("Cancelled the dialog.")
+                            print("Cancelled")
                         end
                     }
                 }
