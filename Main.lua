@@ -1723,29 +1723,6 @@ local aa = {
 				},
 	 			{ v.TabHolder, D }
 			)
-
-			-- Search box overlaying the tab list (no background, thin grey border)
-			local TabSearchBox = s(
-				"TextBox",
-				{
-					Size = UDim2.new(1, -8, 0, 28),
-					Position = UDim2.new(0, 4, 0, 4),
-					BackgroundTransparency = 1,
-					BorderSizePixel = 1,
-					BorderColor3 = Color3.fromRGB(180, 180, 180),
-					Text = "",
-					PlaceholderText = "Search...",
-					TextColor3 = Color3.fromRGB(255, 255, 255),
-					TextXAlignment = "Left",
-					ClearTextOnFocus = false,
-					Parent = F,
-					ZIndex = 50,
-					BackgroundTransparency = 1,
-					FontFace = Font.new("rbxasset://fonts/families/GothamSSm.json", Enum.FontWeight.Medium, Enum.FontStyle.Normal),
-					TextSize = 14,
-				},
-				{ s("UICorner", { CornerRadius = UDim.new(0, 4) }) }
-			)
 			v.TabDisplay = s(
 				"TextLabel",
 				{
@@ -1779,6 +1756,28 @@ local aa = {
 			if e(k).UseAcrylic then
 				v.AcrylicPaint.AddParent(v.Root)
 			end
+
+			-- Search box over the tab list (above the tab column)
+			local TabSearchBox = s(
+				"TextBox",
+				{
+					Size = UDim2.new(0, t.TabWidth - 8, 0, 28),
+					Position = UDim2.new(0, 12, 0, 26),
+					BackgroundTransparency = 1,
+					BorderSizePixel = 1,
+					BorderColor3 = Color3.fromRGB(180, 180, 180),
+					Text = "",
+					PlaceholderText = "Search...",
+					TextColor3 = Color3.fromRGB(255, 255, 255),
+					TextXAlignment = "Left",
+					ClearTextOnFocus = false,
+					Parent = v.Root,
+					ZIndex = 50,
+					FontFace = Font.new("rbxasset://fonts/families/GothamSSm.json", Enum.FontWeight.Medium, Enum.FontStyle.Normal),
+					TextSize = 14,
+				},
+				{ s("UICorner", { CornerRadius = UDim.new(0, 4) }) }
+			)
 			local G, H =
 				l.GroupMotor.new({ X = v.Size.X.Offset, Y = v.Size.Y.Offset }),
 				l.GroupMotor.new({ X = v.Position.X.Offset, Y = v.Position.Y.Offset })
@@ -1978,7 +1977,7 @@ local aa = {
 						return
 					end
 					local function stripTags(s)
-						return (s:gsub("<[^>]->", ""))
+						return (s:gsub("<[^>]*>", ""))
 					end
 					-- Empty term -> reset visibility
 					if term == "" then
@@ -2005,7 +2004,9 @@ local aa = {
 							-- iterate items inside the section
 							if itemsParent then
 								for _, item in ipairs(itemsParent:GetChildren()) do
-									if item:IsA("GuiObject") then
+									if item:IsA("UIListLayout") or item:IsA("UIPadding") then
+										-- skip layout elements
+									elseif item:IsA("GuiObject") then
 										local keep = false
 										-- check the item itself
 										if (item:IsA("TextLabel") or item:IsA("TextButton") or item:IsA("TextBox")) and item.Text then
@@ -2028,7 +2029,7 @@ local aa = {
 										end
 										item.Visible = keep
 										if keep then anyFound = true end
-								end
+									end
 								end
 							end
 							-- show section only if any child item matched
