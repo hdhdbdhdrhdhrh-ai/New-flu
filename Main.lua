@@ -1185,21 +1185,25 @@ local aa = {
 						existingGradient:Destroy()
 					end
 					
+					-- Ensure base text color is white
+					m.TitleLabel.TextColor3 = Color3.fromRGB(255, 255, 255)
+					
 					-- Create text gradient
 					j("UIGradient", {
 						Color = ColorSequence.new{
-							ColorSequenceKeypoint.new(0, gradientOptions.Color1 or Color3.fromRGB(0, 235, 0)),
-							ColorSequenceKeypoint.new(1, gradientOptions.Color2 or Color3.fromRGB(0, 150, 0))
+							ColorSequenceKeypoint.new(0, gradientOptions.Color1 or Color3.fromRGB(0, 150, 0)),
+							ColorSequenceKeypoint.new(1, gradientOptions.Color2 or Color3.fromRGB(0, 255, 150))
 						},
 						Rotation = gradientOptions.Rotation or 0,
 						Parent = m.TitleLabel,
 					})
 				else
-					-- Remove gradient if disabled
+					-- Remove gradient if disabled and reset to default color
 					local existingGradient = m.TitleLabel:FindFirstChild("UIGradient")
 					if existingGradient then
 						existingGradient:Destroy()
 					end
+					m.TitleLabel.TextColor3 = Color3.fromRGB(240, 240, 240)
 				end
 			end
 			

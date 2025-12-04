@@ -44,10 +44,9 @@ do
         Open = false,
         Gradient = {
             Enabled = true,
-            Color1 = Color3.fromRGB(0, 100, 0),  -- Dark green
-            Color2 = Color3.fromRGB(0, 235, 0),  -- Light green (accent)
-            Rotation = 45,
-            Transparency = 0.5
+            Color1 = Color3.fromRGB(0, 150, 0),  -- Medium green
+            Color2 = Color3.fromRGB(0, 255, 150), -- Light green
+            Rotation = 0
         }
     })
 
@@ -91,16 +90,15 @@ do
         end
     })
 
-    -- Create another section with different gradient (open by default)
+    -- Create another section with same gradient (open by default)
     local Section2 = Tabs.Main:AddSection({
         Title = "Interactive Elements",
         Open = true,
         Gradient = {
             Enabled = true,
-            Color1 = Color3.fromRGB(0, 80, 0),   -- Darker green
-            Color2 = Color3.fromRGB(0, 200, 0),  -- Lighter green
-            Rotation = -45,
-            Transparency = 0.4
+            Color1 = Color3.fromRGB(0, 150, 0),  -- Medium green
+            Color2 = Color3.fromRGB(0, 255, 150), -- Light green
+            Rotation = 0
         }
     })
 
@@ -136,16 +134,15 @@ do
 
 
 
-    -- Create a third section with accent-based gradient
+    -- Create a third section with same gradient
     local Section3 = Tabs.Main:AddSection({
         Title = "Color Selection",
         Open = false,
         Gradient = {
             Enabled = true,
-            Color1 = Color3.fromRGB(0, 120, 0),  -- Medium dark green
-            Color2 = Color3.fromRGB(0, 235, 0),  -- Accent light green
-            Rotation = 90,
-            Transparency = 0.6
+            Color1 = Color3.fromRGB(0, 150, 0),  -- Medium green
+            Color2 = Color3.fromRGB(0, 255, 150), -- Light green
+            Rotation = 0
         }
     })
 
@@ -215,16 +212,15 @@ do
         )
     end)
 
-    -- Create a fourth section with subtle gradient
+    -- Create a fourth section with same gradient
     local Section4 = Tabs.Main:AddSection({
         Title = "Input & Controls",
         Open = true,
         Gradient = {
             Enabled = true,
-            Color1 = Color3.fromRGB(0, 60, 0),   -- Very dark green
-            Color2 = Color3.fromRGB(0, 180, 0),  -- Medium light green
-            Rotation = 180,
-            Transparency = 0.7
+            Color1 = Color3.fromRGB(0, 150, 0),  -- Medium green
+            Color2 = Color3.fromRGB(0, 255, 150), -- Light green
+            Rotation = 0
         }
     })
 
@@ -293,9 +289,8 @@ do
         Section1:SetGradient({
             Enabled = true,
             Color1 = Color3.fromRGB(0, 150, 0),  -- Medium green
-            Color2 = Color3.fromRGB(0, 255, 100), -- Bright light green
-            Rotation = 135,
-            Transparency = 0.3
+            Color2 = Color3.fromRGB(0, 255, 150), -- Light green
+            Rotation = 0
         })
         
         task.wait(3)

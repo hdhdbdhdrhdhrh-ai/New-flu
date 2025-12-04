@@ -168,21 +168,25 @@ return function(Title, Parent, DefaultOpen)
 				existingGradient:Destroy()
 			end
 			
+			-- Ensure base text color is white
+			Section.TitleLabel.TextColor3 = Color3.fromRGB(255, 255, 255)
+			
 			-- Create text gradient
 			New("UIGradient", {
 				Color = ColorSequence.new{
-					ColorSequenceKeypoint.new(0, gradientOptions.Color1 or Color3.fromRGB(0, 235, 0)),
-					ColorSequenceKeypoint.new(1, gradientOptions.Color2 or Color3.fromRGB(0, 150, 0))
+					ColorSequenceKeypoint.new(0, gradientOptions.Color1 or Color3.fromRGB(0, 150, 0)),
+					ColorSequenceKeypoint.new(1, gradientOptions.Color2 or Color3.fromRGB(0, 255, 150))
 				},
 				Rotation = gradientOptions.Rotation or 0,
 				Parent = Section.TitleLabel,
 			})
 		else
-			-- Remove gradient if disabled
+			-- Remove gradient if disabled and reset to default color
 			local existingGradient = Section.TitleLabel:FindFirstChild("UIGradient")
 			if existingGradient then
 				existingGradient:Destroy()
 			end
+			Section.TitleLabel.TextColor3 = Color3.fromRGB(240, 240, 240)
 		end
 	end
 	
