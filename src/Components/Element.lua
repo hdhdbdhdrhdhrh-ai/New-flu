@@ -69,10 +69,16 @@ return function(Title, Desc, Parent, Hover)
 		Size = UDim2.new(1, 0, 0, 1),
 		Position = UDim2.new(0, 0, 1, 0),
 		AnchorPoint = Vector2.new(0, 1),
-		BackgroundColor3 = Color3.fromRGB(100, 100, 100),
-		BackgroundTransparency = 0.3,
+		BackgroundTransparency = 1,
 		BorderSizePixel = 0,
 		LayoutOrder = 3,
+	}, {
+		New("UIStroke", {
+			Thickness = 0.5,
+			Color = Color3.fromRGB(100, 100, 100),
+			Transparency = 0.3,
+			ApplyStrokeMode = Enum.ApplyStrokeMode.Border,
+		}),
 	})
 
 	Element.Frame = New("Frame", {
