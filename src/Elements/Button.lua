@@ -38,12 +38,12 @@ function Element:New(Config)
 	local ClickableButton = New("TextButton", {
 		Size = UDim2.new(0, 0, 0, 26),
 		BackgroundTransparency = Config.Filled and 0 or 1,
-		Position = UDim2.new(0, 25, 0, 0),
+		Position = UDim2.new(0, 0, 0, 0),
 		AnchorPoint = Vector2.new(0, 0),
 		Text = "",
-		Parent = ButtonFrame.Frame,
+		Parent = ButtonFrame.LabelHolder,
 		AutomaticSize = Enum.AutomaticSize.X,
-		LayoutOrder = 2,
+		LayoutOrder = 3,
 		ClipsDescendants = true,
 	}, {
 		New("UICorner", {
@@ -57,26 +57,11 @@ function Element:New(Config)
 		ButtonText,
 	})
 	
-	-- Update element frame to use UIListLayout so button appears after title/desc
-	local ListLayout = New("UIListLayout", {
-		SortOrder = Enum.SortOrder.LayoutOrder,
-		VerticalAlignment = Enum.VerticalAlignment.Top,
-		Padding = UDim.new(0, 8),
-	})
+	-- Set layout orders so button appears after title and description
+	ButtonFrame.TitleLabel.LayoutOrder = 1
+	ButtonFrame.DescLabel.LayoutOrder = 2
 	
-	-- Add padding to prevent button from clipping window edge and bottom elements
-	local FramePadding = New("UIPadding", {
-		PaddingRight = UDim.new(0, 15),
-		PaddingBottom = UDim.new(0, 10),
-	})
-	
-	ButtonFrame.LabelHolder.LayoutOrder = 1
-	ListLayout.Parent = ButtonFrame.Frame
-	FramePadding.Parent = ButtonFrame.Frame
-	
-	-- Remove old frame references
-	ButtonFrame.Frame.Size = UDim2.new(1, 0, 0, 0)
-	ButtonFrame.Frame.AutomaticSize = Enum.AutomaticSize.Y
+	-- Button is now part of LabelHolder layout, will appear naturally below desc
 	ButtonFrame.Frame.BackgroundTransparency = 1
 	ButtonFrame.Frame.BorderSizePixel = 0
 	ButtonFrame.Border.Transparency = 1

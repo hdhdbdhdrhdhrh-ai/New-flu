@@ -1923,12 +1923,12 @@ local aa = {
 				{
 					Size = UDim2.new(0, 0, 0, 26),
 					BackgroundTransparency = n.Filled and 0 or 1,
-					Position = UDim2.new(0, 25, 0, 0),
+					Position = UDim2.new(0, 0, 0, 0),
 					AnchorPoint = Vector2.new(0, 0),
 					Text = "",
-					Parent = o.Frame,
+					Parent = o.LabelHolder,
 					AutomaticSize = Enum.AutomaticSize.X,
-					LayoutOrder = 2,
+					LayoutOrder = 3,
 					ClipsDescendants = true,
 				},
 				{
@@ -1937,20 +1937,8 @@ local aa = {
 					q, r
 				}
 			)
-			local u = j("UIListLayout", {
-				SortOrder = Enum.SortOrder.LayoutOrder,
-				VerticalAlignment = Enum.VerticalAlignment.Top,
-				Padding = UDim.new(0, 8),
-			})
-			local v = j("UIPadding", {
-				PaddingRight = UDim.new(0, 15),
-				PaddingBottom = UDim.new(0, 10),
-			})
-			o.LabelHolder.LayoutOrder = 1
-			u.Parent = o.Frame
-			v.Parent = o.Frame
-			o.Frame.Size = UDim2.new(1, 0, 0, 0)
-			o.Frame.AutomaticSize = Enum.AutomaticSize.Y
+			o.TitleLabel.LayoutOrder = 1
+			o.DescLabel.LayoutOrder = 2
 			o.Frame.BackgroundTransparency = 1
 			o.Frame.BorderSizePixel = 0
 			o.Border.Transparency = 1
