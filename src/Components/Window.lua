@@ -96,10 +96,10 @@ return function(Config)
 		},
 	})
 
-	-- Search box above tabs
+	-- Search box above the tab list
 	Window.SearchBox = New("Frame", {
-		Size = UDim2.new(1, -Window.TabWidth - 32, 0, 32),
-		Position = UDim2.fromOffset(Window.TabWidth + 26, 20),
+		Size = UDim2.new(0, Window.TabWidth - 12, 0, 32),
+		Position = UDim2.new(0, 12, 0, 54),
 		BackgroundTransparency = 1,
 	}, {
 		-- Top line
@@ -124,7 +124,7 @@ return function(Config)
 			Position = UDim2.new(0, 10, 0, 4),
 			BackgroundTransparency = 1,
 			Text = "",
-			PlaceholderText = "Search tabs...",
+			PlaceholderText = "Search elements...",
 			PlaceholderColor3 = Color3.fromRGB(120, 120, 120),
 			TextColor3 = Color3.fromRGB(240, 240, 240),
 			TextSize = 14,
