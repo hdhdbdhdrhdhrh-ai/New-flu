@@ -89,11 +89,50 @@ return function(Config)
 		TextXAlignment = "Left",
 		TextYAlignment = "Center",
 		Size = UDim2.new(1, -16, 0, 28),
-		Position = UDim2.fromOffset(Window.TabWidth + 26, 56),
+		Position = UDim2.fromOffset(Window.TabWidth + 26, 60),
 		BackgroundTransparency = 1,
 		ThemeTag = {
 			TextColor3 = "Text",
 		},
+	})
+
+	-- Search box above tabs
+	Window.SearchBox = New("Frame", {
+		Size = UDim2.new(1, -Window.TabWidth - 32, 0, 32),
+		Position = UDim2.fromOffset(Window.TabWidth + 26, 20),
+		BackgroundTransparency = 1,
+	}, {
+		-- Top line
+		New("Frame", {
+			Size = UDim2.new(1, 0, 0, 1),
+			Position = UDim2.new(0, 0, 0, 0),
+			BackgroundColor3 = Color3.fromRGB(80, 80, 80),
+			BackgroundTransparency = 0,
+			BorderSizePixel = 0,
+		}),
+		-- Bottom line
+		New("Frame", {
+			Size = UDim2.new(1, 0, 0, 1),
+			Position = UDim2.new(0, 0, 1, -1),
+			BackgroundColor3 = Color3.fromRGB(80, 80, 80),
+			BackgroundTransparency = 0,
+			BorderSizePixel = 0,
+		}),
+		-- Search input
+		New("TextBox", {
+			Size = UDim2.new(1, -20, 1, -8),
+			Position = UDim2.new(0, 10, 0, 4),
+			BackgroundTransparency = 1,
+			Text = "",
+			PlaceholderText = "Search tabs...",
+			PlaceholderColor3 = Color3.fromRGB(120, 120, 120),
+			TextColor3 = Color3.fromRGB(240, 240, 240),
+			TextSize = 14,
+			TextXAlignment = Enum.TextXAlignment.Left,
+			FontFace = Font.new("rbxasset://fonts/families/GothamSSm.json", Enum.FontWeight.Regular, Enum.FontStyle.Normal),
+			ClearTextOnFocus = false,
+			ThemeTag = { TextColor3 = "Text" },
+		}),
 	})
 
 	Window.ContainerHolder = New("Frame", {
@@ -107,8 +146,8 @@ return function(Config)
 	})
 
 	Window.ContainerCanvas = New("Frame", {
-		Size = UDim2.new(1, -Window.TabWidth - 32, 1, -102),
-		Position = UDim2.fromOffset(Window.TabWidth + 26, 90),
+		Size = UDim2.new(1, -Window.TabWidth - 32, 1, -132),
+		Position = UDim2.fromOffset(Window.TabWidth + 26, 120),
 		BackgroundTransparency = 1,
 	}, {
 		Window.ContainerAnim,
@@ -122,6 +161,7 @@ return function(Config)
 		Parent = Config.Parent,
 	}, {
 		Window.AcrylicPaint.Frame,
+		Window.SearchBox,
 		Window.TabDisplay,
 		Window.ContainerCanvas,
 		TabFrame,
@@ -391,6 +431,34 @@ return function(Config)
 		LastTime = 0
 		Window.SelectorPosMotor:setGoal(Instant(TabModule:GetCurrentTabPos()))
 	end)
+
+	-- Search functionality - searches elements within current tab
+	local searchInput = Window.SearchBox:FindFirstChildOfClass("TextBox")
+	if searchInput then
+		Creator.AddSignal(searchInput:GetPropertyChangedSignal("Text"), function()
+			local searchText = searchInput.Text:lower()
+			local currentTab = TabModule.Tabs[TabModule.SelectedTab]
+			
+			if currentTab and currentTab.Container then
+				-- Search through all elements in the current tab
+				for _, elementFrame in ipairs(currentTab.Container:GetChildren()) do
+					if elementFrame:IsA("Frame") and elementFrame:FindFirstChild("LabelHolder") then
+						local titleLabel = elementFrame.LabelHolder:FindFirstChild("TitleLabel")
+						local descLabel = elementFrame.LabelHolder:FindFirstChild("DescLabel")
+						
+						local titleText = titleLabel and titleLabel.Text:lower() or ""
+						local descText = descLabel and descLabel.Text:lower() or ""
+						
+						local isVisible = searchText == "" or 
+							titleText:find(searchText, 1, true) or 
+							descText:find(searchText, 1, true)
+						
+						elementFrame.Visible = isVisible
+					end
+				end
+			end
+		end)
+	end
 
 	return Window
 end

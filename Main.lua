@@ -682,19 +682,19 @@ local aa = {
 				A = A or "Button"
 				B = B or function() end
 				buttonOptions = buttonOptions or {}
-				
-				-- Create button config with filled and color options
-				local buttonConfig = {
-					Title = "",
-					Description = "",
-					ButtonText = A,
-					Callback = B,
-					Filled = buttonOptions.Filled,
-					Color = buttonOptions.Color,
-				}
-				
-				local C = e(k.Components.Button)(buttonConfig, s.ButtonHolder, true)
+				local C = e(k.Components.Button)("", s.ButtonHolder, true)
 				C.Title.Text = A
+				
+				-- Apply custom color and filled style
+				if buttonOptions.Filled then
+					C.Frame.BackgroundTransparency = 0
+					C.Frame.BackgroundColor3 = buttonOptions.Color or Color3.fromRGB(80, 80, 80)
+				elseif buttonOptions.Color then
+					local stroke = C.Frame:FindFirstChildOfClass("UIStroke")
+					if stroke then
+						stroke.Color = buttonOptions.Color
+					end
+				end
 				
 				for D, E in next, s.ButtonHolder:GetChildren() do
 					if E:IsA("TextButton") then
@@ -1722,6 +1722,48 @@ local aa = {
 				},
 				{ v.TabHolder, D }
 			)
+			-- Search box above tabs
+			v.SearchBox = s(
+				"Frame",
+				{
+					Size = UDim2.new(1, -t.TabWidth - 32, 0, 32),
+					Position = UDim2.fromOffset(t.TabWidth + 26, 20),
+					BackgroundTransparency = 1,
+				},
+				{
+					-- Top line
+					s("Frame", {
+						Size = UDim2.new(1, 0, 0, 1),
+						Position = UDim2.new(0, 0, 0, 0),
+						BackgroundColor3 = Color3.fromRGB(80, 80, 80),
+						BackgroundTransparency = 0,
+						BorderSizePixel = 0,
+					}),
+					-- Bottom line
+					s("Frame", {
+						Size = UDim2.new(1, 0, 0, 1),
+						Position = UDim2.new(0, 0, 1, -1),
+						BackgroundColor3 = Color3.fromRGB(80, 80, 80),
+						BackgroundTransparency = 0,
+						BorderSizePixel = 0,
+					}),
+					-- Search input
+					s("TextBox", {
+						Size = UDim2.new(1, -20, 1, -8),
+						Position = UDim2.new(0, 10, 0, 4),
+						BackgroundTransparency = 1,
+						Text = "",
+						PlaceholderText = "Search tabs...",
+						PlaceholderColor3 = Color3.fromRGB(120, 120, 120),
+						TextColor3 = Color3.fromRGB(240, 240, 240),
+						TextSize = 14,
+						TextXAlignment = Enum.TextXAlignment.Left,
+						FontFace = Font.new("rbxasset://fonts/families/GothamSSm.json", Enum.FontWeight.Regular, Enum.FontStyle.Normal),
+						ClearTextOnFocus = false,
+						ThemeTag = { TextColor3 = "Text" },
+					}),
+				}
+			)
 			v.TabDisplay = s(
 				"TextLabel",
 				{
@@ -1733,7 +1775,7 @@ local aa = {
 					TextXAlignment = "Left",
 					TextYAlignment = "Center",
 					Size = UDim2.new(1, -16, 0, 28),
-					Position = UDim2.fromOffset(t.TabWidth + 26, 56),
+					Position = UDim2.fromOffset(t.TabWidth + 26, 60),
 					BackgroundTransparency = 1,
 					ThemeTag = { TextColor3 = "Text" },
 				}
@@ -1741,15 +1783,15 @@ local aa = {
 			v.ContainerHolder = s(
 				"CanvasGroup",
 				{
-					Size = UDim2.new(1, -t.TabWidth - 32, 1, -102),
-					Position = UDim2.fromOffset(t.TabWidth + 26, 90),
+					Size = UDim2.new(1, -t.TabWidth - 32, 1, -132),
+					Position = UDim2.fromOffset(t.TabWidth + 26, 120),
 					BackgroundTransparency = 1,
 				}
 			)
 			v.Root = s(
 				"Frame",
 				{ BackgroundTransparency = 1, Size = v.Size, Position = v.Position, Parent = t.Parent },
-				{ v.AcrylicPaint.Frame, v.TabDisplay, v.ContainerHolder, F, E }
+				{ v.AcrylicPaint.Frame, v.SearchBox, v.TabDisplay, v.ContainerHolder, F, E }
 			)
 			v.TitleBar = e(d.Parent.TitleBar)({ Title = t.Title, SubTitle = t.SubTitle, Parent = v.Root, Window = v })
 			if e(k).UseAcrylic then
@@ -1950,6 +1992,35 @@ local aa = {
 				J = 0
 				v.SelectorPosMotor:setGoal(r(N:GetCurrentTabPos()))
 			end)
+			
+			-- Search functionality - searches elements within current tab
+			local searchInput = v.SearchBox:FindFirstChildOfClass("TextBox")
+			if searchInput then
+				m.AddSignal(searchInput:GetPropertyChangedSignal("Text"), function()
+					local searchText = searchInput.Text:lower()
+					local currentTab = N.Tabs[N.SelectedTab]
+					
+					if currentTab and currentTab.Container then
+						-- Search through all elements in the current tab
+						for _, elementFrame in ipairs(currentTab.Container:GetChildren()) do
+							if elementFrame:IsA("Frame") and elementFrame:FindFirstChild("LabelHolder") then
+								local titleLabel = elementFrame.LabelHolder:FindFirstChild("TitleLabel")
+								local descLabel = elementFrame.LabelHolder:FindFirstChild("DescLabel")
+								
+								local titleText = titleLabel and titleLabel.Text:lower() or ""
+								local descText = descLabel and descLabel.Text:lower() or ""
+								
+								local isVisible = searchText == "" or 
+									titleText:find(searchText, 1, true) or 
+									descText:find(searchText, 1, true)
+								
+								elementFrame.Visible = isVisible
+							end
+						end
+					end
+				end)
+			end
+			
 			return v
 		end
 	end,
