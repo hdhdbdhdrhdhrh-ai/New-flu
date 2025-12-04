@@ -2617,10 +2617,16 @@ local aa = {
 			l.SetTitle = m.SetTitle
 			l.SetDesc = m.SetDesc
 
+			-- Add bottom padding to element frame for dropdown spacing
+			e("UIPadding", {
+				PaddingBottom = UDim.new(0, 50),
+				Parent = m.Frame,
+			})
+
 			-- Search box container with grey border - positioned under title/description
 			local SearchBoxContainer = e("Frame", {
 				Size = UDim2.new(1, -20, 0, 36),
-				Position = UDim2.new(0, 10, 1, 5),
+				Position = UDim2.new(0, 10, 1, -45),
 				BackgroundColor3 = Color3.fromRGB(15, 15, 15),
 				BackgroundTransparency = 0,
 				BorderSizePixel = 0,
@@ -2765,11 +2771,9 @@ local aa = {
 					Parent = TagFrame,
 				})
 
-				local XButton = e("TextButton", {
-					Text = "×",
-					TextColor3 = Color3.fromRGB(255, 255, 255),
-					TextSize = 16,
-					FontFace = Font.new("rbxasset://fonts/families/GothamSSm.json", Enum.FontWeight.Bold, Enum.FontStyle.Normal),
+				local XButton = e("ImageButton", {
+					Image = "rbxassetid://113507840995608",
+					ImageColor3 = Color3.fromRGB(255, 255, 255),
 					BackgroundTransparency = 1,
 					Size = UDim2.fromOffset(14, 14),
 					AutoButtonColor = false,

@@ -35,10 +35,16 @@ function Element:New(Idx, Config)
 	Dropdown.SetTitle = DropdownFrame.SetTitle
 	Dropdown.SetDesc = DropdownFrame.SetDesc
 
+	-- Add bottom padding to element frame for dropdown spacing
+	New("UIPadding", {
+		PaddingBottom = UDim.new(0, 50),
+		Parent = DropdownFrame.Frame,
+	})
+
 	-- Search box container with grey border
 	local SearchBoxContainer = New("Frame", {
 		Size = UDim2.new(1, -20, 0, 35),
-		Position = UDim2.new(0, 10, 1, 5),
+		Position = UDim2.new(0, 10, 1, -45),
 		BackgroundColor3 = Color3.fromRGB(20, 20, 20),
 		BackgroundTransparency = 0.3,
 		BorderSizePixel = 0,
@@ -211,13 +217,12 @@ function Element:New(Idx, Config)
 			},
 		})
 
-		local XButton = New("TextButton", {
-			Text = "×",
-			TextColor3 = Color3.fromRGB(200, 200, 200),
-			TextSize = 16,
-			FontFace = Font.new("rbxasset://fonts/families/GothamSSm.json", Enum.FontWeight.Bold, Enum.FontStyle.Normal),
+		local XButton = New("ImageButton", {
+			Image = "rbxassetid://113507840995608",
+			ImageColor3 = Color3.fromRGB(255, 255, 255),
 			BackgroundTransparency = 1,
-			Size = UDim2.fromOffset(16, 16),
+			Size = UDim2.fromOffset(14, 14),
+			AutoButtonColor = false,
 			Parent = TagFrame,
 		})
 
