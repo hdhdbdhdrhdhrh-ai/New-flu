@@ -2,6 +2,9 @@ local Fluent = loadstring(game:HttpGet("https://raw.githubusercontent.com/hdhdbd
 local SaveManager = loadstring(game:HttpGet("https://raw.githubusercontent.com/dawid-scripts/Fluent/master/Addons/SaveManager.lua"))()
 local InterfaceManager = loadstring(game:HttpGet("https://raw.githubusercontent.com/dawid-scripts/Fluent/master/Addons/InterfaceManager.lua"))()
 
+-- Set custom accent color BEFORE creating the window
+Fluent.Accent = Color3.fromRGB(0, 255, 0)
+
 local Window = Fluent:CreateWindow({
     Title = "Fluent " .. Fluent.Version,
     SubTitle = "by dawid",
@@ -11,12 +14,6 @@ local Window = Fluent:CreateWindow({
     Theme = "Dark",
     MinimizeKey = Enum.KeyCode.LeftControl -- Used when theres no MinimizeKeybind
 })
-
--- Set custom accent color AFTER creating the window and theme
-Fluent.Accent = Color3.fromRGB(0, 255, 0)
-
--- Reapply theme to update all elements with the new accent color
-Fluent:SetTheme("Dark")
 
 --Fluent provides Lucide Icons https://lucide.dev/icons/ for the tabs, icons are optional
 local Tabs = {
