@@ -5,7 +5,7 @@ local New = Creator.New
 
 local Spring = Flipper.Spring.new
 
-return function(Title, Desc, Parent, Hover)
+return function(Title, Desc, Parent, Hover, Border)
 	local Element = {}
 
 	Element.TitleLabel = New("TextLabel", {
@@ -58,28 +58,48 @@ return function(Title, Desc, Parent, Hover)
 		Element.DescLabel,
 	})
 
-	Element.Border = New("UIStroke", {
-		Transparency = 0.3,
-		Thickness = 0.5,
-		ApplyStrokeMode = Enum.ApplyStrokeMode.Border,
-		Color = Color3.fromRGB(100, 100, 100),
-	})
-
-	Element.BottomLine = New("Frame", {
-		Size = UDim2.new(1, 0, 0, 1),
-		Position = UDim2.new(0, 0, 1, 0),
-		AnchorPoint = Vector2.new(0, 1),
-		BackgroundTransparency = 1,
-		BorderSizePixel = 0,
-		LayoutOrder = 3,
-	}, {
-		New("UIStroke", {
-			Thickness = 0.5,
-			Color = Color3.fromRGB(100, 100, 100),
+	Border = Border ~= false -- Default to true if not specified
+	
+	if Border then
+		Element.Border = New("UIStroke", {
 			Transparency = 0.3,
+			Thickness = 0.5,
 			ApplyStrokeMode = Enum.ApplyStrokeMode.Border,
+			Color = Color3.fromRGB(100, 100, 100),
+		})
+
+		Element.BottomLine = New("Frame", {
+			Size = UDim2.new(1, 0, 0, 1),
+			Position = UDim2.new(0, 0, 1, 0),
+			AnchorPoint = Vector2.new(0, 1),
+			BackgroundTransparency = 1,
+			BorderSizePixel = 0,
+			LayoutOrder = 3,
+		}, {
+			New("UIStroke", {
+				Thickness = 0.5,
+				Color = Color3.fromRGB(100, 100, 100),
+				Transparency = 0.3,
+				ApplyStrokeMode = Enum.ApplyStrokeMode.Border,
+			}),
+		})
+	end
+
+	local frameChildren = {
+		New("UICorner", {
+			CornerRadius = UDim.new(0, 4),
 		}),
-	})
+		New("UIListLayout", {
+			SortOrder = Enum.SortOrder.LayoutOrder,
+			Padding = UDim.new(0, 5),
+		}),
+		Element.LabelHolder,
+	}
+	
+	if Border then
+		table.insert(frameChildren, Element.Border)
+		table.insert(frameChildren, Element.BottomLine)
+	end
 
 	Element.Frame = New("Frame", {
 		Size = UDim2.new(1, 0, 0, 0),
@@ -88,18 +108,7 @@ return function(Title, Desc, Parent, Hover)
 		Parent = Parent,
 		AutomaticSize = Enum.AutomaticSize.Y,
 		LayoutOrder = 7,
-	}, {
-		New("UICorner", {
-			CornerRadius = UDim.new(0, 4),
-		}),
-		New("UIListLayout", {
-			SortOrder = Enum.SortOrder.LayoutOrder,
-			Padding = UDim.new(0, 5),
-		}),
-		Element.Border,
-		Element.LabelHolder,
-		Element.BottomLine,
-	})
+	}, frameChildren)
 
 	function Element:SetTitle(Set)
 		Element.TitleLabel.Text = Set
@@ -115,6 +124,68 @@ return function(Title, Desc, Parent, Hover)
 			Element.DescLabel.Visible = true
 		end
 		Element.DescLabel.Text = Set
+	end
+
+	-- Set gradient function for title text
+	function Element:SetTitleGradient(gradientOptions)
+		if gradientOptions and gradientOptions.Enabled then
+			-- Remove existing gradient if any
+			local existingGradient = Element.TitleLabel:FindFirstChild("UIGradient")
+			if existingGradient then
+				existingGradient:Destroy()
+			end
+			
+			-- Ensure base text color is white
+			Element.TitleLabel.TextColor3 = Color3.fromRGB(255, 255, 255)
+			
+			-- Create text gradient
+			New("UIGradient", {
+				Color = ColorSequence.new{
+					ColorSequenceKeypoint.new(0, gradientOptions.Color1 or Color3.fromRGB(0, 150, 0)),
+					ColorSequenceKeypoint.new(1, gradientOptions.Color2 or Color3.fromRGB(0, 255, 150))
+				},
+				Rotation = gradientOptions.Rotation or 0,
+				Parent = Element.TitleLabel,
+			})
+		else
+			-- Remove gradient if disabled and reset to default color
+			local existingGradient = Element.TitleLabel:FindFirstChild("UIGradient")
+			if existingGradient then
+				existingGradient:Destroy()
+			end
+			Element.TitleLabel.TextColor3 = Color3.fromRGB(240, 240, 240)
+		end
+	end
+
+	-- Set gradient function for description text
+	function Element:SetDescGradient(gradientOptions)
+		if gradientOptions and gradientOptions.Enabled then
+			-- Remove existing gradient if any
+			local existingGradient = Element.DescLabel:FindFirstChild("UIGradient")
+			if existingGradient then
+				existingGradient:Destroy()
+			end
+			
+			-- Ensure base text color is white
+			Element.DescLabel.TextColor3 = Color3.fromRGB(255, 255, 255)
+			
+			-- Create text gradient
+			New("UIGradient", {
+				Color = ColorSequence.new{
+					ColorSequenceKeypoint.new(0, gradientOptions.Color1 or Color3.fromRGB(0, 150, 0)),
+					ColorSequenceKeypoint.new(1, gradientOptions.Color2 or Color3.fromRGB(0, 255, 150))
+				},
+				Rotation = gradientOptions.Rotation or 0,
+				Parent = Element.DescLabel,
+			})
+		else
+			-- Remove gradient if disabled and reset to default color
+			local existingGradient = Element.DescLabel:FindFirstChild("UIGradient")
+			if existingGradient then
+				existingGradient:Destroy()
+			end
+			Element.DescLabel.TextColor3 = Color3.fromRGB(200, 200, 200)
+		end
 	end
 
 	function Element:Destroy()
