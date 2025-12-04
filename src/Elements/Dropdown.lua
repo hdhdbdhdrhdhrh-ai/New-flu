@@ -317,33 +317,31 @@ function Element:New(Idx, Config)
 				},
 			})
 
-			local SelectIndicator = New("Frame", {
-				Size = UDim2.fromOffset(4, 14),
-				BackgroundColor3 = Color3.fromRGB(0, 235, 0),
-				BackgroundTransparency = isSelected and 0 or 1,
-				Position = UDim2.fromOffset(-1, 16),
-				AnchorPoint = Vector2.new(0, 0.5),
+			local CheckIcon = New("ImageLabel", {
+				Image = "rbxassetid://10709790644",
+				Size = UDim2.fromOffset(14, 14),
+				BackgroundTransparency = 1,
+				ImageColor3 = Color3.fromRGB(150, 150, 150),
+				Position = UDim2.new(1, -20, 0.5, 0),
+				AnchorPoint = Vector2.new(0.5, 0.5),
+				Visible = isSelected,
 				ThemeTag = {
-					BackgroundColor3 = "Accent",
+					ImageColor3 = "Text",
 				},
-			}, {
-				New("UICorner", {
-					CornerRadius = UDim.new(0, 2),
-				}),
 			})
 
 			local OptionButton = New("TextButton", {
 				Size = UDim2.new(1, -5, 0, 32),
-				BackgroundTransparency = isSelected and 0.89 or 1,
-				BackgroundColor3 = Color3.fromRGB(50, 50, 50),
+				BackgroundTransparency = isSelected and 0.8 or 1,
+				BackgroundColor3 = isSelected and Color3.fromRGB(70, 70, 70) or Color3.fromRGB(50, 50, 50),
 				Text = "",
 				Parent = DropdownScrollFrame,
 				ThemeTag = {
 					BackgroundColor3 = "DropdownOption",
 				},
 			}, {
-				SelectIndicator,
 				OptionLabel,
+				CheckIcon,
 				New("UICorner", {
 					CornerRadius = UDim.new(0, 6),
 				}),
@@ -352,13 +350,13 @@ function Element:New(Idx, Config)
 			-- Hover effects
 			Creator.AddSignal(OptionButton.MouseEnter, function()
 				TweenService:Create(OptionButton, TweenInfo.new(0.1), {
-					BackgroundTransparency = isSelected and 0.85 or 0.92
+					BackgroundTransparency = isSelected and 0.7 or 0.92
 				}):Play()
 			end)
 
 			Creator.AddSignal(OptionButton.MouseLeave, function()
 				TweenService:Create(OptionButton, TweenInfo.new(0.1), {
-					BackgroundTransparency = isSelected and 0.89 or 1
+					BackgroundTransparency = isSelected and 0.8 or 1
 				}):Play()
 			end)
 
