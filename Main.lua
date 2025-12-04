@@ -1702,7 +1702,8 @@ local aa = {
 			v.TabHolder = s(
 				"ScrollingFrame",
 				{
-					Size = UDim2.fromScale(1, 1),
+					Size = UDim2.new(1, 0, 1, -36), -- leave room at top for search
+					Position = UDim2.new(0, 0, 0, 36), -- start below search box
 					BackgroundTransparency = 1,
 					ScrollBarImageTransparency = 1,
 					ScrollBarThickness = 0,
@@ -1728,7 +1729,7 @@ local aa = {
 				"TextBox",
 				{
 					Size = UDim2.new(1, -8, 0, 28),
-					Position = UDim2.new(0, 4, 0, 6),
+					Position = UDim2.new(0, 4, 0, 4),
 					BackgroundTransparency = 1,
 					BorderSizePixel = 1,
 					BorderColor3 = Color3.fromRGB(180, 180, 180),
@@ -2030,15 +2031,8 @@ local aa = {
 								end
 								end
 							end
-							-- also check the section title itself (if present)
-							local titleMatch = false
-							for _, ch in ipairs(sectionRoot:GetChildren()) do
-								if (ch:IsA("TextLabel") or ch:IsA("TextButton")) and ch.Text and stripTags(ch.Text:lower()):find(term, 1, true) then
-									titleMatch = true
-									break
-								end
-							end
-							sectionRoot.Visible = anyFound or titleMatch
+							-- show section only if any child item matched
+							sectionRoot.Visible = anyFound
 						end
 					end
 				end)
