@@ -1415,7 +1415,9 @@ local aa = {
 			end
 			o.Tabs[q].SetTransparency(0.89)
 			o.Tabs[q].Selected = true
-			r.TabDisplay.Text = o.Tabs[q].Name
+			-- Do not update the top 'TabDisplay' text when switching tabs.
+			-- Removed to prevent tab name from appearing at the top of the window.
+			-- r.TabDisplay.Text = o.Tabs[q].Name
 			r.SelectorPosMotor:setGoal(l(o:GetCurrentTabPos(), { frequency = 6 }))
 			task.spawn(function()
 				r.ContainerPosMotor:setGoal(l(110, { frequency = 10 }))
