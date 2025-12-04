@@ -1722,12 +1722,12 @@ local aa = {
 				},
 				{ v.TabHolder, D }
 			)
-			-- Search box above tabs
+			-- Search box above the tab list
 			v.SearchBox = s(
 				"Frame",
 				{
-					Size = UDim2.new(1, -t.TabWidth - 32, 0, 32),
-					Position = UDim2.fromOffset(t.TabWidth + 26, 20),
+					Size = UDim2.new(0, t.TabWidth - 12, 0, 32),
+					Position = UDim2.new(0, 12, 0, 54),
 					BackgroundTransparency = 1,
 				},
 				{
@@ -1753,7 +1753,7 @@ local aa = {
 						Position = UDim2.new(0, 10, 0, 4),
 						BackgroundTransparency = 1,
 						Text = "",
-						PlaceholderText = "Search tabs...",
+						PlaceholderText = "Search...",
 						PlaceholderColor3 = Color3.fromRGB(120, 120, 120),
 						TextColor3 = Color3.fromRGB(240, 240, 240),
 						TextSize = 14,
