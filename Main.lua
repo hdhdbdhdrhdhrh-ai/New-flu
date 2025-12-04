@@ -2596,6 +2596,7 @@ local aa = {
 			game:GetService("Players").LocalPlayer:GetMouse(),
 			game:GetService("Workspace").CurrentCamera,
 			ab.Parent.Parent
+		local ak = game:GetService("TextService")
 		local c, d = ac(aj.Creator), ac(aj.Packages.Flipper)
 		local e, f, g = c.New, aj.Components, {}
 		g.__index = g
@@ -2605,74 +2606,94 @@ local aa = {
 				h.Library,
 				{
 					Values = j.Values,
-					Value = j.Default,
+					Value = j.Default or {},
 					Multi = j.Multi,
-					Buttons = {},
+					SelectedTags = {},
+					SearchText = "",
+					FilteredValues = j.Values,
 					Opened = false,
 					Type = "Dropdown",
 					Callback = j.Callback or function() end,
 				},
 				ac(f.Element)(j.Title, j.Description, h.Container, false)
-			m.DescLabel.Size = UDim2.new(1, -170, 0, 14)
 			l.SetTitle = m.SetTitle
 			l.SetDesc = m.SetDesc
-			local n, o =
-				e(
-					"TextLabel",
-					{
-						FontFace = Font.new(
-							"rbxasset://fonts/families/GothamSSm.json",
-							Enum.FontWeight.Regular,
-							Enum.FontStyle.Normal
-						),
-						Text = "Value",
-						TextColor3 = Color3.fromRGB(240, 240, 240),
-						TextSize = 13,
-						TextXAlignment = Enum.TextXAlignment.Left,
-						Size = UDim2.new(1, -30, 0, 14),
-						Position = UDim2.new(0, 8, 0.5, 0),
-						AnchorPoint = Vector2.new(0, 0.5),
-						BackgroundColor3 = Color3.fromRGB(255, 255, 255),
-						BackgroundTransparency = 1,
-						TextTruncate = Enum.TextTruncate.AtEnd,
-						ThemeTag = { TextColor3 = "Text" },
-					}
-				),
-				e(
-					"ImageLabel",
-					{
-						Image = "rbxassetid://10709790948",
-						Size = UDim2.fromOffset(16, 16),
-						AnchorPoint = Vector2.new(1, 0.5),
-						Position = UDim2.new(1, -8, 0.5, 0),
-						BackgroundTransparency = 1,
-						ThemeTag = { ImageColor3 = "SubText" },
-					}
-				)
-			local p, s =
-				e(
-					"TextButton",
-					{
-						Size = UDim2.fromOffset(160, 30),
-						Position = UDim2.new(1, -10, 0.5, 0),
-						AnchorPoint = Vector2.new(1, 0.5),
-						BackgroundTransparency = 1,
-						Parent = m.Frame,
-					},
-					{
-						e("UICorner", { CornerRadius = UDim.new(0, 5) }),
-						e(
-							"UIStroke",
-							{
-								Transparency = 1,
-								ApplyStrokeMode = Enum.ApplyStrokeMode.Border,
-							}
-						),
-						o,
-						n,
-					}
-				),
-				e("UIListLayout", { Padding = UDim.new(0, 3) })
+			local n = e(
+				"Frame",
+				{
+					Size = UDim2.new(1, -20, 0, 35),
+					Position = UDim2.new(0, 10, 1, 5),
+					BackgroundColor3 = Color3.fromRGB(20, 20, 20),
+					BackgroundTransparency = 0.3,
+					BorderSizePixel = 0,
+					Parent = m.Frame,
+					AutomaticSize = Enum.AutomaticSize.Y,
+				},
+				{
+					e("UICorner", { CornerRadius = UDim.new(0, 6) }),
+					e(
+						"UIStroke",
+						{
+							Color = Color3.fromRGB(80, 80, 80),
+							Thickness = 1,
+							ApplyStrokeMode = Enum.ApplyStrokeMode.Border,
+						}
+					),
+					e(
+						"UIPadding",
+						{
+							PaddingLeft = UDim.new(0, 8),
+							PaddingRight = UDim.new(0, 8),
+							PaddingTop = UDim.new(0, 5),
+							PaddingBottom = UDim.new(0, 5),
+						}
+					),
+				}
+			)
+			local o = e("UIListLayout", {
+				FillDirection = Enum.FillDirection.Horizontal,
+				HorizontalAlignment = Enum.HorizontalAlignment.Left,
+				VerticalAlignment = Enum.VerticalAlignment.Center,
+				Padding = UDim.new(0, 5),
+				Wraps = true,
+				Parent = n,
+			})
+			local p = e(
+				"TextBox",
+				{
+					Size = UDim2.new(0, 100, 0, 25),
+					BackgroundTransparency = 1,
+					Text = "",
+					PlaceholderText = "Search...",
+					PlaceholderColor3 = Color3.fromRGB(150, 150, 150),
+					TextColor3 = Color3.fromRGB(240, 240, 240),
+					TextSize = 13,
+					TextXAlignment = Enum.TextXAlignment.Left,
+					FontFace = Font.new(
+						"rbxasset://fonts/families/GothamSSm.json",
+						Enum.FontWeight.Regular,
+						Enum.FontStyle.Normal
+					),
+					ClearTextOnFocus = false,
+					Parent = n,
+					LayoutOrder = 999999,
+					ThemeTag = { TextColor3 = "Text" },
+				}
+			)
+			local q = e(
+				"ImageLabel",
+				{
+					Image = "rbxassetid://10709790948",
+					Size = UDim2.fromOffset(16, 16),
+					AnchorPoint = Vector2.new(1, 0.5),
+					Position = UDim2.new(1, -8, 0.5, 0),
+					BackgroundTransparency = 1,
+					Parent = n,
+					ZIndex = 10,
+					ThemeTag = { ImageColor3 = "SubText" },
+				}
+			)
+			local s = e("UIListLayout", { Padding = UDim.new(0, 3) })
 			local t = e(
 				"ScrollingFrame",
 				{
@@ -2717,34 +2738,132 @@ local aa = {
 			)
 			local v = e(
 				"Frame",
-				{ BackgroundTransparency = 1, Size = UDim2.fromOffset(170, 300), Parent = h.Library.GUI, Visible = false },
+				{
+					BackgroundTransparency = 1,
+					Size = UDim2.fromOffset(n.AbsoluteSize.X, 300),
+					Parent = h.Library.GUI,
+					Visible = false,
+				},
 				{ u, e("UISizeConstraint", { MinSize = Vector2.new(170, 0) }) }
 			)
 			table.insert(k.OpenFrames, v)
-			local w, x =
-				function()
-					local w = 0
-					if ai.ViewportSize.Y - p.AbsolutePosition.Y < v.AbsoluteSize.Y - 5 then
-						w = v.AbsoluteSize.Y - 5 - (ai.ViewportSize.Y - p.AbsolutePosition.Y) + 40
-					end
-					v.Position = UDim2.fromOffset(p.AbsolutePosition.X - 1, p.AbsolutePosition.Y - 5 - w)
-				end, 0
-			local y, z =
-				function()
-					if #l.Values > 10 then
-						v.Size = UDim2.fromOffset(x, 392)
-					else
-						v.Size = UDim2.fromOffset(x, s.AbsoluteContentSize.Y + 10)
-					end
-				end, function()
-					t.CanvasSize = UDim2.fromOffset(0, s.AbsoluteContentSize.Y)
+			function l.CreateTag(w, x)
+				if l.SelectedTags[x] then
+					return
 				end
-			w()
-			y()
-			c.AddSignal(p:GetPropertyChangedSignal("AbsolutePosition"), w)
-			c.AddSignal(p.MouseButton1Click, function()
+				local y = e(
+					"Frame",
+					{
+						Size = UDim2.new(0, 0, 0, 25),
+						AutomaticSize = Enum.AutomaticSize.X,
+						BackgroundColor3 = Color3.fromRGB(60, 60, 60),
+						BorderSizePixel = 0,
+						Parent = n,
+						LayoutOrder = #l.SelectedTags,
+					},
+					{
+						e("UICorner", { CornerRadius = UDim.new(0, 5) }),
+						e(
+							"UIPadding",
+							{
+								PaddingLeft = UDim.new(0, 8),
+								PaddingRight = UDim.new(0, 5),
+								PaddingTop = UDim.new(0, 3),
+								PaddingBottom = UDim.new(0, 3),
+							}
+						),
+					}
+				)
+				local z = e("UIListLayout", {
+					FillDirection = Enum.FillDirection.Horizontal,
+					HorizontalAlignment = Enum.HorizontalAlignment.Left,
+					VerticalAlignment = Enum.VerticalAlignment.Center,
+					Padding = UDim.new(0, 5),
+					Parent = y,
+				})
+				local A = e(
+					"TextLabel",
+					{
+						Text = x,
+						TextColor3 = Color3.fromRGB(240, 240, 240),
+						TextSize = 12,
+						FontFace = Font.new(
+							"rbxasset://fonts/families/GothamSSm.json",
+							Enum.FontWeight.Medium,
+							Enum.FontStyle.Normal
+						),
+						BackgroundTransparency = 1,
+						AutomaticSize = Enum.AutomaticSize.XY,
+						Parent = y,
+						ThemeTag = { TextColor3 = "Text" },
+					}
+				)
+				local B = e(
+					"TextButton",
+					{
+						Text = "×",
+						TextColor3 = Color3.fromRGB(200, 200, 200),
+						TextSize = 16,
+						FontFace = Font.new(
+							"rbxasset://fonts/families/GothamSSm.json",
+							Enum.FontWeight.Bold,
+							Enum.FontStyle.Normal
+						),
+						BackgroundTransparency = 1,
+						Size = UDim2.fromOffset(16, 16),
+						Parent = y,
+					}
+				)
+				c.AddSignal(B.MouseButton1Click, function()
+					l:RemoveTag(x)
+				end)
+				l.SelectedTags[x] = y
+			end
+			function l.RemoveTag(w, x)
+				if l.SelectedTags[x] then
+					l.SelectedTags[x]:Destroy()
+					l.SelectedTags[x] = nil
+					if l.Multi then
+						l.Value[x] = nil
+					else
+						l.Value = nil
+					end
+					l:BuildDropdownList()
+					k:SafeCallback(l.Callback, l.Value)
+					k:SafeCallback(l.Changed, l.Value)
+				end
+			end
+			function l.FilterValues(w)
+				local x = p.Text:lower()
+				l.SearchText = x
+				if x == "" then
+					l.FilteredValues = l.Values
+				else
+					l.FilteredValues = {}
+					for y, z in ipairs(l.Values) do
+						if z:lower():find(x, 1, true) then
+							table.insert(l.FilteredValues, z)
+						end
+					end
+				end
+				l:BuildDropdownList()
+			end
+			local w = function()
+				local x = 0
+				local y = n.AbsolutePosition.Y + n.AbsoluteSize.Y
+				if ai.ViewportSize.Y - y < v.AbsoluteSize.Y + 5 then
+					x = v.AbsoluteSize.Y - (ai.ViewportSize.Y - y) + 10
+				end
+				v.Position = UDim2.fromOffset(n.AbsolutePosition.X, y + 5 - x)
+			end
+			c.AddSignal(p:GetPropertyChangedSignal("Text"), function()
+				l:FilterValues()
+			end)
+			c.AddSignal(p.Focused, function()
 				l:Open()
 			end)
+			c.AddSignal(n:GetPropertyChangedSignal("AbsolutePosition"), w)
+			c.AddSignal(n:GetPropertyChangedSignal("AbsoluteSize"), w)
 			c.AddSignal(ag.InputBegan, function(A)
 				if
 					A.UserInputType == Enum.UserInputType.MouseButton1
