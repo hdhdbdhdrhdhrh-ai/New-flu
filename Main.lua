@@ -3352,37 +3352,8 @@ local aa = {
 			assert(d.Title, "Paragraph - Missing Title")
 			d.Content = d.Content or ""
 			local e = ac(ag.Element)(d.Title, d.Content, aj.Container, false)
-			
-			-- Remove grey background and border for cleaner look
-			e.Frame.BackgroundTransparency = 1
-			e.Border.Transparency = 1
-			
-			-- Add gradient support for title
-			local function SetGradient(f)
-				if f and f.Enabled then
-					local g = e.TitleLabel:FindFirstChild("UIGradient")
-					if g then g:Destroy() end
-					e.TitleLabel.TextColor3 = Color3.fromRGB(255, 255, 255)
-					ah.New("UIGradient", {
-						Color = ColorSequence.new{
-							ColorSequenceKeypoint.new(0, f.Color1 or Color3.fromRGB(0, 150, 0)),
-							ColorSequenceKeypoint.new(1, f.Color2 or Color3.fromRGB(0, 255, 150))
-						},
-						Rotation = f.Rotation or 0,
-						Parent = e.TitleLabel,
-					})
-				else
-					local g = e.TitleLabel:FindFirstChild("UIGradient")
-					if g then g:Destroy() end
-					e.TitleLabel.TextColor3 = Color3.fromRGB(240, 240, 240)
-				end
-			end
-			
-			-- Apply gradient if provided in config
-			if d.Gradient then
-				SetGradient(d.Gradient)
-			end
-			
+			e.Frame.BackgroundTransparency = 0.92
+			e.Border.Transparency = 0.6
 			return e
 		end
 		return aj

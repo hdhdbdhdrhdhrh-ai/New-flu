@@ -38,13 +38,7 @@ do
 
     Tabs.Main:AddParagraph({
         Title = "Paragraph",
-        Content = "This is a paragraph.\nSecond line!",
-        Gradient = {
-            Enabled = true,
-            Color1 = Color3.fromRGB(255, 100, 150),  -- Pink
-            Color2 = Color3.fromRGB(100, 150, 255),  -- Blue
-            Rotation = 45
-        }
+        Content = "This is a paragraph.\nSecond line!"
     })
 
     -- Create a collapsible section with gradient (closed by default)
@@ -323,6 +317,23 @@ do
     --     Section1.Toggle()  -- This will open the first section
     -- end)
 end
+
+-- New Border Feature Demo Section (added after Main tab for demonstration)
+local BorderDemoSection = Tabs.Main:AddSection({
+    Title = "Border Feature Demo",
+    Open = true
+})
+
+BorderDemoSection:AddParagraph({
+    Title = "Border Feature",
+    Content = "Notice the grey borders between elements and around the tab list for better visual separation."
+})
+
+BorderDemoSection:AddToggle("DemoToggle1", {Title = "First Toggle", Default = false})
+BorderDemoSection:AddButton({Title = "Demo Button 1", Callback = function() print("Button 1") end})
+BorderDemoSection:AddToggle("DemoToggle2", {Title = "Second Toggle", Default = true})
+BorderDemoSection:AddButton({Title = "Demo Button 2", Callback = function() print("Button 2") end})
+BorderDemoSection:AddToggle("DemoToggle3", {Title = "Third Toggle", Default = false})
 
 
 -- Addons:

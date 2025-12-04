@@ -20,6 +20,15 @@ return function(Title, Desc, Parent, Hover)
 		ThemeTag = {
 			TextColor3 = "Text",
 		},
+	}, {
+		New("UIGradient", {
+			Color = ColorSequence.new({
+				ColorSequenceKeypoint.new(0, Color3.fromRGB(255, 100, 100)),
+				ColorSequenceKeypoint.new(0.5, Color3.fromRGB(100, 100, 255)),
+				ColorSequenceKeypoint.new(1, Color3.fromRGB(100, 255, 100)),
+			}),
+			Rotation = 90,
+		}),
 	})
 
 	Element.DescLabel = New("TextLabel", {
@@ -96,7 +105,6 @@ return function(Title, Desc, Parent, Hover)
 			SortOrder = Enum.SortOrder.LayoutOrder,
 			Padding = UDim.new(0, 5),
 		}),
-		Element.Border,
 		Element.LabelHolder,
 		Element.BottomLine,
 	})

@@ -16,14 +16,8 @@ local Tabs = {
 
 do
     Tabs.Main:AddParagraph({
-        Title = "Paragraph",
-        Content = "This is a paragraph.\nSecond line!",
-        Gradient = {
-            Enabled = true,
-            Color1 = Color3.fromRGB(255, 200, 100),  -- Orange
-            Color2 = Color3.fromRGB(100, 255, 200),  -- Teal
-            Rotation = 90
-        }
+        Title = "Gradient Title Paragraph",
+        Content = "This paragraph now has a gradient title and no grey border or background.\nSecond line!"
     })
 
     Tabs.Main:AddButton({
