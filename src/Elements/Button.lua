@@ -84,6 +84,26 @@ function Element:New(Config)
 
 	ButtonFrame:UpdateColor()
 
+	-- Add hover effect
+	Creator.AddSignal(ClickableButton.MouseEnter, function()
+		ClickableButton.BackgroundTransparency = Config.Filled and 0.1 or 0.95
+	end)
+	
+	Creator.AddSignal(ClickableButton.MouseLeave, function()
+		ClickableButton.BackgroundTransparency = Config.Filled and 0 or 1
+	end)
+	
+	-- Add click effect
+	Creator.AddSignal(ClickableButton.MouseButton1Down, function()
+		ClickableButton.Size = UDim2.new(0, -2, 0, 24) -- Slightly smaller
+		ClickableButton.BackgroundTransparency = Config.Filled and 0.2 or 0.9
+	end)
+	
+	Creator.AddSignal(ClickableButton.MouseButton1Up, function()
+		ClickableButton.Size = UDim2.new(0, 0, 0, 26) -- Back to normal
+		ClickableButton.BackgroundTransparency = Config.Filled and 0 or 1
+	end)
+
 	Creator.AddSignal(ClickableButton.MouseButton1Click, function()
 		self.Library:SafeCallback(Config.Callback)
 	end)

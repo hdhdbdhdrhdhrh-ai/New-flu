@@ -1956,6 +1956,22 @@ local aa = {
 				end
 			end
 			o:UpdateColor()
+			-- Add hover effect
+			i.AddSignal(p.MouseEnter, function()
+				p.BackgroundTransparency = n.Filled and 0.1 or 0.95
+			end)
+			i.AddSignal(p.MouseLeave, function()
+				p.BackgroundTransparency = n.Filled and 0 or 1
+			end)
+			-- Add click effect
+			i.AddSignal(p.MouseButton1Down, function()
+				p.Size = UDim2.new(0, -2, 0, 24)
+				p.BackgroundTransparency = n.Filled and 0.2 or 0.9
+			end)
+			i.AddSignal(p.MouseButton1Up, function()
+				p.Size = UDim2.new(0, 0, 0, 26)
+				p.BackgroundTransparency = n.Filled and 0 or 1
+			end)
 			i.AddSignal(p.MouseButton1Click, function()
 				m.Library:SafeCallback(n.Callback)
 			end)
