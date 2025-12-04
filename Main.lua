@@ -1922,12 +1922,12 @@ local aa = {
 			local p = j(
 				"TextButton",
 				{
-					Size = UDim2.new(0, 0, 0, 26),
+					Size = UDim2.new(1, -20, 0, 26),
 					AnchorPoint = Vector2.new(0, 0),
-					Position = UDim2.new(0, 10, 1, -25),
+					Position = UDim2.new(0, 10, 0, 19),
 					BackgroundTransparency = n.Filled and 0 or 1,
 					Parent = o.Frame,
-					AutomaticSize = Enum.AutomaticSize.X,
+					AutomaticSize = Enum.AutomaticSize.None,
 					Text = "",
 					ClipsDescendants = true,
 				},
@@ -1937,6 +1937,9 @@ local aa = {
 					q, r
 				}
 			)
+			o.Frame.BackgroundTransparency = 1
+			o.Frame.BorderSizePixel = 0
+			o.Border.Transparency = 1
 			function o.UpdateColor(s)
 				if n.Filled then
 					p.BackgroundColor3 = m.Library.Accent
