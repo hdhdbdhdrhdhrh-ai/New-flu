@@ -1939,6 +1939,12 @@ local aa = {
 			)
 			o.TitleLabel.LayoutOrder = 1
 			o.DescLabel.LayoutOrder = 2
+			local buttonSpacing = j("Frame", {
+				Size = UDim2.new(1, 0, 0, 8),
+				BackgroundTransparency = 1,
+				LayoutOrder = 2.5,
+				Parent = o.LabelHolder,
+			})
 			o.Frame.BackgroundTransparency = 1
 			o.Frame.BorderSizePixel = 0
 			o.Border.Transparency = 1
@@ -2432,9 +2438,8 @@ local aa = {
 						e(
 							"UIStroke",
 							{
-								Transparency = 0.5,
+								Transparency = 1,
 								ApplyStrokeMode = Enum.ApplyStrokeMode.Border,
-								ThemeTag = { Color = "InElementBorder" },
 							}
 						),
 						o,
@@ -2899,9 +2904,8 @@ local aa = {
 					ai(
 						"UIStroke",
 						{
-							Transparency = 0.5,
+							Transparency = 1,
 							ApplyStrokeMode = Enum.ApplyStrokeMode.Border,
-							ThemeTag = { Color = "InElementBorder" },
 						}
 					),
 					k,

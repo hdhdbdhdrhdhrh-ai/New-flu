@@ -61,6 +61,14 @@ function Element:New(Config)
 	ButtonFrame.TitleLabel.LayoutOrder = 1
 	ButtonFrame.DescLabel.LayoutOrder = 2
 	
+	-- Add spacing above button
+	local ButtonSpacing = New("Frame", {
+		Size = UDim2.new(1, 0, 0, 8),
+		BackgroundTransparency = 1,
+		LayoutOrder = 2.5,
+		Parent = ButtonFrame.LabelHolder,
+	})
+	
 	-- Button is now part of LabelHolder layout, will appear naturally below desc
 	ButtonFrame.Frame.BackgroundTransparency = 1
 	ButtonFrame.Frame.BorderSizePixel = 0
