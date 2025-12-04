@@ -38,7 +38,7 @@ function Element:New(Config)
 	local ClickableButton = New("TextButton", {
 		Size = UDim2.new(0, 0, 0, 26),
 		BackgroundTransparency = Config.Filled and 0 or 1,
-		Position = UDim2.new(0, 5, 0, 0),
+		Position = UDim2.new(0, 15, 0, 0),
 		AnchorPoint = Vector2.new(0, 0),
 		Text = "",
 		Parent = ButtonFrame.Frame,
@@ -64,9 +64,10 @@ function Element:New(Config)
 		Padding = UDim.new(0, 8),
 	})
 	
-	-- Add padding to prevent button from clipping window edge
+	-- Add padding to prevent button from clipping window edge and bottom elements
 	local FramePadding = New("UIPadding", {
 		PaddingRight = UDim.new(0, 15),
+		PaddingBottom = UDim.new(0, 10),
 	})
 	
 	ButtonFrame.LabelHolder.LayoutOrder = 1

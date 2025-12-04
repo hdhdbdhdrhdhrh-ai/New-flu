@@ -1944,6 +1944,7 @@ local aa = {
 			})
 			local v = j("UIPadding", {
 				PaddingRight = UDim.new(0, 15),
+				PaddingBottom = UDim.new(0, 10),
 			})
 			o.LabelHolder.LayoutOrder = 1
 			u.Parent = o.Frame
