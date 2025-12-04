@@ -682,19 +682,19 @@ local aa = {
 				A = A or "Button"
 				B = B or function() end
 				buttonOptions = buttonOptions or {}
-				local C = e(k.Components.Button)("", s.ButtonHolder, true)
-				C.Title.Text = A
 				
-				-- Apply custom color and filled style
-				if buttonOptions.Filled then
-					C.Frame.BackgroundTransparency = 0
-					C.Frame.BackgroundColor3 = buttonOptions.Color or Color3.fromRGB(80, 80, 80)
-				elseif buttonOptions.Color then
-					local stroke = C.Frame:FindFirstChildOfClass("UIStroke")
-					if stroke then
-						stroke.Color = buttonOptions.Color
-					end
-				end
+				-- Create button config with filled and color options
+				local buttonConfig = {
+					Title = "",
+					Description = "",
+					ButtonText = A,
+					Callback = B,
+					Filled = buttonOptions.Filled,
+					Color = buttonOptions.Color,
+				}
+				
+				local C = e(k.Components.Button)(buttonConfig, s.ButtonHolder, true)
+				C.Title.Text = A
 				
 				for D, E in next, s.ButtonHolder:GetChildren() do
 					if E:IsA("TextButton") then
