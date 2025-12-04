@@ -1015,44 +1015,148 @@ local aa = {
 		local h = d.Parent.Parent
 		local i = e(h.Creator)
 		local j = i.New
-		return function(k, l)
+		return function(k, l, defaultOpen)
 			local m = {}
-			m.Layout = j("UIListLayout", { Padding = UDim.new(0, 5) })
-			m.Container = j(
-				"Frame",
-				{ Size = UDim2.new(1, 0, 0, 26), Position = UDim2.fromOffset(0, 24), BackgroundTransparency = 1 },
-				{ m.Layout }
-			)
-			m.Root = j(
-				"Frame",
-				{ BackgroundTransparency = 1, Size = UDim2.new(1, 0, 0, 26), LayoutOrder = 7, Parent = l },
-				{
-					j(
-						"TextLabel",
-						{
-							RichText = true,
-							Text = k,
-							TextTransparency = 0,
-							FontFace = Font.new(
-								"rbxassetid://12187365364",
-								Enum.FontWeight.SemiBold,
-								Enum.FontStyle.Normal
-							),
-							TextSize = 18,
-							TextXAlignment = "Left",
-							TextYAlignment = "Center",
-							Size = UDim2.new(1, -16, 0, 18),
-							Position = UDim2.fromOffset(0, 2),
-							ThemeTag = { TextColor3 = "Text" },
-						}
-					),
-					m.Container,
-				}
-			)
+			
+			defaultOpen = defaultOpen or false
+			
+			-- Main section frame
+			m.Root = j("Frame", {
+				Size = UDim2.new(1, -10, 0, 0),
+				AutomaticSize = Enum.AutomaticSize.Y,
+				BackgroundTransparency = 1,
+				Parent = l,
+				LayoutOrder = 7,
+			})
+			
+			-- Section header (clickable)
+			m.Header = j("TextButton", {
+				Size = UDim2.new(1, 0, 0, 35),
+				BackgroundColor3 = Color3.fromRGB(45, 45, 45),
+				BackgroundTransparency = 0.1,
+				Text = "",
+				Parent = m.Root,
+				AutomaticSize = Enum.AutomaticSize.None,
+			}, {
+				j("UICorner", {
+					CornerRadius = UDim.new(0, 6),
+				}),
+				j("UIStroke", {
+					Transparency = 0.7,
+					Color = Color3.fromRGB(60, 60, 60),
+					ApplyStrokeMode = Enum.ApplyStrokeMode.Border,
+				}),
+			})
+			
+			-- Section title text
+			m.TitleLabel = j("TextLabel", {
+				Size = UDim2.new(1, -40, 1, 0),
+				Position = UDim2.fromOffset(15, 0),
+				BackgroundTransparency = 1,
+				Text = k,
+				TextColor3 = Color3.fromRGB(240, 240, 240),
+				TextSize = 14,
+				TextXAlignment = Enum.TextXAlignment.Left,
+				FontFace = Font.new(
+					"rbxasset://fonts/families/GothamSSm.json",
+					Enum.FontWeight.Medium,
+					Enum.FontStyle.Normal
+				),
+				Parent = m.Header,
+				ThemeTag = {
+					TextColor3 = "Text",
+				},
+			})
+			
+			-- Arrow icon
+			m.Arrow = j("ImageLabel", {
+				Size = UDim2.fromOffset(16, 16),
+				Position = UDim2.new(1, -25, 0.5, 0),
+				AnchorPoint = Vector2.new(0.5, 0.5),
+				BackgroundTransparency = 1,
+				Image = "rbxassetid://6034818372",
+				ImageColor3 = Color3.fromRGB(180, 180, 180),
+				Rotation = defaultOpen and 90 or -90,
+				Parent = m.Header,
+				ThemeTag = {
+					ImageColor3 = "SubText",
+				},
+			})
+			
+			-- Content container
+			m.Container = j("Frame", {
+				Size = UDim2.new(1, 0, 0, 0),
+				Position = UDim2.fromOffset(0, 35),
+				AutomaticSize = Enum.AutomaticSize.Y,
+				BackgroundTransparency = 1,
+				Parent = m.Root,
+				Visible = defaultOpen,
+				ClipsDescendants = false,
+			}, {
+				j("UIListLayout", {
+					SortOrder = Enum.SortOrder.LayoutOrder,
+					Padding = UDim.new(0, 5),
+				}),
+				j("UIPadding", {
+					PaddingTop = UDim.new(0, 8),
+					PaddingLeft = UDim.new(0, 10),
+					PaddingRight = UDim.new(0, 10),
+					PaddingBottom = UDim.new(0, 5),
+				}),
+			})
+			
+			-- Layout for container
+			m.Layout = m.Container:FindFirstChild("UIListLayout")
+			
+			-- State
+			m.Open = defaultOpen
+			
+			-- Toggle function
+			function m:Toggle()
+				m.Open = not m.Open
+				
+				-- Animate arrow rotation
+				local TweenService = game:GetService("TweenService")
+				local rotationTween = TweenService:Create(
+					m.Arrow,
+					TweenInfo.new(0.2, Enum.EasingStyle.Quad, Enum.EasingDirection.Out),
+					{ Rotation = m.Open and 90 or -90 }
+				)
+				
+				rotationTween:Play()
+				
+				if m.Open then
+					m.Container.Visible = true
+				else
+					m.Container.Visible = false
+				end
+			end
+			
+			-- Set title function
+			function m:SetTitle(NewTitle)
+				m.TitleLabel.Text = NewTitle
+			end
+			
+			-- Click handler
+			i.AddSignal(m.Header.MouseButton1Click, function()
+				m:Toggle()
+			end)
+			
+			-- Hover effect
+			i.AddSignal(m.Header.MouseEnter, function()
+				m.Header.BackgroundTransparency = 0.05
+			end)
+			
+			i.AddSignal(m.Header.MouseLeave, function()
+				m.Header.BackgroundTransparency = 0.1
+			end)
+			
+			-- Auto-resize based on content
 			i.AddSignal(m.Layout:GetPropertyChangedSignal("AbsoluteContentSize"), function()
 				m.Container.Size = UDim2.new(1, 0, 0, m.Layout.AbsoluteContentSize.Y)
-				m.Root.Size = UDim2.new(1, 0, 0, m.Layout.AbsoluteContentSize.Y + 25)
+				m.Root.Size = UDim2.new(1, 0, 0, m.Layout.AbsoluteContentSize.Y + 45)
 			end)
+			
 			return m
 		end
 	end,
@@ -1182,9 +1286,12 @@ local aa = {
 			x.Container = x.ContainerFrame
 			x.ScrollFrame = x.Container
 			function x.AddSection(z, A)
-				local B, C = { Type = "Section" }, e(n.Section)(A, x.Container)
+				local defaultOpen = A.Open or false
+				local B, C = { Type = "Section" }, e(n.Section)(A.Title or A, x.Container, defaultOpen)
 				B.Container = C.Container
 				B.ScrollFrame = x.Container
+				B.Toggle = function() C:Toggle() end
+				B.SetTitle = function(title) C:SetTitle(title) end
 				setmetatable(B, v)
 				return B
 			end

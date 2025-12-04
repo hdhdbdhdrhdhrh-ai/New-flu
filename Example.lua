@@ -38,10 +38,14 @@ do
         Content = "This is a paragraph.\nSecond line!"
     })
 
+    -- Create a collapsible section (closed by default)
+    local Section1 = Tabs.Main:AddSection({
+        Title = "Comp Killer Section",
+        Open = false
+    })
 
-
-    -- Border Button (default)
-    Tabs.Main:AddButton({
+    -- Add elements inside the section
+    Section1:AddButton({
         Title = "Border Button",
         Description = "Button with accent border",
         ButtonText = "Click Me fdbksgfjigsdyjfggsdiufg",
@@ -52,8 +56,7 @@ do
         end
     })
 
-    -- Filled Button
-    Tabs.Main:AddButton({
+    Section1:AddButton({
         Title = "Filled Button",
         Description = "Button with accent fill",
         ButtonText = "Filledfsdffsfsdfsdgsgfdgdfgd",
@@ -81,9 +84,15 @@ do
         end
     })
 
+    -- Create another section (open by default)
+    local Section2 = Tabs.Main:AddSection({
+        Title = "Another Section",
+        Open = true
+    })
 
 
-    local Toggle = Tabs.Main:AddToggle("MyToggle", {Title = "Toggle", Default = false })
+
+    local Toggle = Section2:AddToggle("MyToggle", {Title = "Toggle", Default = false })
 
     Toggle:OnChanged(function()
         print("Toggle changed:", Options.MyToggle.Value)
@@ -93,7 +102,7 @@ do
 
 
     
-    local Slider = Tabs.Main:AddSlider("Slider", {
+    local Slider = Section2:AddSlider("Slider", {
         Title = "Slider",
         Description = "This is a slider",
         Default = 2,
@@ -113,7 +122,13 @@ do
 
 
 
-    local Dropdown = Tabs.Main:AddDropdown("Dropdown", {
+    -- Create a third section for more elements
+    local Section3 = Tabs.Main:AddSection({
+        Title = "More Elements",
+        Open = false
+    })
+
+    local Dropdown = Section3:AddDropdown("Dropdown", {
         Title = "Dropdown",
         Values = {"one", "two", "three", "four", "five", "six", "seven", "eight", "nine", "ten", "eleven", "twelve", "thirteen", "fourteen"},
         Multi = false,
@@ -128,7 +143,7 @@ do
 
 
     
-    local MultiDropdown = Tabs.Main:AddDropdown("MultiDropdown", {
+    local MultiDropdown = Section3:AddDropdown("MultiDropdown", {
         Title = "Dropdown",
         Description = "You can select multiple values.",
         Values = {"one", "two", "three", "four", "five", "six", "seven", "eight", "nine", "ten", "eleven", "twelve", "thirteen", "fourteen"},
@@ -152,7 +167,7 @@ do
 
 
 
-    local Colorpicker = Tabs.Main:AddColorpicker("Colorpicker", {
+    local Colorpicker = Section3:AddColorpicker("Colorpicker", {
         Title = "Colorpicker",
         Default = Color3.fromRGB(96, 205, 255)
     })
@@ -165,7 +180,7 @@ do
 
 
 
-    local TColorpicker = Tabs.Main:AddColorpicker("TransparencyColorpicker", {
+    local TColorpicker = Section3:AddColorpicker("TransparencyColorpicker", {
         Title = "Colorpicker",
         Description = "but you can change the transparency.",
         Transparency = 0,
@@ -179,9 +194,13 @@ do
         )
     end)
 
+    -- Create a fourth section for input elements
+    local Section4 = Tabs.Main:AddSection({
+        Title = "Input & Controls",
+        Open = true
+    })
 
-
-    local Keybind = Tabs.Main:AddKeybind("Keybind", {
+    local Keybind = Section4:AddKeybind("Keybind", {
         Title = "KeyBind",
         Mode = "Toggle", -- Always, Toggle, Hold
         Default = "LeftControl", -- String as the name of the keybind (MB1, MB2 for mouse buttons)
@@ -224,7 +243,7 @@ do
     Keybind:SetValue("MB2", "Toggle") -- Sets keybind to MB2, mode to Hold
 
 
-    local Input = Tabs.Main:AddInput("Input", {
+    local Input = Section4:AddInput("Input", {
         Title = "Input",
         Default = "Default",
         Placeholder = "Placeholder",
@@ -238,6 +257,11 @@ do
     Input:OnChanged(function()
         print("Input updated:", Input.Value)
     end)
+
+    -- Example of programmatically toggling sections
+    task.wait(3)  -- Wait 3 seconds
+    print("Opening Comp Killer Section...")
+    Section1.Toggle()  -- This will open the first section
 end
 
 
