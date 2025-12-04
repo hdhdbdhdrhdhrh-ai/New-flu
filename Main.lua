@@ -1738,7 +1738,7 @@ local aa = {
 					TextXAlignment = "Left",
 					ClearTextOnFocus = false,
 					Parent = F,
-					ZIndex = 5,
+					ZIndex = 50,
 					BackgroundTransparency = 1,
 					FontFace = Font.new("rbxasset://fonts/families/GothamSSm.json", Enum.FontWeight.Medium, Enum.FontStyle.Normal),
 					TextSize = 14,
@@ -1966,7 +1966,8 @@ local aa = {
 			-- Wire up the search box to filter items in the current tab's sections
 			if TabSearchBox then
 				TabSearchBox:GetPropertyChangedSignal("Text"):Connect(function()
-					local term = string.lower(TabSearchBox.Text or "")
+					local raw = TabSearchBox.Text or ""
+					local term = raw:lower():match("^%s*(.-)%s*$") or ""
 					local sel = (N and N.SelectedTab) or 0
 					if sel == 0 then
 						return
@@ -1975,12 +1976,15 @@ local aa = {
 					if not container then
 						return
 					end
+					local function stripTags(s)
+						return (s:gsub("<[^>]->", ""))
+					end
 					-- Empty term -> reset visibility
 					if term == "" then
 						for _, sectionRoot in ipairs(container:GetChildren()) do
-							if sectionRoot:IsA("GuiObject") then
+							if sectionRoot:IsA("Frame") then
 								sectionRoot.Visible = true
-								local itemsParent = sectionRoot:FindFirstChild("Container") or sectionRoot:FindFirstChildWhichIsA("Frame")
+								local itemsParent = sectionRoot:FindFirstChild("Container") or sectionRoot
 								if itemsParent then
 									for _, item in ipairs(itemsParent:GetChildren()) do
 										if item:IsA("GuiObject") then
@@ -1992,19 +1996,33 @@ local aa = {
 						end
 						return
 					end
-					-- Filter by term
+					-- Filter by term (only inside the current tab's container)
 					for _, sectionRoot in ipairs(container:GetChildren()) do
-						if sectionRoot:IsA("GuiObject") then
-							local itemsParent = sectionRoot:FindFirstChild("Container") or sectionRoot:FindFirstChildWhichIsA("Frame")
+						if sectionRoot:IsA("Frame") then
+							local itemsParent = sectionRoot:FindFirstChild("Container") or sectionRoot
 							local anyFound = false
+							-- iterate items inside the section
 							if itemsParent then
 								for _, item in ipairs(itemsParent:GetChildren()) do
 									if item:IsA("GuiObject") then
 										local keep = false
-										for _, desc in ipairs(item:GetDescendants()) do
-											if (desc:IsA("TextLabel") or desc:IsA("TextButton")) and desc.Text and desc.Text:lower():find(term, 1, true) then
+										-- check the item itself
+										if (item:IsA("TextLabel") or item:IsA("TextButton") or item:IsA("TextBox")) and item.Text then
+											local txt = stripTags(item.Text:lower())
+											if txt:find(term, 1, true) then
 												keep = true
-												break
+											end
+										end
+										-- check descendants
+										if not keep then
+											for _, desc in ipairs(item:GetDescendants()) do
+												if (desc:IsA("TextLabel") or desc:IsA("TextButton") or desc:IsA("TextBox")) and desc.Text then
+												local dtxt = stripTags(desc.Text:lower())
+												if dtxt:find(term, 1, true) then
+													keep = true
+													break
+												end
+											end
 											end
 										end
 										item.Visible = keep
@@ -2012,7 +2030,15 @@ local aa = {
 								end
 								end
 							end
-							sectionRoot.Visible = anyFound
+							-- also check the section title itself (if present)
+							local titleMatch = false
+							for _, ch in ipairs(sectionRoot:GetChildren()) do
+								if (ch:IsA("TextLabel") or ch:IsA("TextButton")) and ch.Text and stripTags(ch.Text:lower()):find(term, 1, true) then
+									titleMatch = true
+									break
+								end
+							end
+							sectionRoot.Visible = anyFound or titleMatch
 						end
 					end
 				end)
