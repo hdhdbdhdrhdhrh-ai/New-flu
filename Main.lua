@@ -1922,12 +1922,12 @@ local aa = {
 			local p = j(
 				"TextButton",
 				{
-					Size = UDim2.new(0, 0, 0, 26),
+					Size = UDim2.new(0.5, -5, 0, 26),
 					AnchorPoint = Vector2.new(0, 0),
-					Position = UDim2.new(0, 10, 1, 5),
+					Position = UDim2.new(0, 10, 1, 0),
 					BackgroundTransparency = n.Filled and 0 or 1,
 					Parent = o.Frame,
-					AutomaticSize = Enum.AutomaticSize.X,
+					AutomaticSize = Enum.AutomaticSize.None,
 					Text = "",
 				},
 				{
@@ -3159,19 +3159,19 @@ local aa = {
 			assert(f.Title, "Toggle - Missing Title")
 			local h, i =
 				{ Value = f.Default or false, Callback = f.Callback or function(h) end, Type = "Toggle" },
-				ac(aj.Element)(f.Title, f.Description, d.Container, true)
-			i.DescLabel.Size = UDim2.new(1, -54, 0, 14)
+				ac(aj.Element)(f.Title, f.Description, d.Container, false)
 			h.SetTitle = i.SetTitle
 			h.SetDesc = i.SetDesc
 			local j = ai("UIStroke", { Thickness = 0.8, ApplyStrokeMode = Enum.ApplyStrokeMode.Border })
 			local l = ai(
-				"Frame",
+				"TextButton",
 				{
 					Size = UDim2.fromOffset(16, 16),
-					AnchorPoint = Vector2.new(1, 0.5),
-					Position = UDim2.new(1, -10, 0.5, 0),
+					AnchorPoint = Vector2.new(0, 0.5),
+					Position = UDim2.new(0, 10, 0.5, 0),
 					Parent = i.Frame,
 					BackgroundTransparency = 1,
+					Text = "",
 				},
 				{ ai("UICorner", { CornerRadius = UDim.new(0, 4) }), j }
 			)
@@ -3193,6 +3193,7 @@ local aa = {
 					l.BackgroundTransparency = 0
 					j.Transparency = 1
 					m.Visible = true
+					m.ImageColor3 = Color3.fromRGB(255, 255, 255)
 				else
 					l.BackgroundTransparency = 1
 					j.Color = g.Accent
@@ -3215,7 +3216,7 @@ local aa = {
 				i:Destroy()
 				g.Options[e] = nil
 			end
-			ah.AddSignal(i.Frame.MouseButton1Click, function()
+			ah.AddSignal(l.MouseButton1Click, function()
 				h:SetValue(not h.Value)
 			end)
 			h:SetValue(h.Value)

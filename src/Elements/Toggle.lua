@@ -19,8 +19,7 @@ function Element:New(Idx, Config)
 		Type = "Toggle",
 	}
 
-	local ToggleFrame = require(Components.Element)(Config.Title, Config.Description, self.Container, true)
-	ToggleFrame.DescLabel.Size = UDim2.new(1, -54, 0, 14)
+	local ToggleFrame = require(Components.Element)(Config.Title, Config.Description, self.Container, false)
 
 	Toggle.SetTitle = ToggleFrame.SetTitle
 	Toggle.SetDesc = ToggleFrame.SetDesc
@@ -30,12 +29,13 @@ function Element:New(Idx, Config)
 		ApplyStrokeMode = Enum.ApplyStrokeMode.Border,
 	})
 
-	local ToggleSquare = New("Frame", {
+	local ToggleSquare = New("TextButton", {
 		Size = UDim2.fromOffset(16, 16),
-		AnchorPoint = Vector2.new(1, 0.5),
-		Position = UDim2.new(1, -10, 0.5, 0),
+		AnchorPoint = Vector2.new(0, 0.5),
+		Position = UDim2.new(0, 10, 0.5, 0),
 		Parent = ToggleFrame.Frame,
 		BackgroundTransparency = 1,
+		Text = "",
 	}, {
 		New("UICorner", {
 			CornerRadius = UDim.new(0, 4),
@@ -86,7 +86,7 @@ function Element:New(Idx, Config)
 		Library.Options[Idx] = nil
 	end
 
-	Creator.AddSignal(ToggleFrame.Frame.MouseButton1Click, function()
+	Creator.AddSignal(ToggleSquare.MouseButton1Click, function()
 		Toggle:SetValue(not Toggle.Value)
 	end)
 
