@@ -35,14 +35,22 @@ function Element:New(Idx, Config)
 	Dropdown.SetTitle = DropdownFrame.SetTitle
 	Dropdown.SetDesc = DropdownFrame.SetDesc
 
+	-- Small spacing before search box (like button)
+	local DropdownSpacing = New("Frame", {
+		Size = UDim2.new(1, 0, 0, 8),
+		BackgroundTransparency = 1,
+		LayoutOrder = 2.5,
+		Parent = DropdownFrame.LabelHolder,
+	})
+
 	-- Search box container with grey border
 	local SearchBoxContainer = New("Frame", {
-		Size = UDim2.new(1, -20, 0, 35),
-		Position = UDim2.new(0, 10, 1, 5),
-		BackgroundColor3 = Color3.fromRGB(20, 20, 20),
-		BackgroundTransparency = 0.3,
+		Size = UDim2.new(1, 0, 0, 30),
+		BackgroundColor3 = Color3.fromRGB(15, 15, 15),
+		BackgroundTransparency = 0,
 		BorderSizePixel = 0,
-		Parent = DropdownFrame.Frame,
+		Parent = DropdownFrame.LabelHolder,
+		LayoutOrder = 3,
 		AutomaticSize = Enum.AutomaticSize.Y,
 	}, {
 		New("UICorner", {
@@ -56,10 +64,17 @@ function Element:New(Idx, Config)
 		New("UIPadding", {
 			PaddingLeft = UDim.new(0, 8),
 			PaddingRight = UDim.new(0, 8),
-			PaddingTop = UDim.new(0, 5),
-			PaddingBottom = UDim.new(0, 5),
+			PaddingTop = UDim.new(0, 4),
+			PaddingBottom = UDim.new(0, 4),
 		}),
 	})
+
+	-- Update element frame and layout orders like button
+	DropdownFrame.TitleLabel.LayoutOrder = 1
+	DropdownFrame.DescLabel.LayoutOrder = 2
+	DropdownFrame.Frame.BackgroundTransparency = 1
+	DropdownFrame.Frame.BorderSizePixel = 0
+	DropdownFrame.Border.Transparency = 1
 
 	-- Tags and search input layout
 	local TagsLayout = New("UIListLayout", {
@@ -165,28 +180,34 @@ function Element:New(Idx, Config)
 	})
 	table.insert(Library.OpenFrames, DropdownHolderCanvas)
 
-	-- Create a tag/chip for a selected item
+	-- Create a tag/chip for a selected item (border only, no filled background)
 	function Dropdown:CreateTag(value)
 		if Dropdown.SelectedTags[value] then
 			return -- Tag already exists
 		end
 
 		local TagFrame = New("Frame", {
-			Size = UDim2.new(0, 0, 0, 25),
+			Size = UDim2.new(0, 0, 0, 22),
 			AutomaticSize = Enum.AutomaticSize.X,
-			BackgroundColor3 = Color3.fromRGB(60, 60, 60),
+			BackgroundTransparency = 1,
 			BorderSizePixel = 0,
 			Parent = SearchBoxContainer,
 			LayoutOrder = #Dropdown.SelectedTags,
 		}, {
 			New("UICorner", {
-				CornerRadius = UDim.new(0, 5),
+				CornerRadius = UDim.new(0, 4),
+			}),
+			New("UIStroke", {
+				Color = Color3.fromRGB(0, 180, 0),
+				Thickness = 1,
+				ApplyStrokeMode = Enum.ApplyStrokeMode.Border,
+				ThemeTag = { Color = "Accent" },
 			}),
 			New("UIPadding", {
-				PaddingLeft = UDim.new(0, 8),
-				PaddingRight = UDim.new(0, 5),
-				PaddingTop = UDim.new(0, 3),
-				PaddingBottom = UDim.new(0, 3),
+				PaddingLeft = UDim.new(0, 6),
+				PaddingRight = UDim.new(0, 4),
+				PaddingTop = UDim.new(0, 2),
+				PaddingBottom = UDim.new(0, 2),
 			}),
 		})
 
@@ -194,15 +215,15 @@ function Element:New(Idx, Config)
 			FillDirection = Enum.FillDirection.Horizontal,
 			HorizontalAlignment = Enum.HorizontalAlignment.Left,
 			VerticalAlignment = Enum.VerticalAlignment.Center,
-			Padding = UDim.new(0, 5),
+			Padding = UDim.new(0, 4),
 			Parent = TagFrame,
 		})
 
 		local TagLabel = New("TextLabel", {
 			Text = value,
-			TextColor3 = Color3.fromRGB(240, 240, 240),
-			TextSize = 12,
-			FontFace = Font.new("rbxasset://fonts/families/GothamSSm.json", Enum.FontWeight.Medium, Enum.FontStyle.Normal),
+			TextColor3 = Color3.fromRGB(200, 200, 200),
+			TextSize = 11,
+			FontFace = Font.new("rbxasset://fonts/families/GothamSSm.json", Enum.FontWeight.Regular, Enum.FontStyle.Normal),
 			BackgroundTransparency = 1,
 			AutomaticSize = Enum.AutomaticSize.XY,
 			Parent = TagFrame,
@@ -211,14 +232,14 @@ function Element:New(Idx, Config)
 			},
 		})
 
-		local XButton = New("TextButton", {
-			Text = "×",
-			TextColor3 = Color3.fromRGB(200, 200, 200),
-			TextSize = 16,
-			FontFace = Font.new("rbxasset://fonts/families/GothamSSm.json", Enum.FontWeight.Bold, Enum.FontStyle.Normal),
+		local XButton = New("ImageButton", {
+			Image = "rbxassetid://113507840995608",
+			ImageColor3 = Color3.fromRGB(180, 180, 180),
 			BackgroundTransparency = 1,
-			Size = UDim2.fromOffset(16, 16),
+			Size = UDim2.fromOffset(12, 12),
+			AutoButtonColor = false,
 			Parent = TagFrame,
+			ThemeTag = { ImageColor3 = "SubText" },
 		})
 
 		Creator.AddSignal(XButton.MouseButton1Click, function()
