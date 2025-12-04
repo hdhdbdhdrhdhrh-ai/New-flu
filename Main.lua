@@ -2941,11 +2941,17 @@ local aa = {
 							e("UIStroke", { Color = Color3.new(), Transparency = 0.93, ApplyStrokeMode = Enum.ApplyStrokeMode.Border }),
 						}
 					)
-					local G = e(
+					local G
+					if E then
+						G = Color3.fromRGB(100, 100, 255)
+					else
+						G = Color3.fromRGB(50, 50, 50)
+					end
+					local H = e(
 						"Frame",
 						{
 							Size = UDim2.fromOffset(16, 16),
-							BackgroundColor3 = E and Color3.fromRGB(100, 100, 255) or Color3.fromRGB(50, 50, 50),
+							BackgroundColor3 = G,
 							BorderSizePixel = 0,
 							Position = UDim2.fromOffset(8, 8),
 							Parent = F,
@@ -2962,11 +2968,11 @@ local aa = {
 								TextColor3 = Color3.fromRGB(255, 255, 255),
 								TextSize = 14,
 								FontFace = Font.new("rbxasset://fonts/families/GothamSSm.json", Enum.FontWeight.Bold, Enum.FontStyle.Normal),
-								Parent = G,
+								Parent = H,
 							}
 						)
 					end
-					local H = e(
+					local I = e(
 						"TextButton",
 						{
 							Size = UDim2.new(1, 0, 1, 0),
@@ -2982,7 +2988,7 @@ local aa = {
 						},
 						{ e("UIPadding", { PaddingLeft = UDim.new(0, 32), PaddingTop = UDim.new(0, 1), PaddingBottom = UDim.new(0, 1) }) }
 					)
-					c.AddSignal(H.MouseButton1Click, function()
+					c.AddSignal(I.MouseButton1Click, function()
 						if l.Multi then
 							if l.Value[D] then
 								l.Value[D] = nil
@@ -2992,8 +2998,8 @@ local aa = {
 								l:CreateTag(D)
 							end
 						else
-							for I, J in pairs(l.SelectedTags) do
-								l:RemoveTag(I)
+							for J, K in pairs(l.SelectedTags) do
+								l:RemoveTag(J)
 							end
 							l.Value = D
 							l:CreateTag(D)
@@ -3003,11 +3009,11 @@ local aa = {
 						k:SafeCallback(l.Callback, l.Value)
 						k:SafeCallback(l.Changed, l.Value)
 					end)
-					c.AddSignal(H.MouseEnter, function()
-						H.BackgroundTransparency = 0.92
+					c.AddSignal(I.MouseEnter, function()
+						I.BackgroundTransparency = 0.92
 					end)
-					c.AddSignal(H.MouseLeave, function()
-						H.BackgroundTransparency = 1
+					c.AddSignal(I.MouseLeave, function()
+						I.BackgroundTransparency = 1
 					end)
 				end
 				if #l.FilteredValues > 10 then
