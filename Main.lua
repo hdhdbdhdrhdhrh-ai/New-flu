@@ -1702,8 +1702,7 @@ local aa = {
 			v.TabHolder = s(
 				"ScrollingFrame",
 				{
-					Size = UDim2.new(1, 0, 1, -36), -- leave room at top for search
-					Position = UDim2.new(0, 0, 0, 36), -- start below search box
+					Size = UDim2.fromScale(1, 1),
 					BackgroundTransparency = 1,
 					ScrollBarImageTransparency = 1,
 					ScrollBarThickness = 0,
@@ -1721,7 +1720,7 @@ local aa = {
 					BackgroundTransparency = 1,
 					ClipsDescendants = true,
 				},
-	 			{ v.TabHolder, D }
+				{ v.TabHolder, D }
 			)
 			v.TabDisplay = s(
 				"TextLabel",
@@ -1756,28 +1755,6 @@ local aa = {
 			if e(k).UseAcrylic then
 				v.AcrylicPaint.AddParent(v.Root)
 			end
-
-			-- Search box over the tab list (above the tab column)
-			local TabSearchBox = s(
-				"TextBox",
-				{
-					Size = UDim2.new(0, t.TabWidth - 8, 0, 28),
-					Position = UDim2.new(0, 12, 0, 26),
-					BackgroundTransparency = 1,
-					BorderSizePixel = 1,
-					BorderColor3 = Color3.fromRGB(180, 180, 180),
-					Text = "",
-					PlaceholderText = "Search...",
-					TextColor3 = Color3.fromRGB(255, 255, 255),
-					TextXAlignment = "Left",
-					ClearTextOnFocus = false,
-					Parent = v.Root,
-					ZIndex = 50,
-					FontFace = Font.new("rbxasset://fonts/families/GothamSSm.json", Enum.FontWeight.Medium, Enum.FontStyle.Normal),
-					TextSize = 14,
-				},
-				{ s("UICorner", { CornerRadius = UDim.new(0, 4) }) }
-			)
 			local G, H =
 				l.GroupMotor.new({ X = v.Size.X.Offset, Y = v.Size.Y.Offset }),
 				l.GroupMotor.new({ X = v.Position.X.Offset, Y = v.Position.Y.Offset })
@@ -1962,82 +1939,6 @@ local aa = {
 				P:Open()
 			end
 			local N = e(p.Tab):Init(v)
-
-			-- Wire up the search box to filter items in the current tab's sections
-			if TabSearchBox then
-				TabSearchBox:GetPropertyChangedSignal("Text"):Connect(function()
-					local raw = TabSearchBox.Text or ""
-					local term = raw:lower():match("^%s*(.-)%s*$") or ""
-					local sel = (N and N.SelectedTab) or 0
-					if sel == 0 then
-						return
-					end
-					local container = N.Containers and N.Containers[sel]
-					if not container then
-						return
-					end
-					local function stripTags(s)
-						return (s:gsub("<[^>]*>", ""))
-					end
-					-- Empty term -> reset visibility
-					if term == "" then
-						for _, sectionRoot in ipairs(container:GetChildren()) do
-							if sectionRoot:IsA("Frame") then
-								sectionRoot.Visible = true
-								local itemsParent = sectionRoot:FindFirstChild("Container") or sectionRoot
-								if itemsParent then
-									for _, item in ipairs(itemsParent:GetChildren()) do
-										if item:IsA("GuiObject") then
-											item.Visible = true
-										end
-									end
-								end
-							end
-						end
-						return
-					end
-					-- Filter by term (only inside the current tab's container)
-					for _, sectionRoot in ipairs(container:GetChildren()) do
-						if sectionRoot:IsA("Frame") then
-							local itemsParent = sectionRoot:FindFirstChild("Container") or sectionRoot
-							local anyFound = false
-							-- iterate items inside the section
-							if itemsParent then
-								for _, item in ipairs(itemsParent:GetChildren()) do
-									if item:IsA("UIListLayout") or item:IsA("UIPadding") then
-										-- skip layout elements
-									elseif item:IsA("GuiObject") then
-										local keep = false
-										-- check the item itself
-										if (item:IsA("TextLabel") or item:IsA("TextButton") or item:IsA("TextBox")) and item.Text then
-											local txt = stripTags(item.Text:lower())
-											if txt:find(term, 1, true) then
-												keep = true
-											end
-										end
-										-- check descendants
-										if not keep then
-											for _, desc in ipairs(item:GetDescendants()) do
-												if (desc:IsA("TextLabel") or desc:IsA("TextButton") or desc:IsA("TextBox")) and desc.Text then
-												local dtxt = stripTags(desc.Text:lower())
-												if dtxt:find(term, 1, true) then
-													keep = true
-													break
-												end
-											end
-											end
-										end
-										item.Visible = keep
-										if keep then anyFound = true end
-									end
-								end
-							end
-							-- show section only if any child item matched
-							sectionRoot.Visible = anyFound
-						end
-					end
-				end)
-			end
 			function v.AddTab(O, P)
 				return N:New(P.Title, P.Icon, v.TabHolder)
 			end
