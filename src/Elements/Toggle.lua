@@ -23,6 +23,8 @@ function Element:New(Idx, Config)
 
 	Toggle.SetTitle = ToggleFrame.SetTitle
 	Toggle.SetDesc = ToggleFrame.SetDesc
+	Toggle.SetTitleGradient = ToggleFrame.SetTitleGradient
+	Toggle.SetDescGradient = ToggleFrame.SetDescGradient
 
 	local ToggleBorder = New("UIStroke", {
 		Thickness = 0.8,

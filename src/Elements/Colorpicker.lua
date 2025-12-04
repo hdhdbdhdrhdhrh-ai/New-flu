@@ -43,6 +43,8 @@ function Element:New(Idx, Config)
 
 	Colorpicker.SetTitle = ColorpickerFrame.SetTitle
 	Colorpicker.SetDesc = ColorpickerFrame.SetDesc
+	Colorpicker.SetTitleGradient = ColorpickerFrame.SetTitleGradient
+	Colorpicker.SetDescGradient = ColorpickerFrame.SetDescGradient
 
 	local DisplayFrameColor = New("Frame", {
 		Size = UDim2.fromScale(1, 1),

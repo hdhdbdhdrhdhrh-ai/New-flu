@@ -26,6 +26,8 @@ function Element:New(Idx, Config)
 
 	Input.SetTitle = InputFrame.SetTitle
 	Input.SetDesc = InputFrame.SetDesc
+	Input.SetTitleGradient = InputFrame.SetTitleGradient
+	Input.SetDescGradient = InputFrame.SetDescGradient
 
 	local Textbox = require(Components.Textbox)(InputFrame.Frame, true)
 	Textbox.Frame.Position = UDim2.new(1, -10, 0.5, 0)

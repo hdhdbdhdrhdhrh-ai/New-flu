@@ -34,6 +34,8 @@ function Element:New(Idx, Config)
 	
 	Dropdown.SetTitle = DropdownFrame.SetTitle
 	Dropdown.SetDesc = DropdownFrame.SetDesc
+	Dropdown.SetTitleGradient = DropdownFrame.SetTitleGradient
+	Dropdown.SetDescGradient = DropdownFrame.SetDescGradient
 
 	-- Small spacing before search box (like button)
 	local DropdownSpacing = New("Frame", {
