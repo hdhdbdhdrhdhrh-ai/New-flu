@@ -54,9 +54,14 @@ function Element:New(Idx, Config)
 
 	local SliderFill = New("Frame", {
 		Size = UDim2.new(0, 0, 1, 0),
-		BackgroundColor3 = Color3.fromRGB(0, 0, 0),
+		BackgroundColor3 = Library.Accent,
 		BackgroundTransparency = 0.5,
 	}, {
+		New("UIStroke", {
+			Color = Library.Accent,
+			Thickness = 1,
+			ApplyStrokeMode = Enum.ApplyStrokeMode.Border,
+		}),
 		New("UICorner", {
 			CornerRadius = UDim.new(1, 0),
 		}),
@@ -102,44 +107,12 @@ function Element:New(Idx, Config)
 		SliderRail,
 	})
 
-	Creator.AddSignal(SliderInner.MouseEnter, function()
-		SliderInner.BackgroundColor3 = Library.Accent
-		SliderFill.BackgroundColor3 = Library.Accent
-		SliderFill.BackgroundTransparency = 0.5
-		for _, child in ipairs(SliderInner:GetChildren()) do
-			if child:IsA("UIStroke") then
-				child.Color = Library.Accent
-			end
-		end
-	end)
-
-	Creator.AddSignal(SliderInner.MouseLeave, function()
-		if not Dragging then
-			SliderInner.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
-			SliderFill.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
-			SliderFill.BackgroundTransparency = 0.5
-			for _, child in ipairs(SliderInner:GetChildren()) do
-				if child:IsA("UIStroke") then
-					child.Color = Color3.fromRGB(128, 128, 128)
-				end
-			end
-		end
-	end)
-
 	Creator.AddSignal(SliderDot.InputBegan, function(Input)
 		if
 			Input.UserInputType == Enum.UserInputType.MouseButton1
 			or Input.UserInputType == Enum.UserInputType.Touch
 		then
 			Dragging = true
-			SliderInner.BackgroundColor3 = Library.Accent
-			SliderFill.BackgroundColor3 = Library.Accent
-			SliderFill.BackgroundTransparency = 0.5
-			for _, child in ipairs(SliderInner:GetChildren()) do
-				if child:IsA("UIStroke") then
-					child.Color = Library.Accent
-				end
-			end
 		end
 	end)
 
@@ -149,14 +122,6 @@ function Element:New(Idx, Config)
 			or Input.UserInputType == Enum.UserInputType.Touch
 		then
 			Dragging = false
-			SliderInner.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
-			SliderFill.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
-			SliderFill.BackgroundTransparency = 0.5
-			for _, child in ipairs(SliderInner:GetChildren()) do
-				if child:IsA("UIStroke") then
-					child.Color = Color3.fromRGB(128, 128, 128)
-				end
-			end
 		end
 	end)
 
