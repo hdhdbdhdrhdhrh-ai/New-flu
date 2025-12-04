@@ -38,12 +38,13 @@ do
 
     Tabs.Main:AddParagraph({
         Title = "Paragraph",
-        Content = "This is a paragraph.\nSecond line!"
-    }):SetTitleGradient({
-        Enabled = true,
-        Color1 = Color3.fromRGB(255, 100, 150),  -- Pink
-        Color2 = Color3.fromRGB(100, 200, 255),  -- Blue
-        Rotation = 45
+        Content = "This is a paragraph.\nSecond line!",
+        Gradient = {
+            Enabled = true,
+            Color1 = Color3.fromRGB(255, 100, 150),  -- Pink
+            Color2 = Color3.fromRGB(100, 150, 255),  -- Blue
+            Rotation = 45
+        }
     })
 
     -- Create a collapsible section with gradient (closed by default)
@@ -145,13 +146,6 @@ do
 
     Options.MyToggle:SetValue(false)
 
-    -- Add gradient to toggle title
-    Toggle:SetTitleGradient({
-        Enabled = true,
-        Color1 = Color3.fromRGB(255, 200, 100),  -- Orange
-        Color2 = Color3.fromRGB(255, 100, 200),  -- Pink
-        Rotation = 90
-    })
 
     
     local Slider = Section2:AddSlider("Slider", {
@@ -171,14 +165,6 @@ do
     end)
 
     Slider:SetValue(3)
-
-    -- Add gradient to slider title
-    Slider:SetTitleGradient({
-        Enabled = true,
-        Color1 = Color3.fromRGB(100, 255, 100),  -- Light green
-        Color2 = Color3.fromRGB(255, 100, 100),  -- Red
-        Rotation = 0
-    })
 
 
 
@@ -345,13 +331,14 @@ local BorderDemoSection = Tabs.Main:AddSection({
 })
 
 BorderDemoSection:AddParagraph({
-    Title = "Border Feature & Gradients",
-    Content = "Notice: Paragraphs no longer have grey borders!\nYou can now apply gradients to any text element using SetTitleGradient() or SetDescGradient()."
-}):SetTitleGradient({
-    Enabled = true,
-    Color1 = Color3.fromRGB(255, 255, 100),  -- Yellow
-    Color2 = Color3.fromRGB(100, 255, 255),  -- Cyan
-    Rotation = 180
+    Title = "Border Feature",
+    Content = "Notice the grey borders between elements and around the tab list for better visual separation.",
+    Gradient = {
+        Enabled = true,
+        Color1 = Color3.fromRGB(150, 200, 255),  -- Light blue
+        Color2 = Color3.fromRGB(255, 150, 200),  -- Pink
+        Rotation = -45
+    }
 })
 
 BorderDemoSection:AddToggle("DemoToggle1", {Title = "First Toggle", Default = false})
