@@ -67,6 +67,13 @@ local function applyGradientToLabel(label, themeResetColor,
 		return
 	end
 	removeGradientFrom(label)
+	-- Remove from theme registry to prevent theme system from overriding the gradient color
+	if Creator.Registry and Creator.Registry[label] then
+		local registryData = Creator.Registry[label]
+		if registryData and registryData.Properties then
+			registryData.Properties.TextColor3 = nil
+		end
+	end
 	-- Ensure white base so gradient is vivid
 	label.TextColor3 = Color3.fromRGB(255, 255, 255)
 	local props = {
