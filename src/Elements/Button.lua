@@ -14,9 +14,12 @@ function Element:New(Config)
 
 	local ButtonFrame = require(Components.Element)(Config.Title, Config.Description, self.Container, false)
 
+	local buttonColor = Config.Color or Color3.fromRGB(80, 80, 80) -- Default grey, or custom color
+
 	local ButtonStroke = New("UIStroke", {
 		Thickness = 0.6,
 		ApplyStrokeMode = Enum.ApplyStrokeMode.Border,
+		Color = buttonColor,
 	})
 
 	local ButtonText = New("TextLabel", {
@@ -38,6 +41,7 @@ function Element:New(Config)
 	local ClickableButton = New("TextButton", {
 		Size = UDim2.new(0, 0, 0, 26),
 		BackgroundTransparency = Config.Filled and 0 or 1,
+		BackgroundColor3 = Config.Filled and buttonColor or nil,
 		Position = UDim2.new(0, 0, 0, 0),
 		AnchorPoint = Vector2.new(0, 0),
 		Text = "",
@@ -76,9 +80,9 @@ function Element:New(Config)
 
 	function ButtonFrame:UpdateColor()
 		if Config.Filled then
-			ClickableButton.BackgroundColor3 = self.Library.Accent
+			ClickableButton.BackgroundColor3 = Config.Color or self.Library.Accent
 		else
-			ButtonStroke.Color = self.Library.Accent
+			ButtonStroke.Color = Config.Color or Color3.fromRGB(80, 80, 80)
 		end
 	end
 

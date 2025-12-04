@@ -677,12 +677,25 @@ local aa = {
 				task.wait(0.15)
 				s.TintFrame:Destroy()
 			end
-			function s.Button(z, A, B)
+			function s.Button(z, A, B, buttonOptions)
 				s.Buttons = s.Buttons + 1
 				A = A or "Button"
 				B = B or function() end
+				buttonOptions = buttonOptions or {}
 				local C = e(k.Components.Button)("", s.ButtonHolder, true)
 				C.Title.Text = A
+				
+				-- Apply custom color and filled style
+				if buttonOptions.Filled then
+					C.Frame.BackgroundTransparency = 0
+					C.Frame.BackgroundColor3 = buttonOptions.Color or Color3.fromRGB(80, 80, 80)
+				elseif buttonOptions.Color then
+					local stroke = C.Frame:FindFirstChildOfClass("UIStroke")
+					if stroke then
+						stroke.Color = buttonOptions.Color
+					end
+				end
+				
 				for D, E in next, s.ButtonHolder:GetChildren() do
 					if E:IsA("TextButton") then
 						E.Size = UDim2.new(1 / s.Buttons, -(((s.Buttons - 1) * 10) / s.Buttons), 0, 32)
@@ -1627,11 +1640,14 @@ local aa = {
 					Content = "Are you sure you want to unload the interface?",
 					Buttons = { {
 						Title = "Yes",
+						Filled = true,
+						Color = Color3.fromRGB(180, 60, 60),
 						Callback = function()
 							p:Destroy()
 						end,
 					}, {
 						Title = "No",
+						Color = Color3.fromRGB(80, 80, 80),
 					} },
 				})
 			end)
@@ -1918,7 +1934,7 @@ local aa = {
 					P.Root.Size = UDim2.fromOffset(v.Size.X.Offset - 120, Q.TextBounds.Y + 150)
 				end
 				for R, S in next, O.Buttons do
-					P:Button(S.Title, S.Callback)
+					P:Button(S.Title, S.Callback, { Color = S.Color, Filled = S.Filled })
 				end
 				P:Open()
 			end
@@ -2105,7 +2121,8 @@ local aa = {
 			assert(n.Title, "Button - Missing Title")
 			n.Callback = n.Callback or function() end
 			local o = e(k.Element)(n.Title, n.Description, m.Container, false)
-			local q = j("UIStroke", { Thickness = 0.6, ApplyStrokeMode = Enum.ApplyStrokeMode.Border })
+			local buttonColor = n.Color or Color3.fromRGB(80, 80, 80) -- Default grey, or custom color
+			local q = j("UIStroke", { Thickness = 0.6, ApplyStrokeMode = Enum.ApplyStrokeMode.Border, Color = buttonColor })
 			local r = j("TextLabel", {
 				Size = UDim2.fromScale(1, 1),
 				BackgroundTransparency = 1,
@@ -2125,6 +2142,7 @@ local aa = {
 				{
 					Size = UDim2.new(0, 0, 0, 26),
 					BackgroundTransparency = n.Filled and 0 or 1,
+					BackgroundColor3 = n.Filled and buttonColor or nil,
 					Position = UDim2.new(0, 0, 0, 0),
 					AnchorPoint = Vector2.new(0, 0),
 					Text = "",
@@ -2152,9 +2170,9 @@ local aa = {
 			o.Border.Transparency = 1
 			function o.UpdateColor(s)
 				if n.Filled then
-					p.BackgroundColor3 = m.Library.Accent
+					p.BackgroundColor3 = n.Color or m.Library.Accent
 				else
-					q.Color = m.Library.Accent
+					q.Color = n.Color or Color3.fromRGB(80, 80, 80)
 				end
 			end
 			o:UpdateColor()
