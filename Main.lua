@@ -2466,7 +2466,7 @@ local aa = {
 			)
 			local u = e(
 				"Frame",
-				{ Size = UDim2.fromScale(1, 0.6), BackgroundTransparency = 1 },
+				{ Size = UDim2.fromScale(1, 0.6), BackgroundColor3 = Color3.fromRGB(0, 0, 0), BackgroundTransparency = 0 },
 				{
 					t,
 					e("UICorner", { CornerRadius = UDim.new(0, 7) }),

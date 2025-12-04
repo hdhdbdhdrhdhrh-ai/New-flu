@@ -3,7 +3,7 @@ local SaveManager = loadstring(game:HttpGet("https://raw.githubusercontent.com/d
 local InterfaceManager = loadstring(game:HttpGet("https://raw.githubusercontent.com/dawid-scripts/Fluent/master/Addons/InterfaceManager.lua"))()
 
 -- Set custom accent color BEFORE creating the window
-Fluent.Accent = Color3.fromRGB(0, 255, 0)
+Fluent.Accent = Color3.fromRGB(0, 235, 0)
 
 local Window = Fluent:CreateWindow({
     Title = "Fluent " .. Fluent.Version,
