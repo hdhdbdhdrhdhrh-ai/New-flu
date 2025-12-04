@@ -73,10 +73,6 @@ return function(Title, Desc, Parent, Hover)
 		Parent = Parent,
 		AutomaticSize = Enum.AutomaticSize.Y,
 		LayoutOrder = 7,
-		ThemeTag = {
-			BackgroundColor3 = "Element",
-			BackgroundTransparency = "ElementTransparency",
-		},
 	}, {
 		New("UICorner", {
 			CornerRadius = UDim.new(0, 4),
