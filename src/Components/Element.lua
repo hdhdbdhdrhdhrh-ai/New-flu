@@ -42,8 +42,8 @@ return function(Title, Desc, Parent, Hover)
 		AutomaticSize = Enum.AutomaticSize.Y,
 		BackgroundColor3 = Color3.fromRGB(255, 255, 255),
 		BackgroundTransparency = 1,
-		Position = UDim2.fromOffset(10, 0),
-		Size = UDim2.new(1, -28, 0, 0),
+		Position = UDim2.fromOffset(35, 0),
+		Size = UDim2.new(1, -63, 0, 0),
 	}, {
 		New("UIListLayout", {
 			SortOrder = Enum.SortOrder.LayoutOrder,

@@ -37,11 +37,11 @@ function Element:New(Config)
 	-- Make the button frame itself clickable
 	ButtonFrame.Frame.Size = UDim2.new(1, 0, 0, 26)
 	ButtonFrame.Frame.AutomaticSize = Enum.AutomaticSize.None
-	ButtonFrame.Frame.Position = UDim2.new(0, 0, 1, 0)
+	ButtonFrame.Frame.Position = UDim2.new(0, 0, 1, -25)
 	
 	-- Convert Frame to TextButton
 	local ClickableButton = New("TextButton", {
-		Size = UDim2.new(0.5, -5, 0, 26),
+		Size = UDim2.new(1, 0, 1, 0),
 		BackgroundTransparency = Config.Filled and 0 or 1,
 		Position = UDim2.fromOffset(10, 0),
 		AnchorPoint = Vector2.new(0, 0),
