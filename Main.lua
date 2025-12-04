@@ -1813,8 +1813,12 @@ local aa = {
 			end
 		end
 		function k.GetThemeProperty(m)
-			if i[e(h).Theme][m] then
-				return i[e(h).Theme][m]
+			local n = e(h)
+			if m == "Accent" then
+				return n.Accent
+			end
+			if i[n.Theme] and i[n.Theme][m] then
+				return i[n.Theme][m]
 			end
 			return i.Dark[m]
 		end

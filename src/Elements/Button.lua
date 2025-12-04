@@ -12,7 +12,7 @@ function Element:New(Config)
 	assert(Config.Title, "Button - Missing Title")
 	Config.Callback = Config.Callback or function() end
 
-	local ButtonFrame = require(Components.Element)(Config.Title, Config.Description, self.Container, true)
+	local ButtonFrame = require(Components.Element)(Config.Title, Config.Description, self.Container, false)
 
 	local ButtonStroke = New("UIStroke", {
 		Thickness = 0.6,
@@ -25,22 +25,29 @@ function Element:New(Config)
 		Text = Config.ButtonText or "Button",
 		TextColor3 = Config.TextColor or Color3.fromRGB(255, 255, 255),
 		TextSize = 13,
-		AutomaticSize = Enum.AutomaticSize.X,
 		FontFace = Font.new(
 			"rbxasset://fonts/families/GothamSSm.json",
 			Enum.FontWeight.Medium,
 			Enum.FontStyle.Normal
 		),
+		TextXAlignment = Enum.TextXAlignment.Center,
+		TextYAlignment = Enum.TextYAlignment.Center,
 	})
 
-	local ButtonBox = New("TextButton", {
-		Size = UDim2.new(0, 0, 0, 26),
-		AnchorPoint = Vector2.new(0, 0),
-		Position = UDim2.new(0, 10, 1, 5),
+	-- Make the button frame itself clickable
+	ButtonFrame.Frame.Size = UDim2.new(1, 0, 0, 26)
+	ButtonFrame.Frame.AutomaticSize = Enum.AutomaticSize.None
+	ButtonFrame.Frame.Position = UDim2.new(0, 0, 1, 5)
+	
+	-- Convert Frame to TextButton
+	local ClickableButton = New("TextButton", {
+		Size = UDim2.new(1, 0, 1, 0),
 		BackgroundTransparency = Config.Filled and 0 or 1,
-		Parent = ButtonFrame.Frame,
-		AutomaticSize = Enum.AutomaticSize.X,
+		Position = UDim2.fromOffset(10, 0),
+		AnchorPoint = Vector2.new(0, 0),
 		Text = "",
+		Parent = ButtonFrame.Frame.Parent,
+		AutomaticSize = Enum.AutomaticSize.None,
 	}, {
 		New("UICorner", {
 			CornerRadius = UDim.new(0, 4),
@@ -52,10 +59,14 @@ function Element:New(Config)
 		ButtonStroke,
 		ButtonText,
 	})
+	
+	-- Remove the old frame
+	ButtonFrame.Frame:Destroy()
+	ButtonFrame.Frame = ClickableButton
 
 	function ButtonFrame:UpdateColor()
 		if Config.Filled then
-			ButtonBox.BackgroundColor3 = self.Library.Accent
+			ClickableButton.BackgroundColor3 = self.Library.Accent
 		else
 			ButtonStroke.Color = self.Library.Accent
 		end
@@ -63,7 +74,7 @@ function Element:New(Config)
 
 	ButtonFrame:UpdateColor()
 
-	Creator.AddSignal(ButtonBox.MouseButton1Click, function()
+	Creator.AddSignal(ClickableButton.MouseButton1Click, function()
 		self.Library:SafeCallback(Config.Callback)
 	end)
 
