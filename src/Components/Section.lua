@@ -32,6 +32,7 @@ return function(Title, Parent, DefaultOpen)
 		Size = UDim2.new(1, 0, 0, 30),
 		Position = UDim2.new(0, 0, 0, 5),
 		BackgroundTransparency = 1,
+		AutoButtonColor = false,
 		Text = "",
 		Parent = Section.Root,
 	})
