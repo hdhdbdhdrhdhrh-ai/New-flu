@@ -64,7 +64,7 @@ return function(Title, Parent, DefaultOpen)
 		BackgroundTransparency = 1,
 		Image = "rbxassetid://6034818372",
 		ImageColor3 = Color3.fromRGB(180, 180, 180),
-		Rotation = DefaultOpen and 90 or 0,
+		Rotation = DefaultOpen and 0 or 90,
 		Parent = Section.Header,
 		ThemeTag = {
 			ImageColor3 = "SubText",
@@ -105,11 +105,11 @@ return function(Title, Parent, DefaultOpen)
 		
 		local TweenService = game:GetService("TweenService")
 		
-		-- Animate arrow rotation (0 = closed, 90 = open pointing right)
+		-- Animate arrow rotation (90 = closed pointing right, 0 = open pointing down)
 		local rotationTween = TweenService:Create(
 			Section.Arrow,
-			TweenInfo.new(0.25, Enum.EasingStyle.Quart, Enum.EasingDirection.Out),
-			{ Rotation = Section.Open and 90 or 0 }
+			TweenInfo.new(0.15, Enum.EasingStyle.Quad, Enum.EasingDirection.Out),
+			{ Rotation = Section.Open and 0 or 90 }
 		)
 		rotationTween:Play()
 		
@@ -118,14 +118,12 @@ return function(Title, Parent, DefaultOpen)
 			Section.Container.Visible = true
 			Section.Container.Size = UDim2.new(1, 0, 0, 0)
 			
-			-- Wait for layout to calculate content size
-			task.wait()
 			local contentHeight = Section.Layout.AbsoluteContentSize.Y + 13  -- padding
 			
 			-- Animate container expansion
 			local expandTween = TweenService:Create(
 				Section.Container,
-				TweenInfo.new(0.3, Enum.EasingStyle.Quart, Enum.EasingDirection.Out),
+				TweenInfo.new(0.2, Enum.EasingStyle.Quad, Enum.EasingDirection.Out),
 				{ Size = UDim2.new(1, 0, 0, contentHeight) }
 			)
 			expandTween:Play()
@@ -136,7 +134,7 @@ return function(Title, Parent, DefaultOpen)
 			-- Closing animation
 			local collapseTween = TweenService:Create(
 				Section.Container,
-				TweenInfo.new(0.2, Enum.EasingStyle.Quart, Enum.EasingDirection.Out),
+				TweenInfo.new(0.15, Enum.EasingStyle.Quad, Enum.EasingDirection.Out),
 				{ Size = UDim2.new(1, 0, 0, 0) }
 			)
 			collapseTween:Play()
