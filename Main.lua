@@ -3060,6 +3060,8 @@ local aa = {
 				{ Value = nil, Min = f.Min, Max = f.Max, Rounding = f.Rounding, Callback = f.Callback or function(h) end, Type = "Slider" },
 				false,
 				ac(aj.Element)(f.Title, f.Description, d.Container, false)
+			local sliderPadding = ai("UIPadding", { PaddingBottom = UDim.new(0, 15) })
+			sliderPadding.Parent = j.Frame
 			h.SetTitle = j.SetTitle
 			h.SetDesc = j.SetDesc
 			local k = ai(
@@ -3104,7 +3106,7 @@ local aa = {
 				{
 					Size = UDim2.new(1, -120, 0, 4),
 					AnchorPoint = Vector2.new(0, 0),
-					Position = UDim2.new(0, 10, 1, 5),
+					Position = UDim2.new(0, 5, 1, 5),
 					BackgroundColor3 = Color3.fromRGB(0, 0, 0),
 					BackgroundTransparency = 0,
 					Parent = j.Frame,

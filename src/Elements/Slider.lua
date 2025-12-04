@@ -29,6 +29,12 @@ function Element:New(Idx, Config)
 	local Dragging = false
 
 	local SliderFrame = require(Components.Element)(Config.Title, Config.Description, self.Container, false)
+	
+	-- Add padding below slider to prevent overlap with next element
+	local SliderPadding = New("UIPadding", {
+		PaddingBottom = UDim.new(0, 15),
+	})
+	SliderPadding.Parent = SliderFrame.Frame
 
 	Slider.SetTitle = SliderFrame.SetTitle
 	Slider.SetDesc = SliderFrame.SetDesc
@@ -89,7 +95,7 @@ function Element:New(Idx, Config)
 	local SliderInner = New("Frame", {
 		Size = UDim2.new(1, -120, 0, 4),
 		AnchorPoint = Vector2.new(0, 0),
-		Position = UDim2.new(0, 10, 1, 5),
+		Position = UDim2.new(0, 5, 1, 5),
 		BackgroundColor3 = Color3.fromRGB(0, 0, 0),
 		BackgroundTransparency = 0,
 		Parent = SliderFrame.Frame,
