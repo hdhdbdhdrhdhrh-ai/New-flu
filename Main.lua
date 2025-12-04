@@ -718,7 +718,7 @@ local aa = {
 		local h = d.Parent.Parent
 		local i, j = e(h.Packages.Flipper), e(h.Creator)
 		local k, l = j.New, i.Spring.new
-		return function(m, n, o, p, u)
+		return function(m, n, o, p)
 			local q = {}
 			q.TitleLabel = k(
 				"TextLabel",
@@ -776,48 +776,10 @@ local aa = {
 			q.Border = k(
 				"UIStroke",
 				{
-					Transparency = 0.3,
+					Transparency = 1,
 					ApplyStrokeMode = Enum.ApplyStrokeMode.Border,
 					Color = Color3.fromRGB(0, 0, 0),
 					ThemeTag = { Color = "ElementBorder" },
-				}
-			)
-			q.TopLine = k(
-				"Frame",
-				{
-					Size = UDim2.new(1, 0, 0, 1),
-					Position = UDim2.new(0, 0, 0, 0),
-					AnchorPoint = Vector2.new(0, 0),
-					BackgroundTransparency = 1,
-					BorderSizePixel = 0,
-					LayoutOrder = 0,
-				},
-				{
-					k("UIStroke", {
-						Thickness = 0.5,
-						Color = Color3.fromRGB(100, 100, 100),
-						Transparency = 0.3,
-						ApplyStrokeMode = Enum.ApplyStrokeMode.Border,
-					}),
-				}
-			)
-			q.BottomLine = k(
-				"Frame",
-				{
-					Size = UDim2.new(1, 0, 0, 1),
-					Position = UDim2.new(0, 0, 1, 0),
-					AnchorPoint = Vector2.new(0, 1),
-					BackgroundTransparency = 1,
-					BorderSizePixel = 0,
-					LayoutOrder = 3,
-				},
-				{
-					k("UIStroke", {
-						Thickness = 0.5,
-						Color = Color3.fromRGB(100, 100, 100),
-						Transparency = 0.3,
-						ApplyStrokeMode = Enum.ApplyStrokeMode.Border,
-					}),
 				}
 			)
 			q.Frame = k(
@@ -832,42 +794,8 @@ local aa = {
 					LayoutOrder = 7,
 					ClipsDescendants = true,
 				},
-				{ k("UICorner", { CornerRadius = UDim.new(0, 4) }), q.Border, q.LabelHolder, q.TopLine, q.BottomLine }
+				{ k("UICorner", { CornerRadius = UDim.new(0, 4) }), q.Border, q.LabelHolder }
 			)
-
-			-- hide by default; user can enable via fifth parameter
-			q.TopLine.Visible = false
-			q.BottomLine.Visible = false
-
-			function q.SetBorders(r, s)
-				local top, bottom = false, false
-				if s == nil then
-					-- if r passed directly as boolean/table/string
-					s = r
-					r = nil
-				end
-				local B = s or r
-				if B == nil then
-					return
-				end
-				if type(B) == "boolean" then
-					top, bottom = B, B
-				elseif type(B) == "string" then
-					local ss = B:lower()
-					if ss == "top" then
-						top = true
-					elseif ss == "bottom" then
-						bottom = true
-					elseif ss == "both" then
-						top, bottom = true, true
-					end
-				elseif type(B) == "table" then
-					top = B.Top or B.top or false
-					bottom = B.Bottom or B.bottom or false
-				end
-				q.TopLine.Visible = top
-				q.BottomLine.Visible = bottom
-			end
 			function q.SetTitle(r, s)
 				q.TitleLabel.Text = s
 			end
@@ -887,9 +815,6 @@ local aa = {
 			end
 			q:SetTitle(m)
 			q:SetDesc(n)
-			if u then
-				q.SetBorders(u)
-			end
 			if p then
 				local r, s, t =
 					h.Themes,
@@ -1117,16 +1042,6 @@ local aa = {
 				LayoutOrder = 7,
 			})
 			
-			-- Top separator line
-			m.TopLine = j("Frame", {
-				Size = UDim2.new(1, 0, 0, 1),
-				Position = UDim2.new(0, 0, 0, 0),
-				BackgroundColor3 = Color3.fromRGB(100, 100, 100),
-				BackgroundTransparency = 0.3,
-				BorderSizePixel = 0,
-				Parent = m.Root,
-			})
-			
 			-- Section header (clickable, transparent)
 			m.Header = j("TextButton", {
 				Size = UDim2.new(1, 0, 0, 30),
@@ -1155,16 +1070,6 @@ local aa = {
 					Enum.FontStyle.Normal
 				),
 				Parent = m.Header,
-			})
-			
-			-- Bottom separator line
-			m.BottomLine = j("Frame", {
-				Size = UDim2.new(1, 0, 0, 1),
-				Position = UDim2.new(0, 0, 0, 35),
-				BackgroundColor3 = Color3.fromRGB(100, 100, 100),
-				BackgroundTransparency = 0.3,
-				BorderSizePixel = 0,
-				Parent = m.Root,
 			})
 			
 			-- Arrow icon
@@ -1785,15 +1690,7 @@ local aa = {
 					CanvasSize = UDim2.fromScale(0, 0),
 					ScrollingDirection = Enum.ScrollingDirection.Y,
 				},
-				{ 
-					s("UIListLayout", { Padding = UDim.new(0, 4) }),
-					s("UIStroke", {
-						Thickness = 0.5,
-						Color = Color3.fromRGB(100, 100, 100),
-						Transparency = 0.3,
-						ApplyStrokeMode = Enum.ApplyStrokeMode.Border,
-					}),
-				}
+				{ s("UIListLayout", { Padding = UDim.new(0, 4) }) }
 			)
 			local F = s(
 				"Frame",
@@ -2203,7 +2100,7 @@ local aa = {
 		function l.New(m, n)
 			assert(n.Title, "Button - Missing Title")
 			n.Callback = n.Callback or function() end
-			local o = e(k.Element)(n.Title, n.Description, m.Container, false, n.Borders)
+			local o = e(k.Element)(n.Title, n.Description, m.Container, false)
 			local buttonColor = n.Color or Color3.fromRGB(80, 80, 80) -- Default grey, or custom color
 			local q = j("UIStroke", { Thickness = 0.6, ApplyStrokeMode = Enum.ApplyStrokeMode.Border, Color = buttonColor })
 			local r = j("TextLabel", {
@@ -2321,7 +2218,7 @@ local aa = {
 				z.Vib = E
 			end
 			z:SetHSVFromRGB(z.Value)
-			local A = e(t.Element)(x.Title, x.Description, v.Container, true, x.Borders)
+			local A = e(t.Element)(x.Title, x.Description, v.Container, true)
 			z.SetTitle = A.SetTitle
 			z.SetDesc = A.SetDesc
 			local B = s(
@@ -2714,7 +2611,7 @@ local aa = {
 				Type = "Dropdown",
 				Callback = j.Callback or function() end,
 			}
-			local m = ac(f.Element)(j.Title, j.Description, h.Container, false, j.Borders)
+			local m = ac(f.Element)(j.Title, j.Description, h.Container, false)
 			l.SetTitle = m.SetTitle
 			l.SetDesc = m.SetDesc
 
@@ -3201,7 +3098,7 @@ local aa = {
 					Callback = f.Callback or function(h) end,
 					Type = "Input",
 				},
-				ac(aj.Element)(f.Title, f.Description, d.Container, false, f.Borders)
+				ac(aj.Element)(f.Title, f.Description, d.Container, false)
 			h.SetTitle = i.SetTitle
 			h.SetDesc = i.SetDesc
 			local j = ac(aj.Textbox)(i.Frame, true)
@@ -3271,7 +3168,7 @@ local aa = {
 					ChangedCallback = f.ChangedCallback or function(h) end,
 				},
 				false,
-				ac(aj.Element)(f.Title, f.Description, d.Container, true, f.Borders)
+				ac(aj.Element)(f.Title, f.Description, d.Container, true)
 			h.SetTitle = j.SetTitle
 			h.SetDesc = j.SetDesc
 			local k = ai(
@@ -3434,7 +3331,7 @@ local aa = {
 		function aj.New(c, d)
 			assert(d.Title, "Paragraph - Missing Title")
 			d.Content = d.Content or ""
-			local e = ac(ag.Element)(d.Title, d.Content, aj.Container, false, d.Borders)
+			local e = ac(ag.Element)(d.Title, d.Content, aj.Container, false)
 			e.Frame.BackgroundTransparency = 0.92
 			e.Border.Transparency = 0.6
 			return e
@@ -3458,7 +3355,7 @@ local aa = {
 			local h, i, j =
 				{ Value = nil, Min = f.Min, Max = f.Max, Rounding = f.Rounding, Callback = f.Callback or function(h) end, Type = "Slider" },
 				false,
-				ac(aj.Element)(f.Title, f.Description, d.Container, false, f.Borders)
+				ac(aj.Element)(f.Title, f.Description, d.Container, false)
 			local sliderPadding = ai("UIPadding", { PaddingBottom = UDim.new(0, 15) })
 			sliderPadding.Parent = j.Frame
 			h.SetTitle = j.SetTitle
@@ -3577,7 +3474,7 @@ local aa = {
 			assert(f.Title, "Toggle - Missing Title")
 			local h, i =
 				{ Value = f.Default or false, Callback = f.Callback or function(h) end, Type = "Toggle" },
-				ac(aj.Element)(f.Title, f.Description, d.Container, false, f.Borders)
+				ac(aj.Element)(f.Title, f.Description, d.Container, false)
 			h.SetTitle = i.SetTitle
 			h.SetDesc = i.SetDesc
 			local j = ai("UIStroke", { Thickness = 0.8, ApplyStrokeMode = Enum.ApplyStrokeMode.Border })

@@ -68,12 +68,6 @@ return function(Config)
 		New("UIListLayout", {
 			Padding = UDim.new(0, 4),
 		}),
-		New("UIStroke", {
-			Thickness = 0.5,
-			Color = Color3.fromRGB(100, 100, 100),
-			Transparency = 0.3,
-			ApplyStrokeMode = Enum.ApplyStrokeMode.Border,
-		}),
 	})
 
 	local TabFrame = New("Frame", {
