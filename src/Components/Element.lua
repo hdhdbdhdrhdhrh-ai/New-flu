@@ -59,12 +59,20 @@ return function(Title, Desc, Parent, Hover)
 	})
 
 	Element.Border = New("UIStroke", {
-		Transparency = 1,
+		Transparency = 0.3,
+		Thickness = 0.5,
 		ApplyStrokeMode = Enum.ApplyStrokeMode.Border,
-		Color = Color3.fromRGB(0, 0, 0),
-		ThemeTag = {
-			Color = "ElementBorder",
-		},
+		Color = Color3.fromRGB(100, 100, 100),
+	})
+
+	Element.BottomLine = New("Frame", {
+		Size = UDim2.new(1, 0, 0, 1),
+		Position = UDim2.new(0, 0, 1, 0),
+		AnchorPoint = Vector2.new(0, 1),
+		BackgroundColor3 = Color3.fromRGB(100, 100, 100),
+		BackgroundTransparency = 0.3,
+		BorderSizePixel = 0,
+		LayoutOrder = 3,
 	})
 
 	Element.Frame = New("Frame", {
@@ -84,6 +92,7 @@ return function(Title, Desc, Parent, Hover)
 		}),
 		Element.Border,
 		Element.LabelHolder,
+		Element.BottomLine,
 	})
 
 	function Element:SetTitle(Set)
