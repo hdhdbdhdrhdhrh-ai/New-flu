@@ -80,6 +80,162 @@ return function(Config)
 		Selector,
 	})
 
+	-- Global search box over the tabs (border-only, no background)
+	local SearchBoxContainer = New("Frame", {
+		Size = UDim2.new(1, -12, 0, 34),
+		Position = UDim2.new(0, 6, 0, 6),
+		BackgroundTransparency = 1,
+		Parent = TabFrame,
+		ZIndex = 10,
+	}, {
+		New("UICorner", { CornerRadius = UDim.new(0, 6) }),
+		New("UIStroke", { Color = Color3.fromRGB(80, 80, 80), Thickness = 1, ApplyStrokeMode = Enum.ApplyStrokeMode.Border }),
+		New("UIPadding", { PaddingLeft = UDim.new(0, 8), PaddingRight = UDim.new(0, 8), PaddingTop = UDim.new(0, 4), PaddingBottom = UDim.new(0, 4) }),
+	})
+
+	local SearchInput = New("TextBox", {
+		Size = UDim2.new(1, -24, 1, -8),
+		Position = UDim2.fromOffset(0, 0),
+		BackgroundTransparency = 1,
+		Text = "",
+		PlaceholderText = "Search in current tab...",
+		PlaceholderColor3 = Color3.fromRGB(150, 150, 150),
+		TextColor3 = Color3.fromRGB(240, 240, 240),
+		TextSize = 13,
+		TextXAlignment = Enum.TextXAlignment.Left,
+		FontFace = Font.new("rbxasset://fonts/families/GothamSSm.json", Enum.FontWeight.Regular, Enum.FontStyle.Normal),
+		ClearTextOnFocus = false,
+		Parent = SearchBoxContainer,
+	})
+
+	-- Small search icon on the right
+	local SearchIcon = New("ImageLabel", {
+		Image = Assets.Min,
+		Size = UDim2.fromOffset(14, 14),
+		AnchorPoint = Vector2.new(1, 0.5),
+		Position = UDim2.new(1, -6, 0.5, 0),
+		BackgroundTransparency = 1,
+		Parent = SearchBoxContainer,
+		ThemeTag = { ImageColor3 = "SubText" },
+	})
+
+	-- Placeholder table to restore section open state on clear
+	local SectionOpenState = {}
+
+	-- Helper to reset visibility when clearing search
+	local function ResetTabFilter(tabIndex)
+		local container = (TabModule and TabModule.Containers[tabIndex]) or nil
+		if not container then return end
+		for _, sectionRoot in ipairs(container:GetChildren()) do
+			if sectionRoot:IsA("Frame") then
+				local content = sectionRoot:FindFirstChild("Container")
+				if content and content:IsA("Frame") then
+					for _, elementFrame in ipairs(content:GetChildren()) do
+						if elementFrame:IsA("Frame") then
+							elementFrame.Visible = true
+						end
+					end
+					-- restore section open state if known
+					local wasOpen = SectionOpenState[sectionRoot]
+					local layout = content:FindFirstChildOfClass("UIListLayout")
+					if wasOpen == nil then
+						-- leave current state
+					elseif wasOpen then
+						content.Visible = true
+						-- restore proper sizes
+						local size = layout and (layout.AbsoluteContentSize.Y + 13) or 0
+						sectionRoot.Size = UDim2.new(1, -10, 0, size + 36)
+					else
+						content.Visible = false
+						sectionRoot.Size = UDim2.new(1, -10, 0, 36)
+					end
+				end
+			end
+		end
+	end
+
+	-- Main search function
+	local function PerformTabSearch(query)
+		local tabIndex = TabModule and TabModule.SelectedTab or 1
+		local container = (TabModule and TabModule.Containers[tabIndex]) or nil
+		if not container then return end
+
+		query = (query or ""):lower()
+		if query == "" then
+			ResetTabFilter(tabIndex)
+			return
+		end
+
+		-- Save open states for restoring later
+		SectionOpenState = {}
+
+		local firstMatch = nil
+		for _, sectionRoot in ipairs(container:GetChildren()) do
+			if sectionRoot:IsA("Frame") then
+				local content = sectionRoot:FindFirstChild("Container")
+				if content and content:IsA("Frame") then
+					local layout = content:FindFirstChildOfClass("UIListLayout")
+					local sectionHasMatch = false
+					-- store current state
+					SectionOpenState[sectionRoot] = content.Visible
+					for _, elementFrame in ipairs(content:GetChildren()) do
+						if elementFrame:IsA("Frame") then
+							local titleHolder = elementFrame:FindFirstChild("LabelHolder")
+							local titleLabel = titleHolder and titleHolder:FindFirstChild("TitleLabel")
+							local descLabel = titleHolder and titleHolder:FindFirstChild("DescLabel")
+							local textToSearch = ""
+							if titleLabel then textToSearch = textToSearch .. titleLabel.Text end
+							if descLabel and descLabel.Visible then textToSearch = textToSearch .. " " .. descLabel.Text end
+							local lowertext = textToSearch:lower()
+							if query ~= "" and lowertext:find(query, 1, true) then
+								elementFrame.Visible = true
+								sectionHasMatch = true
+								if not firstMatch then firstMatch = elementFrame end
+							else
+								elementFrame.Visible = false
+							end
+						end
+					end
+					-- expand section if matches present
+					if sectionHasMatch then
+						content.Visible = true
+						local size = 0
+						if layout then
+							size = layout.AbsoluteContentSize.Y + 13
+						end
+						sectionRoot.Size = UDim2.new(1, -10, 0, size + 36)
+					else
+						-- collapse section to header only
+						content.Visible = false
+						sectionRoot.Size = UDim2.new(1, -10, 0, 36)
+					end
+				end
+			end
+		end
+
+		-- Scroll to first match if any
+		if firstMatch then
+			local firstY = math.max(0, firstMatch.AbsolutePosition.Y - container.AbsolutePosition.Y - 20)
+			container.CanvasPosition = Vector2.new(0, firstY)
+		end
+	end
+
+	-- Connect input change to search
+	-- Note: TabModule is assigned later; using a safe resolver when needed
+	SearchInput:GetPropertyChangedSignal("Text"):Connect(function()
+		-- small debounce: use task.defer to avoid re-entrancy
+		local text = SearchInput.Text or ""
+		PerformTabSearch(text)
+	end)
+
+	-- Clear search on ESC
+	Creator.AddSignal(UserInputService.InputBegan, function(Input)
+		if Input.KeyCode == Enum.KeyCode.Escape and SearchInput.Text ~= "" then
+			SearchInput.Text = ""
+			ResetTabFilter(TabModule and TabModule.SelectedTab or 1)
+		end
+	end)
+
 	Window.TabDisplay = New("TextLabel", {
 		RichText = true,
 		Text = "Tab",
