@@ -34,12 +34,7 @@ function Paragraph:New(Config)
 		ParagraphElement.Border.Transparency = 0.6
 	end
 
-	-- Expose SetGradient method for runtime gradient changes
-	function ParagraphElement:SetGradient(gradientOptions)
-		if ParagraphElement.SetTitleGradient then
-			ParagraphElement:SetTitleGradient(gradientOptions)
-		end
-	end
+	-- Gradient can be controlled via Element's own SetGradient/SetTitleGradient; no override needed here
 
 	return ParagraphElement
 end

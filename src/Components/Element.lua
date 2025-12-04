@@ -5,6 +5,82 @@ local New = Creator.New
 
 local Spring = Flipper.Spring.new
 
+-- Util: normalize various gradient input shapes into a ColorSequence and other UIGradient props
+local function normalizeGradientOptions(options)
+	if typeof(options) ~= "table" then
+		return nil
+	end
+	if options.Enabled ~= true then
+		return { enabled = false }
+	end
+	-- Build ColorSequence
+	local sequence
+	if options.Sequence and typeof(options.Sequence) == "ColorSequence" then
+		sequence = options.Sequence
+	elseif options.Colors and typeof(options.Colors) == "table" and #options.Colors >= 2 then
+		local keypoints = {}
+		local n = #options.Colors
+		for i, c in ipairs(options.Colors) do
+			local t = (i - 1) / (n - 1)
+			keypoints[#keypoints + 1] = ColorSequenceKeypoint.new(t, c)
+		end
+		sequence = ColorSequence.new(keypoints)
+	else
+		-- Fallback to Color1/Color2 (backwards compatible)
+		local c1 = options.Color1 or Color3.fromRGB(0, 150, 0)
+		local c2 = options.Color2 or Color3.fromRGB(0, 255, 150)
+		sequence = ColorSequence.new({
+			ColorSequenceKeypoint.new(0, c1),
+			ColorSequenceKeypoint.new(1, c2),
+		})
+	end
+	local rotation = options.Rotation or 0
+	local offset = options.Offset
+	if offset and typeof(offset) == "table" then
+		-- allow {x, y}
+		offset = Vector2.new(offset[1] or 0, offset[2] or 0)
+	end
+	if offset and typeof(offset) ~= "Vector2" then
+		offset = nil
+	end
+	local transparency = options.Transparency -- optional NumberSequence
+	return {
+		enabled = true,
+		sequence = sequence,
+		rotation = rotation,
+		offset = offset,
+		transparency = transparency,
+	}
+end
+
+local function removeGradientFrom(label)
+	local g = label:FindFirstChildOfClass("UIGradient")
+	if g then g:Destroy() end
+end
+
+local function applyGradientToLabel(label, themeResetColor,
+	options)
+	local info = normalizeGradientOptions(options)
+	if not info or info.enabled == false then
+		removeGradientFrom(label)
+		label.TextColor3 = themeResetColor
+		return
+	end
+	removeGradientFrom(label)
+	-- Ensure white base so gradient is vivid
+	label.TextColor3 = Color3.fromRGB(255, 255, 255)
+	local props = {
+		Color = info.sequence,
+		Rotation = info.rotation,
+		Parent = label,
+	}
+	if info.offset then props.Offset = info.offset end
+	if info.transparency and typeof(info.transparency) == "NumberSequence" then
+		props.Transparency = info.transparency
+	end
+	New("UIGradient", props)
+end
+
 return function(Title, Desc, Parent, Hover, Border, Gradient)
 	local Element = {}
 
@@ -123,71 +199,42 @@ return function(Title, Desc, Parent, Hover, Border, Gradient)
 		Element.DescLabel.Text = Set
 	end
 
-	-- Set title gradient: takes a table { Enabled = boolean, Color1 = Color3, Color2 = Color3, Rotation = number }
-	function Element:SetTitleGradient(gradientOptions)
-		if gradientOptions and gradientOptions.Enabled then
-			-- Remove existing gradient if any
-			local existingGradient = Element.TitleLabel:FindFirstChild("UIGradient")
-			if existingGradient then
-				existingGradient:Destroy()
-			end
-			-- Ensure base text color is white
-			Element.TitleLabel.TextColor3 = Color3.fromRGB(255, 255, 255)
-			-- Create the UIGradient
-			New("UIGradient", {
-				Color = ColorSequence.new{
-					ColorSequenceKeypoint.new(0, gradientOptions.Color1 or Color3.fromRGB(0, 150, 0)),
-					ColorSequenceKeypoint.new(1, gradientOptions.Color2 or Color3.fromRGB(0, 255, 150))
-				},
-				Rotation = gradientOptions.Rotation or 0,
-				Parent = Element.TitleLabel,
-			})
+	-- Rewritten gradient API: robust and flexible
+	function Element:SetTitleGradient(options)
+		applyGradientToLabel(Element.TitleLabel, Color3.fromRGB(240, 240, 240), options)
+	end
+
+	function Element:SetDescGradient(options)
+		applyGradientToLabel(Element.DescLabel, Color3.fromRGB(200, 200, 200), options)
+	end
+
+	-- Convenience: set gradients by target: "Title" (default), "Desc", or "Both"
+	function Element:SetGradient(options)
+		local target = options and options.Target or "Title"
+		if target == "Both" then
+			self:SetTitleGradient(options)
+			self:SetDescGradient(options)
+		elseif target == "Desc" then
+			self:SetDescGradient(options)
 		else
-			local existingGradient = Element.TitleLabel:FindFirstChild("UIGradient")
-			if existingGradient then
-				existingGradient:Destroy()
-			end
-			Element.TitleLabel.TextColor3 = Color3.fromRGB(240, 240, 240)
+			self:SetTitleGradient(options)
 		end
 	end
 
-	-- Set description gradient (same behavior as title gradient)
-	function Element:SetDescGradient(gradientOptions)
-		if gradientOptions and gradientOptions.Enabled then
-			local existingGradient = Element.DescLabel:FindFirstChild("UIGradient")
-			if existingGradient then
-				existingGradient:Destroy()
-			end
-			Element.DescLabel.TextColor3 = Color3.fromRGB(255, 255, 255)
-			New("UIGradient", {
-				Color = ColorSequence.new{
-					ColorSequenceKeypoint.new(0, gradientOptions.Color1 or Color3.fromRGB(0, 150, 0)),
-					ColorSequenceKeypoint.new(1, gradientOptions.Color2 or Color3.fromRGB(0, 255, 150))
-				},
-				Rotation = gradientOptions.Rotation or 0,
-				Parent = Element.DescLabel,
-			})
+	-- If Gradient param is provided on creation, apply it
+	if Gradient and type(Gradient) == "table" then
+		-- Backwards-compatible: a single table applies to title; apply to desc if Desc = true
+		if Gradient.Title then
+			Element:SetTitleGradient(Gradient.Title)
 		else
-			local existingGradient = Element.DescLabel:FindFirstChild("UIGradient")
-			if existingGradient then
-				existingGradient:Destroy()
-			end
-			Element.DescLabel.TextColor3 = Color3.fromRGB(200, 200, 200)
-		end
-	end
-
-	-- If Gradient param is provided on creation, apply it to title and desc accordingly
-	if Gradient then
-		if type(Gradient) == "table" then
-			-- Apply to title (if present)
 			Element:SetTitleGradient(Gradient)
-			-- If gradient specifies Desc = true, apply to desc as well
-			if Gradient.Desc then
-				Element:SetDescGradient(Gradient)
-			end
+		end
+		if Gradient.Desc == true then
+			Element:SetDescGradient(Gradient)
+		elseif type(Gradient.Desc) == "table" then
+			Element:SetDescGradient(Gradient.Desc)
 		end
 	end
-
 
 	function Element:Destroy()
 		Element.Frame:Destroy()
