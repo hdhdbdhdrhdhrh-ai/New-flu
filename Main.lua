@@ -1032,8 +1032,8 @@ local aa = {
 			-- Section header (clickable)
 			m.Header = j("TextButton", {
 				Size = UDim2.new(1, 0, 0, 35),
-				BackgroundColor3 = Color3.fromRGB(45, 45, 45),
-				BackgroundTransparency = 0.1,
+				BackgroundColor3 = Color3.fromRGB(0, 0, 0),
+				BackgroundTransparency = 0.3,
 				Text = "",
 				Parent = m.Root,
 				AutomaticSize = Enum.AutomaticSize.None,
@@ -1042,8 +1042,9 @@ local aa = {
 					CornerRadius = UDim.new(0, 6),
 				}),
 				j("UIStroke", {
-					Transparency = 0.7,
-					Color = Color3.fromRGB(60, 60, 60),
+					Transparency = 0,
+					Color = Color3.fromRGB(0, 235, 0),
+					Thickness = 1.5,
 					ApplyStrokeMode = Enum.ApplyStrokeMode.Border,
 				}),
 			})

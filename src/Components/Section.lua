@@ -20,8 +20,8 @@ return function(Title, Parent, DefaultOpen)
 	-- Section header (clickable)
 	Section.Header = New("TextButton", {
 		Size = UDim2.new(1, 0, 0, 35),
-		BackgroundColor3 = Color3.fromRGB(45, 45, 45),
-		BackgroundTransparency = 0.1,
+		BackgroundColor3 = Color3.fromRGB(0, 0, 0),
+		BackgroundTransparency = 0.3,
 		Text = "",
 		Parent = Section.Root,
 		AutomaticSize = Enum.AutomaticSize.None,
@@ -30,8 +30,9 @@ return function(Title, Parent, DefaultOpen)
 			CornerRadius = UDim.new(0, 6),
 		}),
 		New("UIStroke", {
-			Transparency = 0.7,
-			Color = Color3.fromRGB(60, 60, 60),
+			Transparency = 0,
+			Color = Color3.fromRGB(0, 235, 0),
+			Thickness = 1.5,
 			ApplyStrokeMode = Enum.ApplyStrokeMode.Border,
 		}),
 	})
