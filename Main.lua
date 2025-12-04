@@ -2918,141 +2918,109 @@ local aa = {
 				end
 			end
 			function l.BuildDropdownList(B)
-				local C, D = l.Values, {}
-				for E, F in next, t:GetChildren() do
-					if not F:IsA("UIListLayout") then
-						F:Destroy()
+				for C, D in ipairs(t:GetChildren()) do
+					if D:IsA("Frame") then
+						D:Destroy()
 					end
 				end
-				local G = 0
-				for H, I in next, C do
-					local J = {}
-					G = G + 1
-					local K, L =
-						e(
-							"Frame",
-							{
-								Size = UDim2.fromOffset(4, 14),
-								BackgroundColor3 = Color3.fromRGB(76, 194, 255),
-								Position = UDim2.fromOffset(-1, 16),
-								AnchorPoint = Vector2.new(0, 0.5),
-								ThemeTag = { BackgroundColor3 = "Accent" },
-							},
-							{ e("UICorner", { CornerRadius = UDim.new(0, 2) }) }
-						),
+				for C, D in ipairs(l.FilteredValues) do
+					local E = l.Multi and l.Value[D] or l.Value == D
+					local F = e(
+						"Frame",
+						{
+							Size = UDim2.new(1, -10, 0, 32),
+							BackgroundTransparency = 1,
+							BorderSizePixel = 0,
+							Parent = t,
+						},
+						{
+							e("UICorner", { CornerRadius = UDim.new(0, 5) }),
+							e("UIStroke", { Color = Color3.new(), Transparency = 0.93, ApplyStrokeMode = Enum.ApplyStrokeMode.Border }),
+						}
+					)
+					local G = e(
+						"Frame",
+						{
+							Size = UDim2.fromOffset(16, 16),
+							BackgroundColor3 = E and Color3.fromRGB(100, 100, 255) or Color3.fromRGB(50, 50, 50),
+							BorderSizePixel = 0,
+							Position = UDim2.fromOffset(8, 8),
+							Parent = F,
+						},
+						{ e("UICorner", { CornerRadius = UDim.new(0, 4) }) }
+					)
+					if E then
 						e(
 							"TextLabel",
 							{
-								FontFace = Font.new("rbxasset://fonts/families/GothamSSm.json"),
-								Text = I,
-								TextColor3 = Color3.fromRGB(200, 200, 200),
-								TextSize = 13,
-								TextXAlignment = Enum.TextXAlignment.Left,
-								BackgroundColor3 = Color3.fromRGB(255, 255, 255),
-								AutomaticSize = Enum.AutomaticSize.Y,
+								Size = UDim2.new(1, 0, 1, 0),
 								BackgroundTransparency = 1,
-								Size = UDim2.fromScale(1, 1),
-								Position = UDim2.fromOffset(10, 0),
-								Name = "ButtonLabel",
-								ThemeTag = { TextColor3 = "Text" },
+								Text = "✓",
+								TextColor3 = Color3.fromRGB(255, 255, 255),
+								TextSize = 14,
+								FontFace = Font.new("rbxasset://fonts/families/GothamSSm.json", Enum.FontWeight.Bold, Enum.FontStyle.Normal),
+								Parent = G,
 							}
 						)
-					local M, N = (
-						e(
-							"TextButton",
-							{
-								Size = UDim2.new(1, -5, 0, 32),
-								BackgroundTransparency = 1,
-								ZIndex = 23,
-								Text = "",
-								Parent = t,
-								ThemeTag = { BackgroundColor3 = "DropdownOption" },
-							},
-							{ K, L, e("UICorner", { CornerRadius = UDim.new(0, 6) }) }
-						)
-					)
-					if j.Multi then
-						N = l.Value[I]
-					else
-						N = l.Value == I
 					end
-					local O, P = c.SpringMotor(1, M, "BackgroundTransparency")
-					local Q, R = c.SpringMotor(1, K, "BackgroundTransparency")
-					local S = d.SingleMotor.new(6)
-					S:onStep(function(T)
-						K.Size = UDim2.new(0, 4, 0, T)
-					end)
-					c.AddSignal(M.MouseEnter, function()
-						P(N and 0.85 or 0.89)
-					end)
-					c.AddSignal(M.MouseLeave, function()
-						P(N and 0.89 or 1)
-					end)
-					c.AddSignal(M.MouseButton1Down, function()
-						P(0.92)
-					end)
-					c.AddSignal(M.MouseButton1Up, function()
-						P(N and 0.85 or 0.89)
-					end)
-					function J.UpdateButton(T)
-						if j.Multi then
-							N = l.Value[I]
-							if N then
-								P(0.89)
+					local H = e(
+						"TextButton",
+						{
+							Size = UDim2.new(1, 0, 1, 0),
+							BackgroundTransparency = 1,
+							TextColor3 = Color3.new(1, 1, 1),
+							FontFace = Font.new("rbxasset://fonts/families/GothamSSm.json", Enum.FontWeight.Regular, Enum.FontStyle.Normal),
+							TextSize = 14,
+							Text = D,
+							Parent = F,
+							TextXAlignment = Enum.TextXAlignment.Left,
+							AutomaticSize = Enum.AutomaticSize.X,
+							ThemeTag = { TextColor3 = "Text", BackgroundColor3 = "Highlight" },
+						},
+						{ e("UIPadding", { PaddingLeft = UDim.new(0, 32), PaddingTop = UDim.new(0, 1), PaddingBottom = UDim.new(0, 1) }) }
+					)
+					c.AddSignal(H.MouseButton1Click, function()
+						if l.Multi then
+							if l.Value[D] then
+								l.Value[D] = nil
+								l:RemoveTag(D)
+							else
+								l.Value[D] = true
+								l:CreateTag(D)
 							end
 						else
-							N = l.Value == I
-							P(N and 0.89 or 1)
-						end
-						S:setGoal(d.Spring.new(N and 14 or 6, { frequency = 6 }))
-						R(N and 0 or 1)
-					end
-					L.InputBegan:Connect(function(T)
-						if
-							T.UserInputType == Enum.UserInputType.MouseButton1
-							or T.UserInputType == Enum.UserInputType.Touch
-						then
-							local U = not N
-							if l:GetActiveValues() == 1 and not U and not j.AllowNull then
-							else
-								if j.Multi then
-									N = U
-									l.Value[I] = N and true or nil
-								else
-									N = U
-									l.Value = N and I or nil
-									for V, W in next, D do
-										W:UpdateButton()
-									end
-								end
-								J:UpdateButton()
-								l:Display()
-								k:SafeCallback(l.Callback, l.Value)
-								k:SafeCallback(l.Changed, l.Value)
+							for I, J in pairs(l.SelectedTags) do
+								l:RemoveTag(I)
 							end
+							l.Value = D
+							l:CreateTag(D)
+							l:Close()
 						end
+						l:BuildDropdownList()
+						k:SafeCallback(l.Callback, l.Value)
+						k:SafeCallback(l.Changed, l.Value)
 					end)
-					J:UpdateButton()
-					l:Display()
-					D[M] = J
+					c.AddSignal(H.MouseEnter, function()
+						H.BackgroundTransparency = 0.92
+					end)
+					c.AddSignal(H.MouseLeave, function()
+						H.BackgroundTransparency = 1
+					end)
 				end
-				x = 0
-				for J, K in next, D do
-					if J.ButtonLabel then
-						if J.ButtonLabel.TextBounds.X > x then
-							x = J.ButtonLabel.TextBounds.X
-						end
-					end
+				if #l.FilteredValues > 10 then
+					v.Size = UDim2.fromOffset(n.AbsoluteSize.X, 392)
+				else
+					v.Size = UDim2.fromOffset(n.AbsoluteSize.X, s.AbsoluteContentSize.Y + 10)
 				end
-				x = x + 30
-				z()
-				y()
+				t.CanvasSize = UDim2.fromOffset(0, s.AbsoluteContentSize.Y)
 			end
 			function l.SetValues(B, C)
 				if C then
 					l.Values = C
+					l.FilteredValues = C
 				end
 				l:BuildDropdownList()
+				l:Display()
 			end
 			function l.OnChanged(B, C)
 				l.Changed = C
@@ -3075,6 +3043,7 @@ local aa = {
 					end
 				end
 				l:BuildDropdownList()
+				l:Display()
 				k:SafeCallback(l.Callback, l.Value)
 				k:SafeCallback(l.Changed, l.Value)
 			end
@@ -3082,39 +3051,30 @@ local aa = {
 				m:Destroy()
 				k.Options[i] = nil
 			end
+			if j.Default then
+				if type(j.Default) == "string" then
+					if table.find(l.Values, j.Default) then
+						if l.Multi then
+							l.Value[j.Default] = true
+						else
+							l.Value = j.Default
+						end
+					end
+				elseif type(j.Default) == "table" then
+					for B, C in ipairs(j.Default) do
+						if table.find(l.Values, C) then
+							if l.Multi then
+								l.Value[C] = true
+							else
+								l.Value = C
+								break
+							end
+						end
+					end
+				end
+			end
 			l:BuildDropdownList()
 			l:Display()
-			local B = {}
-			if type(j.Default) == "string" then
-				local C = table.find(l.Values, j.Default)
-				if C then
-					table.insert(B, C)
-				end
-			elseif type(j.Default) == "table" then
-				for C, D in next, j.Default do
-					local E = table.find(l.Values, D)
-					if E then
-						table.insert(B, E)
-					end
-				end
-			elseif type(j.Default) == "number" and l.Values[j.Default] ~= nil then
-				table.insert(B, j.Default)
-			end
-			if next(B) then
-				for C = 1, #B do
-					local D = B[C]
-					if j.Multi then
-						l.Value[l.Values[D]] = true
-					else
-						l.Value = l.Values[D]
-					end
-					if not j.Multi then
-						break
-					end
-				end
-				l:BuildDropdownList()
-				l:Display()
-			end
 			k.Options[i] = l
 			return l
 		end
