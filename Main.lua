@@ -779,6 +779,7 @@ local aa = {
 					AutomaticSize = Enum.AutomaticSize.Y,
 					Text = "",
 					LayoutOrder = 7,
+					ClipsDescendants = true,
 					ThemeTag = { BackgroundColor3 = "Element", BackgroundTransparency = "ElementTransparency" },
 				},
 				{ k("UICorner", { CornerRadius = UDim.new(0, 4) }), q.Border, q.LabelHolder }
