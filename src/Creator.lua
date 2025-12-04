@@ -86,7 +86,8 @@ end
 
 function Creator.GetThemeProperty(Property)
 	local Library = require(Root)
-	if Property == "Accent" and Library.Accent then
+	-- Always return custom accent if it's been explicitly set and not the default
+	if Property == "Accent" then
 		return Library.Accent
 	end
 	if Themes[Library.Theme] and Themes[Library.Theme][Property] then
