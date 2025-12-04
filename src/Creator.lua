@@ -85,8 +85,12 @@ function Creator.Disconnect()
 end
 
 function Creator.GetThemeProperty(Property)
-	if Themes[require(Root).Theme][Property] then
-		return Themes[require(Root).Theme][Property]
+	local Library = require(Root)
+	if Property == "Accent" and Library.Accent then
+		return Library.Accent
+	end
+	if Themes[Library.Theme] and Themes[Library.Theme][Property] then
+		return Themes[Library.Theme][Property]
 	end
 	return Themes["Dark"][Property]
 end

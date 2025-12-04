@@ -54,13 +54,17 @@ function Element:New(Idx, Config)
 
 	local SliderFill = New("Frame", {
 		Size = UDim2.new(0, 0, 1, 0),
-		BackgroundColor3 = Library.Accent,
 		BackgroundTransparency = 0.5,
+		ThemeTag = {
+			BackgroundColor3 = "Accent",
+		},
 	}, {
 		New("UIStroke", {
-			Color = Library.Accent,
 			Thickness = 1,
 			ApplyStrokeMode = Enum.ApplyStrokeMode.Border,
+			ThemeTag = {
+				Color = "Accent",
+			},
 		}),
 		New("UICorner", {
 			CornerRadius = UDim.new(1, 0),
