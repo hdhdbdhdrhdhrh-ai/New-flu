@@ -3358,7 +3358,7 @@ local aa = {
 			e.Border.Transparency = 1
 			
 			-- Add gradient support for title
-			function e:SetGradient(f)
+			local function SetGradient(f)
 				if f and f.Enabled then
 					local g = e.TitleLabel:FindFirstChild("UIGradient")
 					if g then g:Destroy() end
@@ -3380,7 +3380,7 @@ local aa = {
 			
 			-- Apply gradient if provided in config
 			if d.Gradient then
-				e:SetGradient(d.Gradient)
+				SetGradient(d.Gradient)
 			end
 			
 			return e

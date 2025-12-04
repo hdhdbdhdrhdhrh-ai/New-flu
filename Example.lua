@@ -324,29 +324,6 @@ do
     -- end)
 end
 
--- New Border Feature Demo Section (added after Main tab for demonstration)
-local BorderDemoSection = Tabs.Main:AddSection({
-    Title = "Border Feature Demo",
-    Open = true
-})
-
-BorderDemoSection:AddParagraph({
-    Title = "Border Feature",
-    Content = "Notice the grey borders between elements and around the tab list for better visual separation.",
-    Gradient = {
-        Enabled = true,
-        Color1 = Color3.fromRGB(150, 200, 255),  -- Light blue
-        Color2 = Color3.fromRGB(255, 150, 200),  -- Pink
-        Rotation = -45
-    }
-})
-
-BorderDemoSection:AddToggle("DemoToggle1", {Title = "First Toggle", Default = false})
-BorderDemoSection:AddButton({Title = "Demo Button 1", Callback = function() print("Button 1") end})
-BorderDemoSection:AddToggle("DemoToggle2", {Title = "Second Toggle", Default = true})
-BorderDemoSection:AddButton({Title = "Demo Button 2", Callback = function() print("Button 2") end})
-BorderDemoSection:AddToggle("DemoToggle3", {Title = "Third Toggle", Default = false})
-
 
 -- Addons:
 -- SaveManager (Allows you to have a configuration system)

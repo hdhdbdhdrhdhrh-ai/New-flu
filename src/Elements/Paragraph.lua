@@ -18,7 +18,7 @@ function Paragraph:New(Config)
 	Paragraph.Border.Transparency = 1
 
 	-- Add gradient support for title
-	function Paragraph:SetGradient(gradientOptions)
+	local function SetGradient(gradientOptions)
 		if gradientOptions and gradientOptions.Enabled then
 			-- Remove existing gradient if any
 			local existingGradient = Paragraph.TitleLabel:FindFirstChild("UIGradient")
@@ -47,10 +47,10 @@ function Paragraph:New(Config)
 			Paragraph.TitleLabel.TextColor3 = Color3.fromRGB(240, 240, 240)
 		end
 	end
-
+	
 	-- Apply gradient if provided in config
 	if Config.Gradient then
-		Paragraph:SetGradient(Config.Gradient)
+		SetGradient(Config.Gradient)
 	end
 
 	return Paragraph
