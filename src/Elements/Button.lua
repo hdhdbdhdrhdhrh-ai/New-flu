@@ -35,8 +35,8 @@ function Element:New(Config)
 	})
 
 	-- Make the button right under the title
-	ButtonFrame.Frame.Size = UDim2.new(1, -20, 0, 26)
-	ButtonFrame.Frame.AutomaticSize = Enum.AutomaticSize.None
+	ButtonFrame.Frame.Size = UDim2.new(0, 0, 0, 26)
+	ButtonFrame.Frame.AutomaticSize = Enum.AutomaticSize.X
 	ButtonFrame.Frame.Position = UDim2.new(0, 10, 0, 19)
 	ButtonFrame.Frame.BackgroundTransparency = 1
 	ButtonFrame.Frame.BorderSizePixel = 0

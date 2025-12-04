@@ -1922,12 +1922,12 @@ local aa = {
 			local p = j(
 				"TextButton",
 				{
-					Size = UDim2.new(1, -20, 0, 26),
+					Size = UDim2.new(0, 0, 0, 26),
 					AnchorPoint = Vector2.new(0, 0),
 					Position = UDim2.new(0, 10, 0, 19),
 					BackgroundTransparency = n.Filled and 0 or 1,
 					Parent = o.Frame,
-					AutomaticSize = Enum.AutomaticSize.None,
+					AutomaticSize = Enum.AutomaticSize.X,
 					Text = "",
 					ClipsDescendants = true,
 				},
