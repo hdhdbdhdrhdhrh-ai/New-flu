@@ -178,11 +178,7 @@ function TabModule:SelectTab(Tab)
     TabModule.Tabs[Tab].SetTransparency(0.89)
     TabModule.Tabs[Tab].Selected = true
 
-    -- Do not update the top 'TabDisplay' text when a tab is selected.
-    -- This change removes the automatic display of the tab name at the top of
-    -- the window. If you want to restore the behavior, set the text manually
-    -- or uncomment the line below.
-    -- Window.TabDisplay.Text = TabModule.Tabs[Tab].Name
+    Window.TabDisplay.Text = TabModule.Tabs[Tab].Name
     Window.SelectorPosMotor:setGoal(Spring(TabModule:GetCurrentTabPos(), { frequency = 6 }))
 
     task.spawn(function()
