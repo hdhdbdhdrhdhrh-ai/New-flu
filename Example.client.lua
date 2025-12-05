@@ -14,6 +14,14 @@ local Tabs = {
     Settings = Window:AddTab({ Title = "Settings", Icon = "settings" })
 }
 
+-- Demonstrate tab title gradient
+Window:SetTabTitleGradient({
+    Enabled = true,
+    Color1 = Color3.fromRGB(255, 100, 150),  -- Pink
+    Color2 = Color3.fromRGB(100, 150, 255),  -- Blue
+    Rotation = 0,
+})
+
 do
     local GradientPara = Tabs.Main:AddParagraph({
         Title = "Gradient Title Paragraph",
