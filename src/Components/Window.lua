@@ -88,7 +88,7 @@ return function(Config)
 
 	Window.TabDisplay = New("TextLabel", {
 		RichText = true,
-		Text = "",
+		Text = "Tab",
 		TextTransparency = 0,
 		FontFace = Font.new("rbxassetid://12187365364", Enum.FontWeight.SemiBold, Enum.FontStyle.Normal),
 		TextSize = 28,
@@ -113,8 +113,8 @@ return function(Config)
 	})
 
 	Window.ContainerCanvas = New("Frame", {
-		Size = UDim2.new(1, -Window.TabWidth - 32, 1, -68),
-		Position = UDim2.fromOffset(Window.TabWidth + 26, 56),
+		Size = UDim2.new(1, -Window.TabWidth - 32, 1, -102),
+		Position = UDim2.fromOffset(Window.TabWidth + 26, 90),
 		BackgroundTransparency = 1,
 	}, {
 		Window.ContainerAnim,
@@ -397,6 +397,87 @@ return function(Config)
 		LastTime = 0
 		Window.SelectorPosMotor:setGoal(Instant(TabModule:GetCurrentTabPos()))
 	end)
+
+	-- Gradient support for TabDisplay
+	local function normalizeGradientOptions(options)
+		if typeof(options) ~= "table" then
+			return nil
+		end
+		if options.Enabled ~= true then
+			return { enabled = false }
+		end
+		local sequence
+		if options.Sequence and typeof(options.Sequence) == "ColorSequence" then
+			sequence = options.Sequence
+		elseif options.Colors and typeof(options.Colors) == "table" and #options.Colors >= 2 then
+			local keypoints = {}
+			local n = #options.Colors
+			for i, c in ipairs(options.Colors) do
+				local t = (i - 1) / (n - 1)
+				keypoints[#keypoints + 1] = ColorSequenceKeypoint.new(t, c)
+			end
+			sequence = ColorSequence.new(keypoints)
+		else
+			local c1 = options.Color1 or Color3.fromRGB(0, 150, 0)
+			local c2 = options.Color2 or Color3.fromRGB(0, 255, 150)
+			sequence = ColorSequence.new({
+				ColorSequenceKeypoint.new(0, c1),
+				ColorSequenceKeypoint.new(1, c2),
+			})
+		end
+		local rotation = options.Rotation or 0
+		local offset = options.Offset
+		if offset and typeof(offset) == "table" then
+			offset = Vector2.new(offset[1] or 0, offset[2] or 0)
+		end
+		if offset and typeof(offset) ~= "Vector2" then
+			offset = nil
+		end
+		local transparency = options.Transparency
+		return {
+			enabled = true,
+			sequence = sequence,
+			rotation = rotation,
+			offset = offset,
+			transparency = transparency,
+		}
+	end
+
+	local function removeGradientFrom(label)
+		local g = label:FindFirstChildOfClass("UIGradient")
+		if g then g:Destroy() end
+	end
+
+	local function applyGradientToLabel(label, themeResetColor, options)
+		local info = normalizeGradientOptions(options)
+		if not info or info.enabled == false then
+			removeGradientFrom(label)
+			label.TextColor3 = themeResetColor
+			return
+		end
+		removeGradientFrom(label)
+		if Creator.Registry and Creator.Registry[label] then
+			local registryData = Creator.Registry[label]
+			if registryData and registryData.Properties then
+				registryData.Properties.TextColor3 = nil
+			end
+		end
+		label.TextColor3 = Color3.fromRGB(255, 255, 255)
+		local props = {
+			Color = info.sequence,
+			Rotation = info.rotation,
+			Parent = label,
+		}
+		if info.offset then props.Offset = info.offset end
+		if info.transparency and typeof(info.transparency) == "NumberSequence" then
+			props.Transparency = info.transparency
+		end
+		Creator.New("UIGradient", props)
+	end
+
+	function Window:SetTabTitleGradient(options)
+		applyGradientToLabel(Window.TabDisplay, Color3.fromRGB(240, 240, 240), options)
+	end
 
 	return Window
 end

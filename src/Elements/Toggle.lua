@@ -34,7 +34,7 @@ function Element:New(Idx, Config)
 	local ToggleSquare = New("TextButton", {
 		Size = UDim2.fromOffset(16, 16),
 		AnchorPoint = Vector2.new(0, 0.5),
-		Position = UDim2.new(0, 5, 0.5, 0),
+		Position = UDim2.new(0, 10, 0.5, 0),
 		Parent = ToggleFrame.Frame,
 		BackgroundTransparency = 1,
 		Text = "",

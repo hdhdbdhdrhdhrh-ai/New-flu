@@ -1415,9 +1415,7 @@ local aa = {
 			end
 			o.Tabs[q].SetTransparency(0.89)
 			o.Tabs[q].Selected = true
-			-- Do not update the top 'TabDisplay' text when switching tabs.
-			-- Removed to prevent tab name from appearing at the top of the window.
-			-- r.TabDisplay.Text = o.Tabs[q].Name
+			r.TabDisplay.Text = o.Tabs[q].Name
 			r.SelectorPosMotor:setGoal(l(o:GetCurrentTabPos(), { frequency = 6 }))
 			task.spawn(function()
 				r.ContainerPosMotor:setGoal(l(110, { frequency = 10 }))
@@ -1728,7 +1726,7 @@ local aa = {
 				"TextLabel",
 				{
 					RichText = true,
-					Text = "",
+					Text = "Tab",
 					TextTransparency = 0,
 					FontFace = Font.new("rbxassetid://12187365364", Enum.FontWeight.SemiBold, Enum.FontStyle.Normal),
 					TextSize = 28,
@@ -1743,8 +1741,8 @@ local aa = {
 			v.ContainerHolder = s(
 				"CanvasGroup",
 				{
-					Size = UDim2.new(1, -t.TabWidth - 32, 1, -68),
-					Position = UDim2.fromOffset(t.TabWidth + 26, 56),
+					Size = UDim2.new(1, -t.TabWidth - 32, 1, -102),
+					Position = UDim2.fromOffset(t.TabWidth + 26, 90),
 					BackgroundTransparency = 1,
 				}
 			)
