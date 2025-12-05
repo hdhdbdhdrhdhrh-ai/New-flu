@@ -26,12 +26,6 @@ function Element:New(Idx, Config)
 	Toggle.SetTitleGradient = ToggleFrame.SetTitleGradient
 	Toggle.SetDescGradient = ToggleFrame.SetDescGradient
 
-	-- Shift title and description to the right so they don't overlap with the toggle
-	-- square when toggles are moved further left.
-	ToggleFrame.TitleLabel.Position = UDim2.fromOffset(26, 0)
-	ToggleFrame.TitleLabel.Size = UDim2.new(1, -26, 0, 14)
-	ToggleFrame.DescLabel.Position = UDim2.fromOffset(26, 0)
-
 	local ToggleBorder = New("UIStroke", {
 		Thickness = 0.8,
 		ApplyStrokeMode = Enum.ApplyStrokeMode.Border,
@@ -40,7 +34,7 @@ function Element:New(Idx, Config)
 	local ToggleSquare = New("TextButton", {
 		Size = UDim2.fromOffset(16, 16),
 		AnchorPoint = Vector2.new(0, 0.5),
-		Position = UDim2.new(0, 6, 0.5, 0),
+		Position = UDim2.new(0, 5, 0.5, 0),
 		Parent = ToggleFrame.Frame,
 		BackgroundTransparency = 1,
 		Text = "",

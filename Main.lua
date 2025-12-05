@@ -1718,7 +1718,7 @@ local aa = {
 				"Frame",
 				{
 					Size = UDim2.new(0, t.TabWidth, 1, -66),
-					Position = UDim2.new(0, 12, 0, 44),
+					Position = UDim2.new(0, 12, 0, 54),
 					BackgroundTransparency = 1,
 					ClipsDescendants = true,
 				},
@@ -1735,7 +1735,7 @@ local aa = {
 					TextXAlignment = "Left",
 					TextYAlignment = "Center",
 					Size = UDim2.new(1, -16, 0, 28),
-					Position = UDim2.fromOffset(t.TabWidth + 26, 44),
+					Position = UDim2.fromOffset(t.TabWidth + 26, 56),
 					BackgroundTransparency = 1,
 					ThemeTag = { TextColor3 = "Text" },
 				}
@@ -1743,8 +1743,8 @@ local aa = {
 			v.ContainerHolder = s(
 				"CanvasGroup",
 				{
-					Size = UDim2.new(1, -t.TabWidth - 32, 1, -102),
-					Position = UDim2.fromOffset(t.TabWidth + 26, 80),
+					Size = UDim2.new(1, -t.TabWidth - 32, 1, -68),
+					Position = UDim2.fromOffset(t.TabWidth + 26, 56),
 					BackgroundTransparency = 1,
 				}
 			)
@@ -3123,13 +3123,6 @@ local aa = {
 				ac(aj.Element)(f.Title, f.Description, d.Container, false)
 			h.SetTitle = i.SetTitle
 			h.SetDesc = i.SetDesc
-			-- Shift toggle title and description right to avoid overlap with toggle square
-			i.TitleLabel.Position = UDim2.fromOffset(26, 0)
-			i.TitleLabel.Size = UDim2.new(1, -26, 0, 14)
-			i.DescLabel.Position = UDim2.fromOffset(26, 0)
-            
-            
-            
 			local j = ac(aj.Textbox)(i.Frame, true)
 			j.Frame.Position = UDim2.new(1, -10, 0.5, 0)
 			j.Frame.AnchorPoint = Vector2.new(1, 0.5)
@@ -3512,7 +3505,7 @@ local aa = {
 				{
 					Size = UDim2.fromOffset(16, 16),
 					AnchorPoint = Vector2.new(0, 0.5),
-					Position = UDim2.new(0, 6, 0.5, 0),
+					Position = UDim2.new(0, 10, 0.5, 0),
 					Parent = i.Frame,
 					BackgroundTransparency = 1,
 					Text = "",
