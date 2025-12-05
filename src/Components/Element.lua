@@ -144,8 +144,8 @@ return function(Title, Desc, Parent, Hover, Border, Gradient)
 		AutomaticSize = Enum.AutomaticSize.Y,
 		BackgroundColor3 = Color3.fromRGB(255, 255, 255),
 		BackgroundTransparency = 1,
-		Position = UDim2.fromOffset(10, 0),
-		Size = UDim2.new(1, -20, 0, 0),
+		Position = UDim2.fromOffset(5, 0),
+		Size = UDim2.new(1, -10, 0, 0),
 		LayoutOrder = 1,
 	}, {
 		New("UIListLayout", {

@@ -178,7 +178,11 @@ function TabModule:SelectTab(Tab)
     TabModule.Tabs[Tab].SetTransparency(0.89)
     TabModule.Tabs[Tab].Selected = true
 
-    Window.TabDisplay.Text = TabModule.Tabs[Tab].Name
+    -- Do not update the top 'TabDisplay' text when a tab is selected.
+    -- This change removes the automatic display of the tab name at the top of
+    -- the window. If you want to restore the behavior, set the text manually
+    -- or uncomment the line below.
+    -- Window.TabDisplay.Text = TabModule.Tabs[Tab].Name
     Window.SelectorPosMotor:setGoal(Spring(TabModule:GetCurrentTabPos(), { frequency = 6 }))
 
     task.spawn(function()
@@ -187,10 +191,10 @@ function TabModule:SelectTab(Tab)
         Window.ContainerPosMotor:setGoal(Spring(15, { frequency = 10 }))
         Window.ContainerBackMotor:setGoal(Spring(1, { frequency = 10 }))
         task.wait(0.12)
-        for _, Container in next, TabModule.Tabs do
-            Container.ContainerFrame.Visible = false
+        for _, Container in next, TabModule.Containers do
+            Container.Visible = false
         end
-        TabModule.Tabs[Tab].ContainerFrame.Visible = true
+        TabModule.Containers[Tab].Visible = true
         Window.ContainerPosMotor:setGoal(Spring(0, { frequency = 5 }))
         Window.ContainerBackMotor:setGoal(Spring(0, { frequency = 8 }))
         task.wait(0.12)

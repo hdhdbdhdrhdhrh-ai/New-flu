@@ -1,6 +1,6 @@
 local fs = require("@lune/fs")
 local process = require("@lune/process")
-local BuildCodegen = require("modules/BuildCodegen")
+local BuildCodegen = require("build/modules/BuildCodegen")
 
 local FilePath = "dist/main.lua"
 local TempFile = "dist/temp.lua"
